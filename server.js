@@ -27,7 +27,7 @@ pool.connect((err, client, release) => {
     release();
 });
 
-// ---------- 初始化表结构（增加 tags 字段） ----------
+// ---------- 初始化表结构 ----------
 pool.query(`
     CREATE TABLE IF NOT EXISTS schedules (
         id SERIAL PRIMARY KEY,
@@ -39,24 +39,28 @@ pool.query(`
         links TEXT,
         videoEmbed TEXT,
         thumbnail TEXT,
-        tags TEXT[] DEFAULT '{}'   -- 🆕 新增 tags 字段，存储文本数组
+        tags TEXT[] DEFAULT '{}'
     )
 `).then(() => {
     console.log('✅ 数据库表已就绪');
+    // ---------- 确保 tags 列存在（兼容已有表） ----------
+    return pool.query(`
+        ALTER TABLE schedules ADD COLUMN IF NOT EXISTS tags TEXT[] DEFAULT '{}'
+    `);
+}).then(() => {
+    console.log('✅ tags 列已确认');
 }).catch(err => {
-    console.error('❌ 创建表失败：', err.message);
+    console.error('❌ 初始化失败：', err.message);
 });
 
 // ---------- API 路由 ----------
 
-// 获取所有日程（返回包含 tags）
 app.get('/api/data', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM schedules ORDER BY date ASC');
-        // 确保 tags 字段始终为数组（如果为 null 则转为空数组）
         const rows = result.rows.map(row => ({
             ...row,
-            tags: row.tags || []   // 兼容旧数据
+            tags: row.tags || []
         }));
         res.json(rows);
     } catch (err) {
@@ -65,7 +69,6 @@ app.get('/api/data', async (req, res) => {
     }
 });
 
-// 新增日程（支持 tags）
 app.post('/api/data', async (req, res) => {
     const { date, person, tag, shortName, title, links, videoEmbed, thumbnail, tags } = req.body;
     try {
@@ -81,7 +84,7 @@ app.post('/api/data', async (req, res) => {
                 links || '[]',
                 videoEmbed || '',
                 thumbnail || '',
-                tags || []   // 🆕 插入 tags 数组
+                tags || []
             ]
         );
         res.status(201).json(result.rows[0]);
@@ -91,7 +94,6 @@ app.post('/api/data', async (req, res) => {
     }
 });
 
-// 修改日程（支持更新 tags）
 app.put('/api/data/:id', async (req, res) => {
     const id = req.params.id;
     const { date, person, tag, shortName, title, links, videoEmbed, thumbnail, tags } = req.body;
@@ -109,7 +111,7 @@ app.put('/api/data/:id', async (req, res) => {
                 links || '[]',
                 videoEmbed || '',
                 thumbnail || '',
-                tags || [],   // 🆕 更新 tags
+                tags || [],
                 id
             ]
         );
@@ -123,7 +125,6 @@ app.put('/api/data/:id', async (req, res) => {
     }
 });
 
-// 删除日程（保持不变）
 app.delete('/api/data/:id', async (req, res) => {
     const id = req.params.id;
     try {
