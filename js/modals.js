@@ -75,7 +75,7 @@ function openModal(itemData) {
     }
 
     // ============================================================
-    // 🔧 修复：微博图片加载失败
+    // 🔧 修复：微博图片使用代理加载
     // ============================================================
     modalMediaBox.innerHTML = '';
     const thumb = (itemData.thumbnail || '').trim();
@@ -83,25 +83,19 @@ function openModal(itemData) {
 
     if (thumb) {
         const img = document.createElement('img');
-        // 核心修复：绕过防盗链
-        img.setAttribute('referrerpolicy', 'no-referrer');
-        img.src = thumb;
+        // ✅ 使用代理地址（解决防盗链）
+        const proxyUrl = getProxiedImageUrl(thumb);
+        img.src = proxyUrl;
         img.alt = itemData.title || '缩略图';
+        img.setAttribute('referrerpolicy', 'no-referrer');
 
-        // 重试逻辑：如果是微博图片且加载失败，尝试添加尺寸参数
+        // 如果代理加载失败，尝试直接加载原图
         img.onerror = function() {
-            const isWeibo = thumb.includes('sinaimg.cn') || thumb.includes('pic.sinaimg.cn') || 
-                            thumb.includes('ww1.sinaimg.cn') || thumb.includes('wx1.sinaimg.cn');
-            if (isWeibo && !thumb.includes('?name=')) {
-                // 第一次重试：添加 ?name=large 参数
-                this.src = thumb + '?name=large';
+            if (this.src.includes('images.weserv.nl')) {
+                this.src = thumb;
                 this.onerror = function() {
-                    // 第二次重试：尝试 ?name=orig
-                    this.src = thumb + '?name=orig';
-                    this.onerror = function() {
-                        this.style.display = 'none';
-                        modalMediaBox.innerHTML = `<span class="no-media">图片加载失败</span>`;
-                    };
+                    this.style.display = 'none';
+                    modalMediaBox.innerHTML = `<span class="no-media">图片加载失败</span>`;
                 };
             } else {
                 this.style.display = 'none';
