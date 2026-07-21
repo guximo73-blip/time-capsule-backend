@@ -78,15 +78,22 @@ function openModal(itemData) {
     const thumb = (itemData.thumbnail || '').trim();
     const video = (itemData.videoEmbed || itemData.videoembed || '').trim();
     if (thumb) {
-        const img = document.createElement('img');
-        img.src = thumb;
-        img.alt = itemData.title || '缩略图';
-        img.onerror = function() {
+    const img = document.createElement('img');
+    img.src = thumb;
+    // 添加 referrerpolicy 属性绕过防盗链
+    img.setAttribute('referrerpolicy', 'no-referrer');
+    img.alt = itemData.title || '缩略图';
+    img.onerror = function() {
+        // 如果原图加载失败，尝试添加尺寸参数重试
+        const fallbackUrl = thumb.includes('sinaimg.cn') ? thumb + '?name=large' : thumb;
+        this.src = fallbackUrl;
+        this.onerror = function() {
             this.style.display = 'none';
             modalMediaBox.innerHTML = `<span class="no-media">图片加载失败</span>`;
         };
-        modalMediaBox.appendChild(img);
-    } else if (video) {
+    };
+    modalMediaBox.appendChild(img);
+} else if (video) {
         const embed = urlToEmbed(video);
         if (embed === null) {
             modalMediaBox.innerHTML =
