@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WINTER RECORD</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <h1>WINTER RECORD</h1>
+    <div class="subtitle">幸福的终点是旼炡和你</div>
+
+    <div class="person-filter-bar" id="personBar"></div>
+
+    <div class="control-group">
+        <div class="calendar-control" style="margin:0;gap:8px;flex:1;justify-content:center;">
+            <button class="cal-btn" id="prevMonth">◀</button>
+            <span class="current-ym" id="ymDisplay">2026年7月</span>
+            <button class="cal-btn" id="nextMonth">▶</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;">
+            <input id="searchInput" placeholder="搜索日程..." />
+            <button id="addBtn">➕ 新建日程</button>
+            <button id="importBtn">📥 批量导入</button>
+            <button id="importExcelBtn">📊 Excel导入</button>
+            <button id="manageTagsBtn" class="manage-btn" style="background:#9c27b0;color:#fff;border:none;padding:6px 18px;border-radius:6px;cursor:pointer;font-size:15px;font-weight:700;">🏷️ 行程</button>
+            <button id="manageMilestonesBtn" class="manage-btn" style="background:#ff6f00;color:#fff;border:none;padding:6px 18px;border-radius:6px;cursor:pointer;font-size:15px;font-weight:700;">🎯 重要日</button>
+        </div>
+    </div>
+
+    <div id="calendar-area"></div>
+
+    <!-- 模态框 -->
+    <div class="modal-mask" id="modalMask"><div class="modal-wrap"><div class="modal-img-box" id="modalMediaBox"><span class="no-media">暂无媒体</span></div><div class="modal-info"><div id="modalPersonTags" class="modal-person-tags"></div><div class="modal-title" id="modalTitle"></div><div id="modalLinkList"></div><div style="margin:10px 0;display:flex;flex-wrap:wrap;gap:6px;" id="modalTagDisplay"></div><div class="modal-actions"><button class="modal-edit-btn" id="modalEditBtn">✏️ 编辑</button><button class="modal-delete-btn" id="modalDeleteBtn">🗑️ 删除</button></div></div><button class="modal-close" id="modalClose">×</button></div></div>
+
+    <div class="modal-mask form-modal" id="formModal"><div class="modal-wrap"><div class="modal-info"><div class="form-title" id="formTitle">📝 新建日程</div><form id="scheduleForm" autocomplete="off"><div class="form-row"><div class="form-group"><label>日期 <span class="required">*</span></label><input type="text" id="formDate" placeholder="YYYY-MM-DD 或 240529" required><div class="hint">支持 YYYY-MM-DD 或 6/8位数字</div></div><div class="form-group"><label>人物 <span class="required">*</span></label><div id="personCheckboxContainer" class="person-checkbox-group"></div><div class="hint">可多选</div></div></div><div class="form-group"><label>标题 <span class="required">*</span></label><input type="text" id="formTitleInput" placeholder="如：Winter 新物料发布" required></div><div class="form-group"><label>行程（多选）</label><div id="formTagCheckboxContainer" class="person-checkbox-group" style="gap:6px;"></div></div><div class="form-group"><label>链接 (JSON 格式，可选)</label><textarea id="formLinks" placeholder='[{"icon":"📸","text":"Instagram","link":"https://..."}]'></textarea><div class="hint">💡 格式：<code>[{"icon":"图标","text":"显示文字","link":"网址"}]</code></div></div><div class="form-row"><div class="form-group"><label>缩略图地址（可选）</label><input type="text" id="formThumbnail" placeholder="图片URL（优先展示）"></div><div class="form-group"><label>视频嵌入地址（可选）</label><input type="text" id="formVideo" placeholder="支持 B站 / YouTube 等"><div class="hint">📌 部分平台自动转为跳转链接。</div></div></div><div class="form-actions"><button type="button" class="btn-cancel" id="formCancel">取消</button><button type="submit" class="btn-submit" id="formSubmitBtn">✅ 保存</button></div></form></div><button class="modal-close" id="formClose">×</button></div></div>
+
+    <div class="modal-mask" id="tagManagerModal"><div class="modal-wrap" style="max-width:620px;flex-direction:column;padding:30px;"><div class="modal-info" style="width:100%;padding:0;"><div class="form-title">🏷️ 行程管理</div><div class="tag-manager"><div class="tag-list" id="tagListContainer"></div><div class="tag-form"><input type="text" id="newTagName" placeholder="行程名称"><input type="color" id="newTagColor" value="#4FC3F7"><button id="addTagBtn">添加行程</button></div><div style="margin-top:8px;font-size:13px;opacity:.7;">💡 勾选“🚗 行程”后，该行程会在日历中显示特殊边框和背景</div></div></div><button class="modal-close" id="tagManagerClose">×</button></div></div>
+
+    <div class="modal-mask" id="milestoneManagerModal"><div class="modal-wrap" style="max-width:600px;flex-direction:column;padding:30px;"><div class="modal-info" style="width:100%;padding:0;"><div class="form-title">🎯 重要日管理</div><div class="milestone-manager"><div class="milestone-list" id="milestoneListContainer"></div><div class="milestone-form"><input type="text" id="newMilestoneDate" placeholder="YYYY-MM-DD"><input type="text" id="newMilestoneTitle" placeholder="重要日名称"><input type="text" id="newMilestoneIcon" placeholder="图标 (emoji)" value="🌟"><button id="addMilestoneBtn">添加重要日</button></div></div></div><button class="modal-close" id="milestoneManagerClose">×</button></div></div>
+
+    <div class="modal-mask import-modal" id="importModal"><div class="modal-wrap"><div class="modal-info"><div class="form-title">📥 批量导入日程</div><div style="margin-bottom:12px;color:#aaa;font-size:14px;line-height:1.7;">粘贴 JSON 数组数据，或上传 JSON 文件。<button id="loadSampleBtn" style="background:transparent;border:1px solid #555;color:#aaa;border-radius:4px;padding:2px 12px;cursor:pointer;font-size:13px;margin-left:8px;">📄 加载示例</button></div><div class="form-group"><label>JSON 数据</label><textarea id="importDataText" placeholder='[{"date":"2026-07-20","person":["Winter"],"title":"Winter 新物料"}]'></textarea></div><div class="import-toolbar"><span class="hint-text">📌 支持数组格式</span><button class="btn-outline" id="importFileBtn">📁 上传 JSON</button><button class="btn-primary" id="previewImportBtn">🔍 预览</button><input type="file" id="importFileInput" accept=".json,.txt"></div><div id="importPreviewArea" style="display:none;"><div class="import-stats-bar"><span class="stat-item">📊 共 <span class="num" id="importTotalCount">0</span> 条</span><span class="stat-item">✅ 有效 <span class="num green" id="importValidCount">0</span> 条</span><span class="stat-item">❌ 无效 <span class="num red" id="importInvalidCount">0</span> 条</span></div><div class="import-preview-table-wrap" id="importPreviewTableWrap"><table><thead><tr><th>#</th><th>日期</th><th>人物</th><th>标题</th><th>状态</th></tr></thead><tbody id="importPreviewBody"></tbody></table></div><div class="import-progress" id="importProgress"><span id="importProgressText">正在导入...</span><div class="progress-bar"><div class="fill" id="importProgressFill"></div></div></div><div class="form-actions"><button class="btn-cancel" id="importCancel">取消</button><button class="btn-submit" id="importConfirmBtn" style="background:#66BB6A;">📥 确认导入</button></div></div></div><button class="modal-close" id="importClose">×</button></div></div>
+
+    <div class="modal-mask" id="excelImportModal"><div class="modal-wrap" style="max-width:700px;flex-direction:column;padding:30px;"><div class="modal-info" style="width:100%;padding:0;"><div class="form-title">📊 Excel 导入日程</div><div style="margin-bottom:12px;color:#aaa;font-size:14px;line-height:1.7;">支持 .xlsx / .xls 格式。表头需包含：<code>date</code>、<code>person</code>、<code>title</code>。<a id="excelTemplateLink" href="#" style="color:#4FC3F7;text-decoration:underline;cursor:pointer;">📄 下载模板</a></div><div class="form-group"><label>选择 Excel 文件</label><input type="file" id="excelFileInput" accept=".xlsx,.xls" style="width:100%;padding:8px 12px;border:1px solid var(--border-color);border-radius:6px;background:rgba(0,0,0,.3);color:var(--text-color);font-size:14px;cursor:pointer;"></div><div id="excelPreviewArea" style="display:none;"><div class="import-stats-bar"><span class="stat-item">📊 共 <span class="num" id="excelTotalCount">0</span> 条</span><span class="stat-item">✅ 有效 <span class="num green" id="excelValidCount">0</span> 条</span><span class="stat-item">❌ 无效 <span class="num red" id="excelInvalidCount">0</span> 条</span></div><div class="import-preview-table-wrap" id="excelPreviewTableWrap"><table><thead><tr><th>#</th><th>日期</th><th>人物</th><th>标题</th><th>状态</th></tr></thead><tbody id="excelPreviewBody"></tbody></table></div><div class="form-actions"><button class="btn-cancel" id="excelImportCancel">取消</button><button class="btn-submit" id="excelConfirmBtn" style="background:#66BB6A;">📥 确认导入</button></div></div></div><button class="modal-close" id="excelImportClose">×</button></div></div>
+
+    <div class="import-result-toast" id="importResultToast"><span id="importResultMsg"></span><button class="toast-close" id="importToastClose">×</button></div>
+
+    <div class="ym-picker-overlay" id="ymPickerOverlay"><div class="ym-picker-box"><h3>📅 选择年月</h3><div class="ym-picker-row"><select id="ymYearSelect"></select><span>年</span><select id="ymMonthSelect"></select><span>月</span></div><div class="ym-picker-actions"><button class="ym-btn-confirm" id="ymConfirm">确认</button><button class="ym-btn-cancel" id="ymCancel">取消</button></div></div></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/modals.js"></script>
+    <script src="js/import.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
