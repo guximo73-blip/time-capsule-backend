@@ -74,26 +74,42 @@ function openModal(itemData) {
         modalTagDisplay.appendChild(span);
     }
 
+    // ============================================================
+    // 🔧 修复：微博图片加载失败
+    // ============================================================
     modalMediaBox.innerHTML = '';
     const thumb = (itemData.thumbnail || '').trim();
     const video = (itemData.videoEmbed || itemData.videoembed || '').trim();
+
     if (thumb) {
-    const img = document.createElement('img');
-    img.src = thumb;
-    // 添加 referrerpolicy 属性绕过防盗链
-    img.setAttribute('referrerpolicy', 'no-referrer');
-    img.alt = itemData.title || '缩略图';
-    img.onerror = function() {
-        // 如果原图加载失败，尝试添加尺寸参数重试
-        const fallbackUrl = thumb.includes('sinaimg.cn') ? thumb + '?name=large' : thumb;
-        this.src = fallbackUrl;
-        this.onerror = function() {
-            this.style.display = 'none';
-            modalMediaBox.innerHTML = `<span class="no-media">图片加载失败</span>`;
+        const img = document.createElement('img');
+        // 核心修复：绕过防盗链
+        img.setAttribute('referrerpolicy', 'no-referrer');
+        img.src = thumb;
+        img.alt = itemData.title || '缩略图';
+
+        // 重试逻辑：如果是微博图片且加载失败，尝试添加尺寸参数
+        img.onerror = function() {
+            const isWeibo = thumb.includes('sinaimg.cn') || thumb.includes('pic.sinaimg.cn') || 
+                            thumb.includes('ww1.sinaimg.cn') || thumb.includes('wx1.sinaimg.cn');
+            if (isWeibo && !thumb.includes('?name=')) {
+                // 第一次重试：添加 ?name=large 参数
+                this.src = thumb + '?name=large';
+                this.onerror = function() {
+                    // 第二次重试：尝试 ?name=orig
+                    this.src = thumb + '?name=orig';
+                    this.onerror = function() {
+                        this.style.display = 'none';
+                        modalMediaBox.innerHTML = `<span class="no-media">图片加载失败</span>`;
+                    };
+                };
+            } else {
+                this.style.display = 'none';
+                modalMediaBox.innerHTML = `<span class="no-media">图片加载失败</span>`;
+            }
         };
-    };
-    modalMediaBox.appendChild(img);
-} else if (video) {
+        modalMediaBox.appendChild(img);
+    } else if (video) {
         const embed = urlToEmbed(video);
         if (embed === null) {
             modalMediaBox.innerHTML =
@@ -104,8 +120,7 @@ function openModal(itemData) {
             iframe.height = '100%';
             iframe.src = embed;
             iframe.frameBorder = '0';
-            iframe.allow =
-                'accelerometer, autoplay, clipboard-write, encrypted-media, gyroscope, picture-in-picture';
+            iframe.allow = 'accelerometer, autoplay, clipboard-write, encrypted-media, gyroscope, picture-in-picture';
             iframe.allowFullscreen = true;
             iframe.onerror = function() {
                 modalMediaBox.innerHTML =
