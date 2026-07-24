@@ -120,27 +120,18 @@ function showToast(msg, type) {
 function getProxiedImageUrl(url) {
     if (!url) return '';
 
-    // 检测是否为微博图片（涵盖所有常见域名）
-    const isWeibo = url.includes('sinaimg.cn') || url.includes('pic.sinaimg.cn') ||
-        url.includes('ww1.sinaimg.cn') || url.includes('ww2.sinaimg.cn') ||
-        url.includes('ww3.sinaimg.cn') || url.includes('ww4.sinaimg.cn') ||
-        url.includes('wx1.sinaimg.cn') || url.includes('wx2.sinaimg.cn') ||
-        url.includes('wx3.sinaimg.cn') || url.includes('wx4.sinaimg.cn') ||
-        url.includes('ws1.sinaimg.cn') || url.includes('ws2.sinaimg.cn') ||
-        url.includes('tvax1.sinaimg.cn') || url.includes('tvax2.sinaimg.cn') ||
-        url.includes('tva1.sinaimg.cn') || url.includes('tva2.sinaimg.cn');
+    // 检测是否为 Instagram 或 Twitter (X) 的图片链接
+    const isInstagram = url.includes('instagram.com') || url.includes('cdninstagram.com');
+    const isTwitter = url.includes('twitter.com') || url.includes('twimg.com') || url.includes('x.com');
+    const isWeibo = url.includes('sinaimg.cn') || url.includes('pic.sinaimg.cn');
+    const isDouban = url.includes('doubanio.com') || url.includes('douban.com');
 
-    // 检测是否为豆瓣图片
-    const isDouban = url.includes('doubanio.com') || url.includes('douban.com') || url.includes('doubanimg.com') ||
-        url.includes('img1.doubanio.com') || url.includes('img2.doubanio.com') ||
-        url.includes('img3.doubanio.com') || url.includes('img9.doubanio.com');
-
-    // 检测是否为Twitter/X图片
-    const isTwitter = url.includes('twimg.com') || url.includes('twitter.com') || url.includes('x.com');
-
-    if (isWeibo || isDouban || isTwitter) {
-        // 使用 weserv.nl 代理（免费、支持缓存、速度较快）
-        return `https://images.weserv.nl/?url=${encodeURIComponent(url)}`;
+    // 如果是这些平台的图片，全部通过 wsrv.nl 代理
+    if (isInstagram || isTwitter || isWeibo || isDouban) {
+        // 使用 wsrv.nl 代理，它专门为图片服务设计，稳定且免费
+        return `https://wsrv.nl/?url=${encodeURIComponent(url)}`;
     }
+
+    // 其他图片直接返回原链接
     return url;
 }
