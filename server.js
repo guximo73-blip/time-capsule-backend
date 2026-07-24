@@ -43,18 +43,65 @@ pool.query(`
     )
 `).then(() => {
     console.log('✅ 数据库表已就绪');
-    // ---------- 确保 tags 列存在（兼容已有表） ----------
-    return pool.query(`
-        ALTER TABLE schedules ADD COLUMN IF NOT EXISTS tags TEXT[] DEFAULT '{}'
-    `);
-}).then(() => {
-    console.log('✅ tags 列已确认');
 }).catch(err => {
-    console.error('❌ 初始化失败：', err.message);
+    console.error('❌ 创建表失败：', err.message);
+});
+
+// ============================================================
+// 🖼️ 图片代理接口（解决 Instagram / Twitter 等防盗链）
+// ============================================================
+app.get('/api/image-proxy', async (req, res) => {
+    const imageUrl = req.query.url;
+    if (!imageUrl) {
+        return res.status(400).json({ error: 'Missing url parameter' });
+    }
+
+    // 安全限制：只允许代理图片链接，防止被滥用
+    const allowedDomains = [
+        'instagram.com', 'cdninstagram.com', 'fbcdn.net',
+        'twitter.com', 'twimg.com', 'x.com',
+        'sinaimg.cn', 'pic.sinaimg.cn',
+        'doubanio.com', 'douban.com'
+    ];
+    const isAllowed = allowedDomains.some(domain => imageUrl.includes(domain));
+    if (!isAllowed) {
+        return res.status(403).json({ error: 'Domain not allowed' });
+    }
+
+    try {
+        const response = await fetch(imageUrl, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+                'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+                'Referer': 'https://www.instagram.com/',
+                'Sec-Fetch-Dest': 'image',
+                'Sec-Fetch-Mode': 'no-cors',
+                'Sec-Fetch-Site': 'cross-site'
+            }
+        });
+
+        if (!response.ok) {
+            console.error(`图片代理失败 [${response.status}]: ${imageUrl}`);
+            return res.status(response.status).json({ error: `Failed to fetch image: ${response.status}` });
+        }
+
+        const imageBuffer = await response.arrayBuffer();
+        const contentType = response.headers.get('content-type') || 'image/jpeg';
+        
+        res.set('Content-Type', contentType);
+        res.set('Cache-Control', 'public, max-age=86400'); // 缓存1天
+        res.set('Access-Control-Allow-Origin', '*');
+        res.send(Buffer.from(imageBuffer));
+    } catch (error) {
+        console.error('图片代理错误:', error.message);
+        res.status(500).json({ error: 'Failed to load image' });
+    }
 });
 
 // ---------- API 路由 ----------
 
+// 获取所有日程
 app.get('/api/data', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM schedules ORDER BY date ASC');
@@ -69,6 +116,7 @@ app.get('/api/data', async (req, res) => {
     }
 });
 
+// 新增日程
 app.post('/api/data', async (req, res) => {
     const { date, person, tag, shortName, title, links, videoEmbed, thumbnail, tags } = req.body;
     try {
@@ -94,6 +142,7 @@ app.post('/api/data', async (req, res) => {
     }
 });
 
+// 修改日程
 app.put('/api/data/:id', async (req, res) => {
     const id = req.params.id;
     const { date, person, tag, shortName, title, links, videoEmbed, thumbnail, tags } = req.body;
@@ -125,6 +174,7 @@ app.put('/api/data/:id', async (req, res) => {
     }
 });
 
+// 删除日程
 app.delete('/api/data/:id', async (req, res) => {
     const id = req.params.id;
     try {
