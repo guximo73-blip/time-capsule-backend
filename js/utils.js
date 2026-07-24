@@ -115,23 +115,52 @@ function showToast(msg, type) {
 }
 
 // ============================================================
-// 🔧 新增：图片代理函数（解决微博/豆瓣等防盗链）
+// 🖼️ 图片代理：通过您自己的后端代理加载受限图片
 // ============================================================
 function getProxiedImageUrl(url) {
     if (!url) return '';
 
-    // 检测是否为 Instagram 或 Twitter (X) 的图片链接
-    const isInstagram = url.includes('instagram.com') || url.includes('cdninstagram.com');
-    const isTwitter = url.includes('twitter.com') || url.includes('twimg.com') || url.includes('x.com');
-    const isWeibo = url.includes('sinaimg.cn') || url.includes('pic.sinaimg.cn');
-    const isDouban = url.includes('doubanio.com') || url.includes('douban.com');
+    // 检测是否为需要代理的图片平台
+    const needsProxy = url.includes('instagram.com') || url.includes('cdninstagram.com') ||
+                       url.includes('twitter.com') || url.includes('twimg.com') || url.includes('x.com') ||
+                       url.includes('sinaimg.cn') || url.includes('pic.sinaimg.cn') ||
+                       url.includes('doubanio.com') || url.includes('douban.com');
 
-    // 如果是这些平台的图片，全部通过 wsrv.nl 代理
-    if (isInstagram || isTwitter || isWeibo || isDouban) {
-        // 使用 wsrv.nl 代理，它专门为图片服务设计，稳定且免费
-        return `https://wsrv.nl/?url=${encodeURIComponent(url)}`;
+    if (needsProxy) {
+        // 使用您自己的后端代理接口
+        return `/api/image-proxy?url=${encodeURIComponent(url)}`;
     }
 
-    // 其他图片直接返回原链接
     return url;
+}
+
+// 带重试的图片加载
+function loadImageWithRetry(imgElement, originalUrl, retryCount) {
+    if (retryCount === undefined) retryCount = 0;
+    if (retryCount >= 3) {
+        imgElement.style.display = 'none';
+        const parent = imgElement.parentElement;
+        if (parent) {
+            parent.innerHTML = `<span class="no-media">图片加载失败<br><span style="font-size:12px;color:#666;word-break:break-all;">${originalUrl}</span></span>`;
+        }
+        return;
+    }
+
+    const proxyUrl = getProxiedImageUrl(originalUrl);
+    imgElement.src = proxyUrl;
+
+    // 超时重试
+    let timeoutId = setTimeout(() => {
+        loadImageWithRetry(imgElement, originalUrl, retryCount + 1);
+    }, 10000);
+
+    imgElement.onload = function() {
+        clearTimeout(timeoutId);
+        imgElement.style.display = '';
+    };
+
+    imgElement.onerror = function() {
+        clearTimeout(timeoutId);
+        loadImageWithRetry(imgElement, originalUrl, retryCount + 1);
+    };
 }
