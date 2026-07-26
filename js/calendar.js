@@ -2,22 +2,68 @@
 let viewYear = new Date().getFullYear();
 let viewMonth = new Date().getMonth() + 1;
 let currentFilterPerson = "all";
-let searchKeyword = "";
-let currentView = 'dashboard'; // 'dashboard' | 'calendar'
+let searchDateKeyword = "";
+let currentView = 'dashboard';
 
-// ===== 回归期配置（按实际回归时间修改） =====
-const REGRESSION_LIST = [
-    { name: 'LEMONADE', year: 2026, month: 5, start: '2026-05-01', end: '2026-05-31' },
-    { name: 'WHIPLASH', year: 2024, month: 11, start: '2024-11-01', end: '2024-11-30' },
-    { name: 'DRAMA',    year: 2024, month: 5, start: '2024-05-01', end: '2024-05-31' },
-    { name: 'SPICY',    year: 2024, month: 2, start: '2024-02-01', end: '2024-02-29' },
-    { name: 'GIRLS',    year: 2023, month: 12, start: '2023-12-01', end: '2023-12-31' },
-    { name: 'SAVAGE',   year: 2023, month: 10, start: '2023-10-01', end: '2023-10-31' },
-    { name: 'NEXT LEVEL', year: 2023, month: 7, start: '2023-07-01', end: '2023-07-31' },
-];
+// 行程图标映射
+const TAG_ICON_MAP = {
+    '打歌舞台': '🎤',
+    '演唱会/拼盘': '🎵',
+    '综艺录制': '📺',
+    '颁奖礼/红毯': '🏆',
+    '机场出境/入境': '✈️',
+    '品牌活动': '💄',
+    '签售会（线上/线下）': '📸',
+    '杂志/画报拍摄': '🎬',
+    '直播/VLOG': '📱',
+    '电台录制': '🎙️',
+    '生日/周年活动': '🎂',
+    '粉丝见面会': '🤝',
+    '舞蹈练习室/cover': '🩰',
+    '官咖/社交媒体更新': '📝',
+    '特别舞台/节日特辑': '🎄',
+    '周边/快闪店活动': '🎁'
+};
+
+function getTagIcon(tagName) {
+    return TAG_ICON_MAP[tagName] || '📌';
+}
+
+// 渲染行程图标侧栏
+function renderTagLegend() {
+    const container = document.getElementById('tagLegendBody');
+    if (!container) return;
+    container.innerHTML = '';
+    const tagCounts = {};
+    scheduleList.forEach(item => {
+        (item.tags || []).forEach(tagId => {
+            const tag = tags.find(t => t.id === tagId);
+            if (tag) {
+                tagCounts[tag.name] = (tagCounts[tag.name] || 0) + 1;
+            }
+        });
+    });
+    const sortedTags = [...tags].sort((a, b) => (tagCounts[b.name] || 0) - (tagCounts[a.name] || 0));
+    sortedTags.forEach(tag => {
+        const div = document.createElement('div');
+        div.className = 'tag-legend-item';
+        const icon = getTagIcon(tag.name);
+        const count = tagCounts[tag.name] || 0;
+        div.innerHTML = `
+            <span class="legend-icon">${icon}</span>
+            <span class="legend-name">${tag.name}</span>
+            <span class="legend-count">${count}</span>
+        `;
+        container.appendChild(div);
+    });
+    if (sortedTags.length === 0) {
+        container.innerHTML = '<div style="text-align:center;opacity:0.3;font-size:12px;padding:12px 0;">暂无行程</div>';
+    }
+}
 
 function renderPersonButtons() {
     const bar = document.getElementById('personBar');
+    if (!bar) return;
     bar.innerHTML = '';
     const counts = {};
     personList.forEach(p => counts[p] = 0);
@@ -30,13 +76,11 @@ function renderPersonButtons() {
             if (counts[key] !== undefined) counts[key]++;
         });
     });
-
     const allBtn = document.createElement('button');
     allBtn.className = 'person-btn active';
     allBtn.dataset.val = 'all';
     allBtn.innerText = `全部 (${scheduleList.length})`;
     bar.appendChild(allBtn);
-
     displayPersonList.forEach(p => {
         const btn = document.createElement('button');
         btn.className = 'person-btn';
@@ -46,7 +90,6 @@ function renderPersonButtons() {
         if (currentFilterPerson === p) btn.classList.add('active');
         bar.appendChild(btn);
     });
-
     const multiBtn = document.createElement('button');
     multiBtn.className = 'person-btn';
     multiBtn.dataset.val = 'multi';
@@ -54,7 +97,6 @@ function renderPersonButtons() {
     multiBtn.style.background = 'rgba(249,169,90,0.25)';
     if (currentFilterPerson === 'multi') multiBtn.classList.add('active');
     bar.appendChild(multiBtn);
-
     bar.querySelectorAll('.person-btn').forEach(btn => {
         btn.onclick = function() {
             bar.querySelectorAll('.person-btn').forEach(b => b.classList.remove('active'));
@@ -72,11 +114,9 @@ function getFilterData() {
     } else if (currentFilterPerson !== 'all') {
         arr = arr.filter(item => ensurePersonArray(item).includes(currentFilterPerson));
     }
-    if (searchKeyword) {
-        arr = arr.filter(item =>
-            (item.tag || '' + item.shortName || '' + item.title || '' + JSON.stringify(item.links || {})).toLowerCase()
-            .includes(searchKeyword)
-        );
+    // 日期搜索
+    if (searchDateKeyword) {
+        arr = arr.filter(item => item.date && item.date.includes(searchDateKeyword));
     }
     arr.sort((a, b) => new Date(a.date) - new Date(b.date));
     return arr;
@@ -136,96 +176,69 @@ function renderCalendar() {
         }
         td.appendChild(headerDiv);
 
-        // 数字角标：当日多行程
-        if (dateGroup[fullDate] && dateGroup[fullDate].length > 1) {
-            const badge = document.createElement('span');
-            badge.className = 'cell-badge';
-            badge.textContent = dateGroup[fullDate].length;
-            td.style.position = 'relative';
-            td.appendChild(badge);
-        }
-
+        // 行程图标展示
         if (dateGroup[fullDate]) {
             const content = document.createElement('div');
             content.className = 'calendar-content';
-            dateGroup[fullDate].forEach(item => {
-                const persons = ensurePersonArray(item);
-                let primaryColor = persons.length === 1 ? getPersonColor(persons[0]) : MULTI_PERSON_COLOR;
-                const textColor = primaryColor;
-                const bgColor = hexToRgba(primaryColor, 0.25);
-                const fullTitle = item.title || '未命名';
+            const items = dateGroup[fullDate];
+            const total = items.length;
 
+            // 显示所有行程图标（最多显示3个，其余用数字角标）
+            const displayItems = items.slice(0, 3);
+            displayItems.forEach(item => {
                 const block = document.createElement('div');
-                block.className = 'calendar-block';
-                block.style.background = bgColor;
-                block.style.color = textColor;
-
+                block.className = 'calendar-icon-block';
+                const tagId = (item.tags || [])[0];
+                let icon = '📌';
+                if (tagId) {
+                    const tag = tags.find(t => t.id === tagId);
+                    if (tag) icon = getTagIcon(tag.name);
+                }
+                block.textContent = icon;
+                block.title = item.title || '未命名';
+                block.onclick = (e) => {
+                    e.stopPropagation();
+                    openModal(item);
+                };
+                // 检查是否为行程标签
                 const travelTag = (item.tags || []).map(tid => tags.find(t => t.id === tid))
                     .filter(t => t && t.isTravel);
                 if (travelTag.length > 0) {
-                    const firstTravel = travelTag[0];
-                    block.style.borderLeftColor = firstTravel.color;
                     block.classList.add('is-travel');
-                    block.style.background = `linear-gradient(135deg, ${hexToRgba(firstTravel.color, 0.3)}, ${hexToRgba(firstTravel.color, 0.1)})`;
                 }
-
-                const hasThumb = (item.thumbnail || '').trim() !== '';
-                const hasVideo = (item.videoEmbed || '').trim() !== '';
-                const icon = hasThumb ? '🖼️' : (hasVideo ? '▶️' : '');
-                if (icon) {
-                    const iconSpan = document.createElement('span');
-                    iconSpan.className = 'block-icon';
-                    iconSpan.textContent = icon;
-                    block.appendChild(iconSpan);
-                }
-
-                const textOuter = document.createElement('span');
-                textOuter.className = 'block-text';
-                const textInner = document.createElement('span');
-                textInner.className = 'text-inner';
-                textInner.textContent = fullTitle;
-                textOuter.appendChild(textInner);
-                block.appendChild(textOuter);
-
-                if (isEditMode) {
-                    const tagDots = document.createElement('span');
-                    tagDots.className = 'tag-dots';
-                    (item.tags || []).forEach(tagId => {
-                        const tag = tags.find(t => t.id === tagId);
-                        if (tag) {
-                            const dot = document.createElement('span');
-                            dot.className = 'tag-dot';
-                            dot.style.background = tag.color;
-                            dot.title = tag.name;
-                            tagDots.appendChild(dot);
-                        }
-                    });
-                    block.appendChild(tagDots);
-                }
-
-                block.onclick = () => openModal(item);
-
-                block.addEventListener('mouseenter', function() {
-                    const inner = this.querySelector('.text-inner');
-                    const outer = this.querySelector('.block-text');
-                    if (inner && outer && inner.scrollWidth > outer.clientWidth) {
-                        const distance = inner.scrollWidth - outer.clientWidth;
-                        inner.style.transition = 'transform 3s linear';
-                        inner.style.transform = `translateX(-${distance}px)`;
-                    }
-                });
-                block.addEventListener('mouseleave', function() {
-                    const inner = this.querySelector('.text-inner');
-                    if (inner) {
-                        inner.style.transition = 'transform 0.3s ease';
-                        inner.style.transform = 'translateX(0)';
-                    }
-                });
-
                 content.appendChild(block);
             });
+
+            // 如果多于3个，显示数字角标
+            if (total > 3) {
+                const moreBlock = document.createElement('div');
+                moreBlock.className = 'calendar-icon-block';
+                moreBlock.style.background = 'rgba(168,216,234,0.08)';
+                moreBlock.style.fontSize = '12px';
+                moreBlock.style.fontWeight = '700';
+                moreBlock.style.color = '#A8D8EA';
+                moreBlock.textContent = `+${total - 3}`;
+                moreBlock.title = `点击查看全部 ${total} 件物料`;
+                moreBlock.onclick = (e) => {
+                    e.stopPropagation();
+                    // 打开日期详情：显示该日所有物料
+                    showDateDetail(fullDate, items);
+                };
+                content.appendChild(moreBlock);
+            }
+
             td.appendChild(content);
+
+            // 总数角标（右上角显示总数）
+            if (total > 1) {
+                const badge = document.createElement('span');
+                badge.className = 'cell-badge';
+                badge.textContent = total;
+                td.style.position = 'relative';
+                td.appendChild(badge);
+            }
         }
+
         tr.appendChild(td);
         col++;
         if (col >= 7) { tbody.appendChild(tr);
@@ -236,96 +249,53 @@ function renderCalendar() {
     table.appendChild(tbody);
     calDom.appendChild(table);
 
-    requestAnimationFrame(() => {
-        document.querySelectorAll('.block-text').forEach(outer => {
-            const inner = outer.querySelector('.text-inner');
-            if (inner && inner.scrollWidth > outer.clientWidth) {
-                outer.setAttribute('data-overflow', 'true');
-            } else {
-                outer.setAttribute('data-overflow', 'false');
-            }
-        });
-    });
+    // 渲染行程侧栏
+    renderTagLegend();
 }
 
-function renderDashboard() {
-    const grid = document.getElementById('dashboardGrid');
-    if (!grid) return;
-    grid.innerHTML = '';
+// 日期详情弹窗（当日所有物料）
+function showDateDetail(date, items) {
+    // 使用查看弹窗展示所有物料
+    if (items.length === 1) {
+        openModal(items[0]);
+        return;
+    }
+    // 多个物料：显示列表选择
+    let listHtml = items.map((item, idx) =>
+        `<div style="padding:6px 10px;margin:3px 0;background:rgba(255,255,255,0.04);border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;" 
+              onmouseover="this.style.background='rgba(168,216,234,0.12)'" 
+              onmouseout="this.style.background='rgba(255,255,255,0.04)'"
+              onclick="openModal(scheduleList.find(s=>s.id===${item.id}))">
+            <span>${idx+1}.</span>
+            <span>${item.title || '未命名'}</span>
+            <span style="font-size:12px;opacity:0.4;margin-left:auto;">${item.date}</span>
+        </div>`
+    ).join('');
 
-    const sorted = [...REGRESSION_LIST].sort((a, b) => {
-        if (a.year !== b.year) return b.year - a.year;
-        return b.month - a.month;
-    });
-
-    sorted.forEach(reg => {
-        const regStart = new Date(reg.year, reg.month - 1, 1);
-        const regEnd = new Date(reg.year, reg.month, 0);
-        const items = scheduleList.filter(item => {
-            const d = new Date(item.date);
-            return d >= regStart && d <= regEnd;
-        });
-
-        const total = items.length;
-        const done = items.filter(item => {
-            return item.title && (item.thumbnail || item.videoEmbed || (item.links && JSON.stringify(item.links) !== '[]'));
-        }).length;
-        const progress = total > 0 ? Math.round((done / total) * 100) : 0;
-        const remaining = total - done;
-
-        const card = document.createElement('div');
-        card.className = 'dashboard-card glass-card';
-        card.innerHTML = `
-            <div class="card-title">${reg.name}</div>
-            <div class="card-date">${reg.year}年${reg.month}月</div>
-            <div class="card-progress">
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width:${progress}%"></div>
-                </div>
-                <span class="progress-text">${progress}%</span>
+    // 临时展示列表
+    const tempModal = document.createElement('div');
+    tempModal.className = 'modal-mask active';
+    tempModal.style.display = 'flex';
+    tempModal.innerHTML = `
+        <div class="modal-wrap" style="max-width:480px;flex-direction:column;padding:20px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <h3 style="margin:0;font-size:18px;">📅 ${date}</h3>
+                <button class="modal-close" style="position:static;background:rgba(100,100,100,0.2);">×</button>
             </div>
-            <div class="card-footer">
-                <span>${remaining > 0 ? `剩余 ${remaining} 件` : '✅ 已毕业'}</span>
-                <span>📅 共 ${total} 件</span>
+            <div style="max-height:400px;overflow-y:auto;">
+                ${listHtml}
             </div>
-        `;
-
-        card.addEventListener('click', function() {
-            viewYear = reg.year;
-            viewMonth = reg.month;
-            switchToCalendar();
-            syncJumpSelect();
-            renderAll();
-        });
-
-        grid.appendChild(card);
-    });
-}
-
-function switchToDashboard() {
-    currentView = 'dashboard';
-    document.getElementById('dashboard-view').classList.add('active');
-    document.getElementById('dashboard-view').classList.add('view-fade-in');
-    document.getElementById('calendar-view').classList.remove('active');
-    document.getElementById('goToDashboard').style.display = 'none';
-    document.querySelector('.person-filter-bar').style.display = 'none';
-    document.querySelector('.calendar-control').style.display = 'none';
-    renderDashboard();
-}
-
-function switchToCalendar() {
-    currentView = 'calendar';
-    document.getElementById('dashboard-view').classList.remove('active');
-    document.getElementById('calendar-view').classList.add('active');
-    document.getElementById('calendar-view').classList.add('view-fade-in');
-    document.getElementById('goToDashboard').style.display = 'inline-block';
-    document.querySelector('.person-filter-bar').style.display = 'flex';
-    document.querySelector('.calendar-control').style.display = 'flex';
+            <div style="margin-top:12px;text-align:center;font-size:13px;opacity:0.4;">共 ${items.length} 件物料</div>
+        </div>
+    `;
+    document.body.appendChild(tempModal);
+    tempModal.querySelector('.modal-close').onclick = () => tempModal.remove();
+    tempModal.onclick = (e) => { if (e.target === tempModal) tempModal.remove(); };
 }
 
 function renderAll() {
     if (currentView === 'dashboard') {
-        renderDashboard();
+        // dashboard 由 dashboard.js 处理
         return;
     }
     renderPersonButtons();
@@ -342,3 +312,14 @@ function renderAll() {
 function syncJumpSelect() {
     document.getElementById('ymDisplay').innerText = `${viewYear}年${viewMonth}月`;
 }
+
+// 日期搜索事件绑定
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchDateInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            searchDateKeyword = e.target.value.trim();
+            renderAll();
+        });
+    }
+});
