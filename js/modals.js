@@ -20,7 +20,6 @@ const personCheckboxContainer = document.getElementById('personCheckboxContainer
 const formTagCheckboxContainer = document.getElementById('formTagCheckboxContainer');
 let editModeId = null;
 
-// ----- 详情模态框 -----
 function closeModal() {
     modalMask.classList.remove('active');
     modalMediaBox.innerHTML = '<span class="no-media">暂无媒体</span>';
@@ -30,7 +29,6 @@ function closeModal() {
 function openModal(itemData) {
     currentDeleteId = itemData.id;
     modalTitle.innerText = itemData.title;
-    // 人物标签隐藏
     modalPersonTags.innerHTML = '';
     modalPersonTags.style.display = 'none';
 
@@ -130,9 +128,7 @@ function openModal(itemData) {
     modalMask.classList.add('active');
 }
 
-// ----- 表单模态框（无人物标签） -----
 function renderPersonCheckboxes(selected) {
-    // 隐藏人物标签，保留空容器但不显示
     personCheckboxContainer.innerHTML = '';
     personCheckboxContainer.style.display = 'none';
 }
@@ -160,12 +156,10 @@ function renderFormTagCheckboxes(selected) {
 }
 
 function getSelectedPersons() {
-    return ['Winter']; // 默认返回 Winter，实际表单中已隐藏
+    return ['Winter'];
 }
 
-function setSelectedPersons(persons) {
-    // 无操作，隐藏
-}
+function setSelectedPersons(persons) {}
 
 function openForm(itemData) {
     if (!isEditMode) return;
@@ -206,7 +200,6 @@ function closeForm() {
     editModeId = null;
 }
 
-// ----- 标签管理 -----
 function renderTagManager() {
     const container = document.getElementById('tagListContainer');
     container.innerHTML = '';
@@ -246,7 +239,6 @@ function renderTagManager() {
     });
 }
 
-// ----- 重要日管理 -----
 function renderMilestoneManager() {
     const container = document.getElementById('milestoneListContainer');
     container.innerHTML = '';
@@ -270,7 +262,6 @@ function renderMilestoneManager() {
     });
 }
 
-// ----- 事件绑定 -----
 modalClose.onclick = closeModal;
 modalMask.addEventListener('click', e => { if (e.target === modalMask) closeModal(); });
 modalDeleteBtn.onclick = function() {
@@ -297,7 +288,7 @@ scheduleForm.onsubmit = async function(e) {
     e.preventDefault();
     if (!isEditMode) return;
     const date = normalizeDateInput(document.getElementById('formDate').value.trim());
-    const persons = ['Winter']; // 默认人物
+    const persons = ['Winter'];
     const title = document.getElementById('formTitleInput').value.trim();
     const linksRaw = document.getElementById('formLinks').value.trim();
     const videoEmbed = document.getElementById('formVideo').value.trim();
