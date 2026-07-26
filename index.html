@@ -1,2 +1,2007 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>0101号空间站</title><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><style>:root{--bg-color:#0a0a14;--text-color:#e9e9eb;--border-color:rgba(168,216,234,0.15);--glass-bg:rgba(255,255,255,0.05);--glass-border:rgba(168,216,234,0.20);--glass-shadow:0 8px 32px rgba(0,0,0,0.3);--ice-blue:#A8D8EA;--moon-white:#F0F4F8;--silver:#C0C8D4;--purple:#B8A9D4;--btn-active:#A8D8EA;--danger:#b84863;--modal-bg:rgba(0,0,0,0.7);--modal-card-bg:rgba(20,20,35,0.9);--bg-overlay:rgba(10,10,20,0.7)}*{box-sizing:border-box}html{min-height:100vh;background:#0a0a14}body{margin:0;min-height:100vh;background:transparent;font-family:'Courier New','Microsoft Yahei',sans-serif;line-height:1.6;font-size:15px;color:var(--text-color);padding:20px 30px 60px;max-width:1320px;margin:0 auto;position:relative;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L14.5 9.5L22 10L16.5 15L18.5 22L12 18L5.5 22L7.5 15L2 10L9.5 9.5L12 2Z' fill='%23A8D8EA' opacity='0.85'/%3E%3C/svg%3E") 12 12,auto}body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(168,216,234,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 50%,rgba(184,169,212,0.06) 0%,transparent 60%),radial-gradient(ellipse at 50% 100%,rgba(192,200,212,0.04) 0%,transparent 40%),#0a0a14;z-index:-2}body::after{content:'❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦';position:fixed;inset:0;font-size:20px;letter-spacing:40px;opacity:0.06;z-index:-1;pointer-events:none;animation:floatSnow 80s linear infinite;white-space:nowrap;overflow:hidden;color:var(--ice-blue)}@keyframes floatSnow{0%{transform:translateY(0) rotate(0deg)}100%{transform:translateY(-100px) rotate(10deg)}}h1{font-size:42px;font-weight:700;text-align:center;letter-spacing:6px;color:var(--ice-blue);text-shadow:0 0 40px rgba(168,216,234,0.15);font-family:'Courier New',monospace;margin:8px 0 2px}.subtitle{font-size:16px;opacity:0.5;text-align:center;letter-spacing:6px;margin-bottom:18px;font-family:'Courier New',monospace;color:var(--moon-white)}.person-filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;justify-content:center}.person-btn{padding:6px 16px;border-radius:20px;border:1px solid rgba(168,216,234,0.15);background:rgba(168,216,234,0.08);color:#fff;cursor:pointer;font-size:14px;transition:all .3s;font-family:'Courier New',monospace}.person-btn:hover{background:rgba(168,216,234,0.2);transform:translateY(-2px)}.person-btn.active{background:rgba(168,216,234,0.25);border-color:var(--ice-blue);box-shadow:0 0 20px rgba(168,216,234,0.15)}#dashboard-view{display:none;padding:20px 0 30px}#dashboard-view.active{display:block}#calendar-view{display:none;padding:6px 0 20px}#calendar-view.active{display:block}.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:30px 20px;justify-items:center}.dashboard-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform .3s ease;width:140px}.dashboard-item:hover{transform:translateY(-6px) scale(1.03)}.dashboard-item .circular-progress{position:relative;width:140px;height:140px}.dashboard-item .circular-progress svg{width:140px;height:140px;transform:rotate(-90deg)}.dashboard-item .circular-progress .bg-circle{fill:none;stroke:rgba(255,255,255,0.06);stroke-width:6}.dashboard-item .circular-progress .progress-circle{fill:none;stroke:#000;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .8s ease;filter:drop-shadow(0 0 8px rgba(168,216,234,0.15))}.dashboard-item .circular-progress .center-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:18px;font-weight:700;color:var(--ice-blue);font-family:'Courier New',monospace;text-shadow:0 0 20px rgba(168,216,234,0.2);text-align:center;line-height:1.2;width:80%}.dashboard-item .item-info{margin-top:8px;text-align:center;font-size:13px;opacity:0.5;font-family:'Courier New',monospace;color:var(--moon-white)}.dashboard-item .item-info .badge{display:inline-block;padding:1px 10px;border-radius:10px;font-size:11px;font-weight:600;background:rgba(102,187,106,0.15);color:#66BB6A;border:1px solid rgba(102,187,106,0.1)}.btn-back{background:rgba(168,216,234,0.08);border:1px solid rgba(168,216,234,0.12);color:var(--ice-blue);padding:5px 16px;border-radius:6px;cursor:pointer;font-size:13px;font-family:'Courier New',monospace;transition:all .25s ease}.btn-back:hover{background:rgba(168,216,234,0.2);transform:scale(1.02)}.control-group{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}.calendar-control{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.cal-btn{padding:6px 14px;font-size:15px;border:1px solid rgba(168,216,234,0.15);background:rgba(0,0,0,0.3);color:var(--text-color);border-radius:6px;cursor:pointer;transition:all .2s;font-family:'Courier New',monospace}.cal-btn:hover{background:rgba(168,216,234,0.1);border-color:var(--ice-blue)}.current-ym{font-size:18px;font-weight:700;min-width:130px;text-align:center;padding:4px 16px;border-radius:8px;cursor:pointer;border:1px solid rgba(168,216,234,0.1);color:var(--ice-blue);font-family:'Courier New',monospace;text-shadow:0 0 10px rgba(168,216,234,0.1)}.current-ym:hover{background:rgba(168,216,234,0.05)}.add-btn{background:rgba(168,216,234,0.12);border:1px solid rgba(168,216,234,0.15);color:var(--ice-blue);padding:6px 18px;border-radius:6px;cursor:pointer;font-size:14px;font-family:'Courier New',monospace;transition:all .3s}.add-btn:hover{background:rgba(168,216,234,0.25)}.search-area{display:flex;gap:8px;align-items:center;flex-wrap:wrap}#searchDateInput{padding:6px 12px;font-size:13px;border:1px solid rgba(168,216,234,0.15);border-radius:6px;background:rgba(0,0,0,0.3);color:#fff;min-width:150px;font-family:'Courier New',monospace}#searchDateInput::placeholder{color:rgba(255,255,255,0.3)}#searchDateInput:focus{border-color:var(--ice-blue);outline:0}#importBtn,#importExcelBtn{background:rgba(168,216,234,0.08);border:1px solid rgba(168,216,234,0.12);color:var(--ice-blue);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-family:'Courier New',monospace;transition:all .3s}#importBtn:hover,#importExcelBtn:hover{background:rgba(168,216,234,0.2)}.calendar-table{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed}.calendar-table th{border:1px solid rgba(168,216,234,0.08);padding:6px 4px;background:rgba(168,216,234,0.05);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);text-align:center;font-weight:400;height:34px;color:rgba(255,255,255,0.5);border-radius:8px;font-family:'Courier New',monospace;font-size:12px;letter-spacing:1px}.calendar-table td{border:1px solid rgba(168,216,234,0.08);vertical-align:top;height:90px;padding:4px 3px 2px;transition:background .2s;background:rgba(255,255,255,0.03);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:8px;position:relative;min-width:50px}.calendar-table td:hover{background:rgba(168,216,234,0.06)}.cell-header{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:2px;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.2;font-family:'Courier New',monospace}.cell-header .date-num{flex:1}.cell-header .milestone-icon{font-size:13px;opacity:0.5}.calendar-content{display:flex;flex-direction:column;gap:2px;max-height:70px;overflow-y:auto;scrollbar-width:none}.calendar-content::-webkit-scrollbar{display:none}.calendar-icon-block{position:relative;display:flex;align-items:center;justify-content:center;padding:2px 4px;border-radius:4px;cursor:pointer;font-size:16px;transition:all .2s;min-height:20px;background:rgba(168,216,234,0.05);border:1px solid rgba(168,216,234,0.05)}.calendar-icon-block:hover{background:rgba(168,216,234,0.12);transform:scale(1.05)}.calendar-icon-block.is-travel{border-left:2px solid var(--ice-blue)}.cell-badge{position:absolute;top:2px;right:4px;background:rgba(168,216,234,0.15);color:var(--ice-blue);font-size:8px;font-weight:700;padding:0 4px;border-radius:8px;line-height:13px;min-width:14px;text-align:center;font-family:'Courier New',monospace;border:1px solid rgba(168,216,234,0.06)}.side-panel{background:rgba(255,255,255,0.03);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(168,216,234,0.10);border-radius:12px;overflow:hidden;transition:all .3s ease;flex-shrink:0;width:160px}.side-panel-header{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;font-size:13px;font-weight:600;color:var(--ice-blue);border-bottom:1px solid rgba(168,216,234,0.05);font-family:'Courier New',monospace}.side-panel-header .toggle-btn{background:0 0;border:none;color:rgba(168,216,234,0.4);cursor:pointer;font-size:14px;transition:transform .3s}.side-panel-header .toggle-btn:hover{color:var(--ice-blue)}.side-panel.collapsed .side-panel-body{display:none}.side-panel.collapsed .toggle-btn{transform:rotate(-90deg)}.side-panel-body{padding:8px 10px;max-height:400px;overflow-y:auto}.tag-legend-item{display:flex;align-items:center;gap:6px;padding:3px 6px;border-radius:4px;font-size:12px;color:rgba(255,255,255,0.5);transition:background .2s;font-family:'Courier New',monospace}.tag-legend-item:hover{background:rgba(168,216,234,0.04)}.tag-legend-item .legend-icon{font-size:14px}.tag-legend-item .legend-name{flex:1;word-break:break-word}.tag-legend-item .legend-count{font-size:10px;opacity:0.3}.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:999;padding:20px}.modal-mask.active{display:flex}.modal-wrap{display:flex;width:min(1000px,100%);background:rgba(20,20,35,0.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.5);border:1px solid rgba(168,216,234,0.10);max-height:90vh}.modal-img-box{width:55%;flex-shrink:0;aspect-ratio:16/9;background:#0a0a12;display:flex;align-items:center;justify-content:center}.modal-img-box img,.modal-img-box iframe,.modal-img-box video{width:100%;height:100%;object-fit:contain;display:block;border:0}.modal-img-box .no-media{color:#888;font-size:14px;opacity:0.6;text-align:center;font-family:'Courier New',monospace}.modal-info{width:48%;padding:24px;overflow-y:auto;max-height:85vh}.modal-title{font-size:18px;font-weight:700;color:#fff;font-family:'Courier New',monospace}.modal-link-item{margin:6px 0;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04)}.modal-link-item a{color:var(--ice-blue);text-decoration:none}.modal-link-item a:hover{color:var(--purple)}.modal-close{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;background:rgba(100,100,100,0.2);color:#fff;font-size:15px;transition:background .2s}.modal-close:hover{background:rgba(100,100,100,0.4)}.modal-delete-btn{padding:6px 16px;background:var(--danger);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-family:'Courier New',monospace}.modal-delete-btn:hover{opacity:.85}.modal-edit-btn{padding:6px 16px;background:var(--ice-blue);color:#000;border:none;border-radius:6px;cursor:pointer;font-size:13px;margin-right:8px;font-family:'Courier New',monospace}.modal-edit-btn:hover{opacity:.85}.modal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.readonly .modal-edit-btn,.readonly .modal-delete-btn,.readonly #addBtn,.readonly #importBtn,.readonly .manage-btn{display:none!important}.form-modal .modal-wrap{max-width:520px;flex-direction:column;padding:24px}.form-modal .modal-info{width:100%;padding:0}.form-modal .modal-img-box{display:none}.form-title{font-size:22px;font-weight:700;text-align:center;color:var(--ice-blue);font-family:'Courier New',monospace}.form-group{margin-bottom:14px}.form-group label{display:block;margin-bottom:3px;font-weight:500;font-size:14px;color:rgba(255,255,255,0.6);font-family:'Courier New',monospace}.form-group input,.form-group textarea{width:100%;padding:6px 10px;border:1px solid rgba(168,216,234,0.1);border-radius:6px;background:rgba(0,0,0,0.3);color:#fff;font-size:14px;font-family:'Courier New',monospace}.form-group input:focus,.form-group textarea:focus{border-color:var(--ice-blue);outline:0}.form-group .hint{font-size:11px;opacity:0.3;margin-top:1px;font-family:'Courier New',monospace}.person-checkbox-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:3px}.person-checkbox-group label{display:flex;align-items:center;gap:4px;font-weight:400;font-size:13px;cursor:pointer;padding:2px 8px;border-radius:16px;background:rgba(0,0,0,0.2);color:rgba(255,255,255,0.6);font-family:'Courier New',monospace}.person-checkbox-group label:hover{background:rgba(168,216,234,0.05)}.person-checkbox-group input[type=checkbox]{width:14px;height:14px;accent-color:var(--ice-blue)}.form-actions{display:flex;gap:10px;margin-top:16px;justify-content:flex-end}.form-actions button{padding:6px 20px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:500;font-family:'Courier New',monospace}.btn-cancel{background:rgba(255,255,255,0.05);color:#fff;border:1px solid rgba(255,255,255,0.05)}.btn-cancel:hover{background:rgba(255,255,255,0.1)}.btn-submit{background:var(--ice-blue);color:#000}.btn-submit:hover{opacity:.85}.ym-picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center}.ym-picker-overlay.active{display:flex}.ym-picker-box{background:rgba(20,20,35,0.9);padding:24px 32px 30px;border-radius:16px;border:1px solid rgba(168,216,234,0.1);min-width:280px;text-align:center}.ym-picker-box h3{margin:0 0 14px;color:var(--ice-blue);font-family:'Courier New',monospace}.ym-picker-row{display:flex;gap:14px;justify-content:center;align-items:center;margin:10px 0 16px;flex-wrap:wrap}.ym-picker-row select{padding:6px 12px;font-size:16px;border-radius:6px;border:1px solid rgba(168,216,234,0.1);background:rgba(0,0,0,0.3);color:#fff;cursor:pointer;min-width:80px;font-family:'Courier New',monospace}.ym-picker-row select:focus{border-color:var(--ice-blue);outline:0}.ym-picker-actions button{padding:6px 24px;border:none;border-radius:6px;font-size:15px;cursor:pointer;font-family:'Courier New',monospace}.ym-btn-confirm{background:var(--ice-blue);color:#000}.ym-btn-cancel{background:rgba(255,255,255,0.05);color:#fff;border:1px solid rgba(255,255,255,0.05)}.ym-btn-cancel:hover{background:rgba(255,255,255,0.1)}#ice-particle-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}.ice-particle{position:absolute;pointer-events:none;font-size:16px;animation:iceBurst 1.2s ease-out forwards;user-select:none;opacity:.9}@keyframes iceBurst{0%{transform:translate(0,0) scale(1) rotate(0deg);opacity:.9}100%{transform:translate(var(--tx),var(--ty)) scale(0) rotate(360deg);opacity:0}}.import-modal .modal-wrap{max-width:780px;flex-direction:column;padding:30px}.import-modal .modal-info{width:100%;padding:0}.import-modal .modal-img-box{display:none}#importDataText{min-height:160px;font-family:Consolas,monospace;font-size:13px;background:rgba(0,0,0,0.3);color:#fff;border:1px solid rgba(168,216,234,0.1);border-radius:6px;padding:8px 10px;width:100%;resize:vertical}#importDataText:focus{border-color:var(--ice-blue);outline:0}.import-preview-table-wrap{max-height:240px;overflow-y:auto;border:1px solid rgba(168,216,234,0.08);border-radius:6px;margin-top:6px}.import-preview-table-wrap table{width:100%;border-collapse:collapse;font-size:13px}.import-preview-table-wrap th{background:rgba(0,0,0,0.4);padding:4px 8px;text-align:left;position:sticky;top:0;z-index:2;font-weight:600;border-bottom:2px solid rgba(168,216,234,0.1);color:rgba(255,255,255,0.6);font-family:'Courier New',monospace}.import-preview-table-wrap td{padding:4px 8px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle;font-family:'Courier New',monospace;font-size:12px}.import-stats-bar{display:flex;gap:16px;margin:6px 0 10px;flex-wrap:wrap;font-size:13px;font-family:'Courier New',monospace;color:rgba(255,255,255,0.5)}.import-stats-bar .num{font-weight:700;font-size:15px}.import-stats-bar .num.green{color:#66BB6A}.import-stats-bar .num.red{color:#f87171}.import-toolbar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center}.import-toolbar .hint-text{font-size:12px;opacity:0.4;margin-right:auto;font-family:'Courier New',monospace}.import-toolbar button{padding:4px 14px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-family:'Courier New',monospace}.import-toolbar .btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.1);color:#fff}.import-toolbar .btn-outline:hover{background:rgba(255,255,255,0.04)}.import-toolbar .btn-primary{background:rgba(168,216,234,0.15);color:var(--ice-blue);border:1px solid rgba(168,216,234,0.1)}.import-toolbar .btn-primary:hover{background:rgba(168,216,234,0.25)}#importFileInput{display:none}.import-progress{margin-top:8px;padding:6px 12px;border-radius:6px;background:rgba(255,255,255,0.04);font-size:13px;display:none;font-family:'Courier New',monospace}.import-progress.active{display:block}.import-progress .progress-bar{height:4px;background:rgba(168,216,234,0.1);border-radius:2px;margin-top:4px;overflow:hidden}.import-progress .progress-bar .fill{height:100%;background:var(--ice-blue);width:0;transition:width .3s}.import-result-toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:10px;background:rgba(20,20,35,0.9);border:1px solid rgba(168,216,234,0.1);box-shadow:0 8px 32px rgba(0,0,0,0.5);z-index:2000;font-size:14px;text-align:center;max-width:90%;backdrop-filter:blur(4px);display:none;font-family:'Courier New',monospace;color:#fff}.import-result-toast.show{display:block;animation:fadeUp .3s ease}@keyframes fadeUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}.import-result-toast .toast-close{margin-left:12px;cursor:pointer;opacity:0.6;background:0 0;border:none;color:#fff;font-size:16px}.import-result-toast.success{border-color:#66BB6A}.import-result-toast.error{border-color:#f87171}@media(max-width:800px){.modal-wrap{flex-direction:column}.modal-img-box,.modal-info{width:100%}.modal-img-box{max-height:280px}h1{font-size:28px}.dashboard-grid{gap:20px}.dashboard-item{width:110px}.dashboard-item .circular-progress{width:110px;height:110px}.dashboard-item .circular-progress svg{width:110px;height:110px}.side-panel{width:120px}}@media(max-width:600px){.dashboard-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:16px}.dashboard-item{width:90px}.dashboard-item .circular-progress{width:90px;height:90px}.dashboard-item .circular-progress svg{width:90px;height:90px}.dashboard-item .circular-progress .center-text{font-size:14px}.side-panel{width:90px}.calendar-table td{height:70px}}@media(max-width:480px){.dashboard-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:12px}.dashboard-item{width:70px}.dashboard-item .circular-progress{width:70px;height:70px}.dashboard-item .circular-progress svg{width:70px;height:70px}.dashboard-item .circular-progress .center-text{font-size:11px}.side-panel{width:70px}.side-panel-header{font-size:10px;padding:4px 6px}.tag-legend-item{font-size:10px}.calendar-table td{height:55px}}</style></head><body><div id="ice-particle-container"></div><h1>❄️ 0101号空间站</h1><div class="subtitle">幸福的终点是旼炡和你</div><div class="person-filter-bar" id="personBar"></div><div style="display:flex;gap:12px;justify-content:center;margin:6px 0 16px;flex-wrap:wrap;"><button class="btn-back" id="goToDashboard" style="display:none;">← 返回仪表盘</button></div><div id="dashboard-view" class="active view-fade-in"><div class="dashboard-grid" id="dashboardGrid"></div></div><div id="calendar-view"><div class="control-group"><div class="calendar-control"><button class="cal-btn" id="prevMonth">◀</button><span class="current-ym" id="ymDisplay">2026年7月</span><button class="cal-btn" id="nextMonth">▶</button><button id="addBtn" class="add-btn">➕ 添加物料</button></div><div class="search-area"><input id="searchDateInput" placeholder="搜索日期 如 2026-07-20"/><button id="importBtn">📥 导入</button><button id="importExcelBtn">📊 Excel</button></div></div><div style="display:flex;gap:16px;align-items:flex-start;margin-top:6px;"><div style="flex:1;min-width:0;overflow-x:auto;" id="calendar-area"></div><div class="side-panel" id="tagLegendPanel"><div class="side-panel-header"><span>🏷️ 行程</span><button class="toggle-btn" data-target="tagLegendPanel">▾</button></div><div class="side-panel-body" id="tagLegendBody"></div></div></div></div><div class="modal-mask" id="modalMask"><div class="modal-wrap"><div class="modal-img-box" id="modalMediaBox"><span class="no-media">暂无媒体</span></div><div class="modal-info"><div id="modalPersonTags" class="modal-person-tags" style="display:none;"></div><div class="modal-title" id="modalTitle"></div><div id="modalLinkList"></div><div style="margin:10px 0;display:flex;flex-wrap:wrap;gap:6px;" id="modalTagDisplay"></div><div class="modal-actions"><button class="modal-edit-btn" id="modalEditBtn">✏️ 编辑</button><button class="modal-delete-btn" id="modalDeleteBtn">🗑️ 删除</button></div></div><button class="modal-close" id="modalClose">×</button></div></div><div class="modal-mask form-modal" id="formModal"><div class="modal-wrap"><div class="modal-info"><div class="form-title" id="formTitle">📝 添加物料</div><form id="scheduleForm" autocomplete="off"><div class="form-row"><div class="form-group"><label>日期 <span class="required">*</span></label><input type="text" id="formDate" placeholder="YYYY-MM-DD 或 240529" required></div><div class="form-group"><label>状态</label><div style="display:flex;gap:16px;padding-top:6px;"><label><input type="radio" name="formStatus" value="已补完" checked> ✅ 已补完</label><label><input type="radio" name="formStatus" value="待补"> ⏳ 待补</label></div></div></div><div class="form-group" style="display:none;"><label>人物</label><div id="personCheckboxContainer" class="person-checkbox-group"></div></div><div class="form-group"><label>标题 <span class="required">*</span></label><input type="text" id="formTitleInput" placeholder="如：音乐银行 横版直拍" required></div><div class="form-group"><label>行程分类（可多选）</label><div id="formTagCheckboxContainer" class="person-checkbox-group" style="gap:6px;"></div></div><div class="form-group"><label>链接</label><input type="text" id="formLinks" placeholder="https://youtube.com/xxx 或 网盘链接"><div class="hint">支持图片/视频链接</div></div><div class="form-row"><div class="form-group"><label>缩略图</label><input type="text" id="formThumbnail" placeholder="图片URL"></div><div class="form-group"><label>视频嵌入</label><input type="text" id="formVideo" placeholder="YouTube / B站 链接"></div></div><div class="form-actions"><button type="button" class="btn-cancel" id="formCancel">取消</button><button type="submit" class="btn-submit" id="formSubmitBtn">✅ 保存</button></div></form></div><button class="modal-close" id="formClose">×</button></div></div><div class="ym-picker-overlay" id="ymPickerOverlay"><div class="ym-picker-box"><h3>📅 选择年月</h3><div class="ym-picker-row"><select id="ymYearSelect"></select><span>年</span><select id="ymMonthSelect"></select><span>月</span></div><div class="ym-picker-actions"><button class="ym-btn-confirm" id="ymConfirm">确认</button><button class="ym-btn-cancel" id="ymCancel">取消</button></div></div></div><div class="modal-mask import-modal" id="importModal"><div class="modal-wrap"><div class="modal-info"><div class="form-title">📥 批量导入日程</div><div style="margin-bottom:12px;color:#aaa;font-size:14px;line-height:1.7;">粘贴 JSON 数组数据，或上传 JSON 文件。<button id="loadSampleBtn" style="background:transparent;border:1px solid #555;color:#aaa;border-radius:4px;padding:2px 12px;cursor:pointer;font-size:13px;margin-left:8px;">📄 加载示例</button></div><div class="form-group"><label>JSON 数据</label><textarea id="importDataText" placeholder='[{"date":"2026-07-20","person":["Winter"],"title":"Winter 新物料"}]'></textarea></div><div class="import-toolbar"><span class="hint-text">📌 支持数组格式</span><button class="btn-outline" id="importFileBtn">📁 上传 JSON</button><button class="btn-primary" id="previewImportBtn">🔍 预览</button><input type="file" id="importFileInput" accept=".json,.txt"></div><div id="importPreviewArea" style="display:none;"><div class="import-stats-bar"><span class="stat-item">📊 共 <span class="num" id="importTotalCount">0</span> 条</span><span class="stat-item">✅ 有效 <span class="num green" id="importValidCount">0</span> 条</span><span class="stat-item">❌ 无效 <span class="num red" id="importInvalidCount">0</span> 条</span></div><div class="import-preview-table-wrap" id="importPreviewTableWrap"><table><thead><tr><th>#</th><th>日期</th><th>人物</th><th>标题</th><th>状态</th></tr></thead><tbody id="importPreviewBody"></tbody></table></div><div class="import-progress" id="importProgress"><span id="importProgressText">正在导入...</span><div class="progress-bar"><div class="fill" id="importProgressFill"></div></div></div><div class="form-actions"><button class="btn-cancel" id="importCancel">取消</button><button class="btn-submit" id="importConfirmBtn" style="background:#66BB6A;">📥 确认导入</button></div></div></div><button class="modal-close" id="importClose">×</button></div></div><div class="modal-mask" id="excelImportModal"><div class="modal-wrap" style="max-width:700px;flex-direction:column;padding:30px;"><div class="modal-info" style="width:100%;padding:0;"><div class="form-title">📊 Excel 导入日程</div><div style="margin-bottom:12px;color:#aaa;font-size:14px;line-height:1.7;">支持 .xlsx / .xls 格式。表头需包含：<code>date</code>、<code>person</code>、<code>title</code>。<a id="excelTemplateLink" href="#" style="color:#A8D8EA;text-decoration:underline;cursor:pointer;">📄 下载模板</a></div><div class="form-group"><label>选择 Excel 文件</label><input type="file" id="excelFileInput" accept=".xlsx,.xls" style="width:100%;padding:8px 12px;border:1px solid var(--border-color);border-radius:6px;background:rgba(0,0,0,.3);color:var(--text-color);font-size:14px;cursor:pointer;"></div><div id="excelPreviewArea" style="display:none;"><div class="import-stats-bar"><span class="stat-item">📊 共 <span class="num" id="excelTotalCount">0</span> 条</span><span class="stat-item">✅ 有效 <span class="num green" id="excelValidCount">0</span> 条</span><span class="stat-item">❌ 无效 <span class="num red" id="excelInvalidCount">0</span> 条</span></div><div class="import-preview-table-wrap" id="excelPreviewTableWrap"><table><thead><tr><th>#</th><th>日期</th><th>人物</th><th>标题</th><th>状态</th></tr></thead><tbody id="excelPreviewBody"></tbody></table></div><div class="form-actions"><button class="btn-cancel" id="excelImportCancel">取消</button><button class="btn-submit" id="excelConfirmBtn" style="background:#66BB6A;">📥 确认导入</button></div></div></div><button class="modal-close" id="excelImportClose">×</button></div></div><div class="import-result-toast" id="importResultToast"><span id="importResultMsg"></span><button class="toast-close" id="importToastClose">×</button></div><script>const API_BASE='https://time-capsule-backend-1-3mzs.onrender.com/api';const urlParams=new URLSearchParams(location.search);const isEditMode=urlParams.get('edit')==='true'||urlParams.get('key')==='20010101';if(!isEditMode)document.body.classList.add('readonly');document.addEventListener('DOMContentLoaded',function(){const s=document.getElementById('searchDateInput');if(s)s.placeholder=isEditMode?'搜索日程...':'筛选日程...';});const weekCN=["周日","周一","周二","周三","周四","周五","周六"];const personList=['Winter','aespa','Karina','Giselle','NingNing'];const displayPersonList=['Winter','aespa'];const personColorRule={"Winter":"#4FC3F7","aespa":"#66BB6A","Karina":"#FF6B9D","Giselle":"#B47EDC","NingNing":"#F9A95A"};const personDisplayMap={"Winter":"⭐Winter","aespa":"aespa","Karina":"💙Karina","Giselle":"🌙Giselle","NingNing":"🦋NingNing"};const MULTI_PERSON_COLOR="#F9A95A";const STORAGE_TAGS='winter_tags';const STORAGE_MILESTONES='winter_milestones';let scheduleList=[];async function loadScheduleData(){try{const resp=await fetch(API_BASE+'/data');if(!resp.ok)throw new Error('加载失败');let data=await resp.json();data=data.map(item=>{ensurePersonArray(item);ensureExtraFields(item);return item});scheduleList=data;renderAll();return scheduleList}catch(err){console.error('加载数据异常：',err);scheduleList=[];renderAll();return[]}}async function addSchedule(formData){if(!isEditMode)return null;try{const resp=await fetch(API_BASE+'/data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)});if(!resp.ok)throw new Error('添加失败');const newItem=await resp.json();ensurePersonArray(newItem);ensureExtraFields(newItem);scheduleList.push(newItem);renderAll();return newItem}catch(err){console.error('添加失败：',err);alert('添加失败，请检查后端是否启动');return null}}async function updateScheduleById(id,formData){if(!isEditMode)return null;try{const resp=await fetch(API_BASE+'/data/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)});if(!resp.ok)throw new Error('更新失败');const updated=await resp.json();ensurePersonArray(updated);ensureExtraFields(updated);const idx=scheduleList.findIndex(item=>item.id===id);if(idx!==-1)scheduleList[idx]=updated;renderAll();return updated}catch(err){console.error('更新失败：',err);alert('更新失败');return null}}async function deleteScheduleById(id){if(!isEditMode)return;try{const resp=await fetch(API_BASE+'/data/'+id,{method:'DELETE'});if(!resp.ok)throw new Error('删除失败');scheduleList=scheduleList.filter(item=>item.id!==id);renderAll()}catch(err){console.error('删除失败：',err);alert('删除失败')}}function getScheduleById(id){return scheduleList.find(item=>item.id===id)}function getPersonColor(p){return personColorRule[p]||'#4FC3F7'}function getTextColorForPerson(p){return['Winter','aespa','Karina','NingNing'].includes(p)?'#000':'#fff'}function extractPersonKey(raw){if(!raw||typeof raw!=='string')return null;for(let name of personList){if(raw.includes(name))return name}return null}function ensurePersonArray(item){if(!item)return[];let persons=item.person;if(typeof persons==='string'){try{let parsed=JSON.parse(persons);persons=Array.isArray(parsed)?parsed:(typeof parsed==='object'?Object.values(parsed):[parsed])}catch{persons=persons.includes(',')?persons.split(',').map(s=>s.trim()):[persons.trim()]}}else if(!Array.isArray(persons))persons=[];persons=persons.map(p=>{if(typeof p==='string'){const key=extractPersonKey(p);return key||p}return p}).filter(p=>p&&typeof p==='string'&&p.trim()!=='').map(p=>p.trim());persons=persons.map(p=>personList.includes(p)?p:(extractPersonKey(p)||p));item.person=persons;return persons}function ensureExtraFields(item){if(!item.tags)item.tags=[];return item}function hexToRgba(hex,alpha){let h=hex.trim();if(h.startsWith('#'))h=h.slice(1);if(h.length===3){h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2]}const r=parseInt(h.slice(0,2),16);const g=parseInt(h.slice(2,4),16);const b=parseInt(h.slice(4,6),16);return'rgba('+r+','+g+','+b+','+alpha+')'}function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}function isValidDate(dateStr){const parts=dateStr.split('-');if(parts.length!==3)return false;const y=parseInt(parts[0]),m=parseInt(parts[1])-1,d=parseInt(parts[2]);const dt=new Date(y,m,d);return dt.getFullYear()===y&&dt.getMonth()===m&&dt.getDate()===d}function normalizeDateInput(raw){const s=raw.trim();if(!s)return s;if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;if(/^\d{6}$/.test(s)){const yy=s.slice(0,2),mm=s.slice(2,4),dd=s.slice(4,6);if(parseInt(mm)>=1&&parseInt(mm)<=12&&parseInt(dd)>=1&&parseInt(dd)<=31)return'20'+yy+'-'+mm+'-'+dd;return s}if(/^\d{8}$/.test(s)){const yyyy=s.slice(0,4),mm=s.slice(4,6),dd=s.slice(6,8);if(parseInt(mm)>=1&&parseInt(mm)<=12&&parseInt(dd)>=1&&parseInt(dd)<=31)return yyyy+'-'+mm+'-'+dd;return s}return s}function urlToEmbed(rawUrl){if(!rawUrl)return"";const url=rawUrl.trim();if(url.includes('player.bilibili.com/player.html')||url.includes('youtube.com/embed/'))return url;const bv=url.match(/BV\w{10}/);if(bv){const page=(url.match(/[?&]p=(\d+)/)||[])[1]||1;return'https://player.bilibili.com/player.html?bvid='+bv[0]+'&page='+page+'&danmaku=0'}const yt=url.match(/youtu\.be\/([A-Za-z0-9_-]{11})/)||url.match(/[?&]v=([A-Za-z0-9_-]{11})/);if(yt)return'https://www.youtube.com/embed/'+yt[1];return null}function showToast(msg,type){const toast=document.getElementById('importResultToast');const msgEl=document.getElementById('importResultMsg');msgEl.textContent=msg;toast.className='import-result-toast show '+type;setTimeout(()=>toast.classList.remove('show'),6000)}function getProxiedImageUrl(url){if(!url)return'';const needsProxy=url.includes('instagram.com')||url.includes('cdninstagram.com')||url.includes('twitter.com')||url.includes('twimg.com')||url.includes('x.com')||url.includes('sinaimg.cn')||url.includes('pic.sinaimg.cn')||url.includes('doubanio.com')||url.includes('douban.com');if(needsProxy){return'/api/image-proxy?url='+encodeURIComponent(url)}return url}function loadImageWithRetry(imgElement,originalUrl,retryCount){if(retryCount===undefined)retryCount=0;if(retryCount>=3){imgElement.style.display='none';const parent=imgElement.parentElement;if(parent){parent.innerHTML='<span class="no-media">图片加载失败<br><span style="font-size:12px;color:#666;word-break:break-all;">'+originalUrl+'</span></span>'}return}const proxyUrl=getProxiedImageUrl(originalUrl);imgElement.src=proxyUrl;let timeoutId=setTimeout(()=>{loadImageWithRetry(imgElement,originalUrl,retryCount+1)},10000);imgElement.onload=function(){clearTimeout(timeoutId);imgElement.style.display=''};imgElement.onerror=function(){clearTimeout(timeoutId);loadImageWithRetry(imgElement,originalUrl,retryCount+1)}}let tags=[];let milestones=[];function loadTagsFromStorage(){const stored=localStorage.getItem(STORAGE_TAGS);if(stored){try{tags=JSON.parse(stored)}catch{tags=[]}}else{tags=[{id:'tag1',name:'打歌舞台',color:'#4FC3F7',isTravel:true},{id:'tag2',name:'综艺录制',color:'#FF6B9D',isTravel:true},{id:'tag3',name:'机场出境/入境',color:'#FFAA00',isTravel:true},{id:'tag4',name:'签售会（线上/线下）',color:'#B47EDC',isTravel:false},{id:'tag5',name:'演唱会/拼盘',color:'#66BB6A',isTravel:true},{id:'tag6',name:'品牌活动',color:'#F9A95A',isTravel:false},{id:'tag7',name:'杂志/画报拍摄',color:'#CE93D8',isTravel:false},{id:'tag8',name:'直播/VLOG',color:'#4DD0E1',isTravel:false},{id:'tag9',name:'电台录制',color:'#FF8A65',isTravel:false},{id:'tag10',name:'生日/周年活动',color:'#F06292',isTravel:false},{id:'tag11',name:'粉丝见面会',color:'#9575CD',isTravel:false},{id:'tag12',name:'舞蹈练习室/cover',color:'#81C784',isTravel:false},{id:'tag13',name:'官咖/社交媒体更新',color:'#FFD54F',isTravel:false},{id:'tag14',name:'特别舞台/节日特辑',color:'#E0E0E0',isTravel:false},{id:'tag15',name:'周边/快闪店活动',color:'#90A4AE',isTravel:false},{id:'tag16',name:'颁奖礼/红毯',color:'#FFD740',isTravel:false}];saveTagsToStorage()}tags=tags.map(t=>({...t,isTravel:t.isTravel||false}));saveTagsToStorage()}function saveTagsToStorage(){localStorage.setItem(STORAGE_TAGS,JSON.stringify(tags))}function loadMilestonesFromStorage(){const stored=localStorage.getItem(STORAGE_MILESTONES);if(stored){try{milestones=JSON.parse(stored)}catch{milestones=[]}}else{milestones=[{id:'ms1',date:'2020-11-17',title:'出道日',icon:'🌟'},{id:'ms2',date:'2001-01-01',title:'生日',icon:'🎂'}];saveMilestonesToStorage()}}function saveMilestonesToStorage(){localStorage.setItem(STORAGE_MILESTONES,JSON.stringify(milestones))}const REGRESSION_LIST=[{name:'LEMON',year:2026,month:5},{name:'WHIPLASH',year:2024,month:11},{name:'DRAMA',year:2024,month:5},{name:'SPICY',year:2024,month:2},{name:'GIRLS',year:2023,month:12},{name:'SAVAGE',year:2023,month:10},{name:'NEXT LEVEL',year:2023,month:7}];function renderDashboard(){const grid=document.getElementById('dashboardGrid');if(!grid)return;grid.innerHTML='';const sorted=[...REGRESSION_LIST].sort((a,b)=>{if(a.year!==b.year)return b.year-a.year;return b.month-a.month});sorted.forEach(reg=>{const regStart=new Date(reg.year,reg.month-1,1);const regEnd=new Date(reg.year,reg.month,0);const items=scheduleList.filter(item=>{const d=new Date(item.date);return d>=regStart&&d<=regEnd});const total=items.length;const done=items.filter(item=>{return item.title&&(item.thumbnail||item.videoEmbed||(item.links&&JSON.stringify(item.links)!=='[]'))}).length;const progress=total>0?Math.round((done/total)*100):0;const remaining=total-done;const circumference=2*Math.PI*44;const offset=circumference*(1-progress/100);const wrapper=document.createElement('div');wrapper.className='dashboard-item';wrapper.innerHTML='<div class="circular-progress"><svg viewBox="0 0 100 100"><circle class="bg-circle" cx="50" cy="50" r="44"/><circle class="progress-circle" cx="50" cy="50" r="44" stroke-dasharray="'+circumference+'" stroke-dashoffset="'+offset+'"/></svg><div class="center-text">'+reg.name+'</div></div><div class="item-info"><div>'+reg.year+'年'+reg.month+'月</div><div>'+(remaining>0?'剩余 '+remaining+' 件':'<span class="badge">✅ 已毕业</span>')+'</div></div>';wrapper.addEventListener('click',function(){window.viewYear=reg.year;window.viewMonth=reg.month;if(typeof window.switchToCalendar==='function'){window.switchToCalendar()}else{alert('切换失败，请刷新页面重试')}});grid.appendChild(wrapper)})}window.renderDashboard=renderDashboard;window.viewYear=window.viewYear||new Date().getFullYear();window.viewMonth=window.viewMonth||(new Date().getMonth()+1);let viewYear=window.viewYear;let viewMonth=window.viewMonth;let currentFilterPerson="all";let searchDateKeyword="";let currentView='dashboard';const TAG_ICON_MAP={'打歌舞台':'🎤','演唱会/拼盘':'🎵','综艺录制':'📺','颁奖礼/红毯':'🏆','机场出境/入境':'✈️','品牌活动':'💄','签售会（线上/线下）':'📸','杂志/画报拍摄':'🎬','直播/VLOG':'📱','电台录制':'🎙️','生日/周年活动':'🎂','粉丝见面会':'🤝','舞蹈练习室/cover':'🩰','官咖/社交媒体更新':'📝','特别舞台/节日特辑':'🎄','周边/快闪店活动':'🎁'};function getTagIcon(tagName){return TAG_ICON_MAP[tagName]||'📌'}function renderTagLegend(){const container=document.getElementById('tagLegendBody');if(!container)return;container.innerHTML='';const tagCounts={};scheduleList.forEach(item=>{(item.tags||[]).forEach(tagId=>{const tag=tags.find(t=>t.id===tagId);if(tag){tagCounts[tag.name]=(tagCounts[tag.name]||0)+1}})});const sortedTags=[...tags].sort((a,b)=>(tagCounts[b.name]||0)-(tagCounts[a.name]||0));sortedTags.forEach(tag=>{const div=document.createElement('div');div.className='tag-legend-item';const icon=getTagIcon(tag.name);const count=tagCounts[tag.name]||0;div.innerHTML='<span class="legend-icon">'+icon+'</span><span class="legend-name">'+tag.name+'</span><span class="legend-count">'+count+'</span>';container.appendChild(div)});if(sortedTags.length===0){container.innerHTML='<div style="text-align:center;opacity:0.2;font-size:11px;padding:12px 0;font-family:Courier New,monospace;">暂无行程</div>'}}function renderPersonButtons(){const bar=document.getElementById('personBar');if(!bar)return;bar.innerHTML='';const counts={};personList.forEach(p=>counts[p]=0);let multiCount=0;scheduleList.forEach(item=>{const persons=ensurePersonArray(item);if(persons.length>1)multiCount++;persons.forEach(p=>{let key=personList.includes(p)?p:(extractPersonKey(p)||p);if(counts[key]!==undefined)counts[key]++})});const allBtn=document.createElement('button');allBtn.className='person-btn active';allBtn.dataset.val='all';allBtn.innerText='全部 ('+scheduleList.length+')';bar.appendChild(allBtn);displayPersonList.forEach(p=>{const btn=document.createElement('button');btn.className='person-btn';btn.dataset.val=p;btn.innerText=(personDisplayMap[p]||p)+' ('+(counts[p]||0)+')';btn.style.background='rgba(255,255,255,0.08)';if(currentFilterPerson===p)btn.classList.add('active');bar.appendChild(btn)});const multiBtn=document.createElement('button');multiBtn.className='person-btn';multiBtn.dataset.val='multi';multiBtn.innerText='👥 多人 ('+multiCount+')';multiBtn.style.background='rgba(249,169,90,0.25)';if(currentFilterPerson==='multi')multiBtn.classList.add('active');bar.appendChild(multiBtn);bar.querySelectorAll('.person-btn').forEach(btn=>{btn.onclick=function(){bar.querySelectorAll('.person-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active');currentFilterPerson=this.dataset.val;renderAll()}})}function getFilterData(){let arr=[...scheduleList];if(currentFilterPerson==='multi'){arr=arr.filter(item=>ensurePersonArray(item).length>1)}else if(currentFilterPerson!=='all'){arr=arr.filter(item=>ensurePersonArray(item).includes(currentFilterPerson))}if(searchDateKeyword){arr=arr.filter(item=>item.date&&item.date.includes(searchDateKeyword))}arr.sort((a,b)=>new Date(a.date)-new Date(b.date));return arr}function renderCalendar(){if(window.viewYear&&window.viewMonth){viewYear=window.viewYear;viewMonth=window.viewMonth}const calDom=document.getElementById('calendar-area');calDom.innerHTML='';syncJumpSelect();const data=getFilterData();const targetYM=viewYear+'-'+String(viewMonth).padStart(2,'0');const monthData=data.filter(item=>item.date&&item.date.startsWith(targetYM));const dateGroup={};monthData.forEach(item=>{if(!dateGroup[item.date])dateGroup[item.date]=[];dateGroup[item.date].push(item)});const monthMilestones=milestones.filter(m=>m.date&&m.date.startsWith(targetYM));const table=document.createElement('table');table.className='calendar-table';const thead=document.createElement('thead');const trHead=document.createElement('tr');weekCN.forEach(w=>{const th=document.createElement('th');th.innerText=w;trHead.appendChild(th)});thead.appendChild(trHead);table.appendChild(thead);const tbody=document.createElement('tbody');const firstDay=new Date(viewYear,viewMonth-1,1).getDay();const totalDays=new Date(viewYear,viewMonth,0).getDate();let tr=document.createElement('tr');for(let i=0;i<firstDay;i++){tr.appendChild(document.createElement('td'))}let col=firstDay;for(let d=1;d<=totalDays;d++){const td=document.createElement('td');const fullDate=viewYear+'-'+String(viewMonth).padStart(2,'0')+'-'+String(d).padStart(2,'0');const headerDiv=document.createElement('div');headerDiv.className='cell-header';const dateSpan=document.createElement('span');dateSpan.className='date-num';dateSpan.textContent=d+'日';headerDiv.appendChild(dateSpan);if(isEditMode){const ms=monthMilestones.find(m=>m.date===fullDate);if(ms){const iconSpan=document.createElement('span');iconSpan.className='milestone-icon';iconSpan.textContent=ms.icon||'🌟';iconSpan.title=ms.title;headerDiv.appendChild(iconSpan)}}td.appendChild(headerDiv);if(dateGroup[fullDate]){const content=document.createElement('div');content.className='calendar-content';const items=dateGroup[fullDate];const total=items.length;const displayItems=items.slice(0,3);displayItems.forEach(item=>{const block=document.createElement('div');block.className='calendar-icon-block';const tagId=(item.tags||[])[0];let icon='📌';if(tagId){const tag=tags.find(t=>t.id===tagId);if(tag)icon=getTagIcon(tag.name)}block.textContent=icon;block.title=item.title||'未命名';block.onclick=(e)=>{e.stopPropagation();openModal(item)};const travelTag=(item.tags||[]).map(tid=>tags.find(t=>t.id===tid)).filter(t=>t&&t.isTravel);if(travelTag.length>0){block.classList.add('is-travel')}content.appendChild(block)});if(total>3){const moreBlock=document.createElement('div');moreBlock.className='calendar-icon-block';moreBlock.style.background='rgba(168,216,234,0.05)';moreBlock.style.fontSize='11px';moreBlock.style.fontWeight='700';moreBlock.style.color='#A8D8EA';moreBlock.textContent='+'+ (total-3);moreBlock.title='点击查看全部 '+total+' 件物料';moreBlock.onclick=(e)=>{e.stopPropagation();showDateDetail(fullDate,items)};content.appendChild(moreBlock)}td.appendChild(content);if(total>1){const badge=document.createElement('span');badge.className='cell-badge';badge.textContent=total;td.appendChild(badge)}}tr.appendChild(td);col++;if(col>=7){tbody.appendChild(tr);tr=document.createElement('tr');col=0}}if(tr.children.length)tbody.appendChild(tr);table.appendChild(tbody);calDom.appendChild(table);renderTagLegend()}function showDateDetail(date,items){if(items.length===1){openModal(items[0]);return}let listHtml=items.map((item,idx)=>'<div style="padding:6px 10px;margin:3px 0;background:rgba(255,255,255,0.03);border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;border:1px solid rgba(168,216,234,0.03);font-family:Courier New,monospace;" onmouseover="this.style.background=\'rgba(168,216,234,0.06)\'" onmouseout="this.style.background=\'rgba(255,255,255,0.03)\'" onclick="openModal(scheduleList.find(s=>s.id==='+item.id+'))"><span style="color:rgba(255,255,255,0.3);font-size:12px;">'+(idx+1)+'.</span><span style="color:#fff;">'+(item.title||'未命名')+'</span><span style="font-size:11px;opacity:0.3;margin-left:auto;">'+item.date+'</span></div>').join('');const tempModal=document.createElement('div');tempModal.className='modal-mask active';tempModal.style.display='flex';tempModal.innerHTML='<div class="modal-wrap" style="max-width:480px;flex-direction:column;padding:20px;border-color:rgba(168,216,234,0.15);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 style="margin:0;font-size:16px;color:#A8D8EA;font-family:Courier New,monospace;">📅 '+date+'</h3><button class="modal-close" style="position:static;background:rgba(100,100,100,0.15);">×</button></div><div style="max-height:400px;overflow-y:auto;padding:2px;">'+listHtml+'</div><div style="margin-top:12px;text-align:center;font-size:12px;opacity:0.3;font-family:Courier New,monospace;">共 '+items.length+' 件物料</div></div>';document.body.appendChild(tempModal);tempModal.querySelector('.modal-close').onclick=()=>tempModal.remove();tempModal.onclick=(e)=>{if(e.target===tempModal)tempModal.remove()}}function renderAll(){if(currentView==='dashboard'){return}renderPersonButtons();renderCalendar();syncJumpSelect()}function syncJumpSelect(){document.getElementById('ymDisplay').innerText=viewYear+'年'+viewMonth+'月';window.viewYear=viewYear;window.viewMonth=viewMonth}document.addEventListener('DOMContentLoaded',function(){const searchInput=document.getElementById('searchDateInput');if(searchInput){searchInput.addEventListener('input',function(e){searchDateKeyword=e.target.value.trim();renderAll()})}});const modalMask=document.getElementById('modalMask');const modalTitle=document.getElementById('modalTitle');const modalLinkList=document.getElementById('modalLinkList');const modalMediaBox=document.getElementById('modalMediaBox');const modalPersonTags=document.getElementById('modalPersonTags');const modalClose=document.getElementById('modalClose');const modalDeleteBtn=document.getElementById('modalDeleteBtn');const modalEditBtn=document.getElementById('modalEditBtn');const modalTagDisplay=document.getElementById('modalTagDisplay');let currentDeleteId=null;const formModal=document.getElementById('formModal');const formClose=document.getElementById('formClose');const formCancel=document.getElementById('formCancel');const scheduleForm=document.getElementById('scheduleForm');const formTitleEl=document.getElementById('formTitle');const formSubmitBtn=document.getElementById('formSubmitBtn');const personCheckboxContainer=document.getElementById('personCheckboxContainer');const formTagCheckboxContainer=document.getElementById('formTagCheckboxContainer');let editModeId=null;function closeModal(){modalMask.classList.remove('active');modalMediaBox.innerHTML='<span class="no-media">暂无媒体</span>';currentDeleteId=null}function openModal(itemData){currentDeleteId=itemData.id;modalTitle.innerText=itemData.title;modalPersonTags.innerHTML='';modalPersonTags.style.display='none';modalTagDisplay.innerHTML='';if(itemData.tags&&itemData.tags.length){itemData.tags.forEach(tagId=>{const tag=tags.find(t=>t.id===tagId);if(tag){const span=document.createElement('span');span.style.display='inline-block';span.style.padding='2px 10px';span.style.borderRadius='12px';span.style.background=tag.color+'33';span.style.border='1px solid '+tag.color;span.style.color='#fff';span.textContent=tag.name+(tag.isTravel?' 🚗':'');modalTagDisplay.appendChild(span)}})}else{const span=document.createElement('span');span.style.color='#666';span.textContent='无行程';modalTagDisplay.appendChild(span)}modalMediaBox.innerHTML='';const thumb=(itemData.thumbnail||'').trim();const video=(itemData.videoEmbed||itemData.videoembed||'').trim();if(thumb){const img=document.createElement('img');const proxyUrl=getProxiedImageUrl(thumb);img.src=proxyUrl;img.alt=itemData.title||'缩略图';img.setAttribute('referrerpolicy','no-referrer');img.onerror=function(){if(this.src.includes('images.weserv.nl')){this.src=thumb;this.onerror=function(){this.style.display='none';modalMediaBox.innerHTML='<span class="no-media">图片加载失败</span>'}}else{this.style.display='none';modalMediaBox.innerHTML='<span class="no-media">图片加载失败</span>'}};modalMediaBox.appendChild(img)}else if(video){const embed=urlToEmbed(video);if(embed===null){modalMediaBox.innerHTML='<span class="no-media">此平台不支持内嵌，<a href="'+video+'" target="_blank" class="fallback-link">点击跳转</a></span>'}else{const iframe=document.createElement('iframe');iframe.width='100%';iframe.height='100%';iframe.src=embed;iframe.frameBorder='0';iframe.allow='accelerometer, autoplay, clipboard-write, encrypted-media, gyroscope, picture-in-picture';iframe.allowFullscreen=true;iframe.onerror=function(){modalMediaBox.innerHTML='<span class="no-media">无法嵌入，<a href="'+video+'" target="_blank" class="fallback-link">点击跳转</a></span>'};modalMediaBox.appendChild(iframe)}}else{modalMediaBox.innerHTML='<span class="no-media">暂无媒体</span>'}modalLinkList.innerHTML='';let links=itemData.links;if(typeof links==='string')try{links=JSON.parse(links)}catch{links=[]}if(!Array.isArray(links))links=[];if(links.length){links.forEach(link=>{const div=document.createElement('div');div.className='modal-link-item';if(link.link){div.innerHTML='<span class="link-icon">'+(link.icon||'🔗')+'</span> <a href="'+link.link+'" target="_blank">'+(link.text||'查看')+'</a>'}else{div.innerText=(link.icon||'')+' '+(link.text||'')}modalLinkList.appendChild(div)})}else{const empty=document.createElement('div');empty.style.color='#666';empty.style.fontSize='14px';empty.innerText='暂无链接';modalLinkList.appendChild(empty)}modalMask.classList.add('active')}function renderPersonCheckboxes(selected){personCheckboxContainer.innerHTML='';personCheckboxContainer.style.display='none'}function renderFormTagCheckboxes(selected){formTagCheckboxContainer.innerHTML='';tags.forEach(tag=>{const label=document.createElement('label');const cb=document.createElement('input');cb.type='checkbox';cb.value=tag.id;cb.checked=selected?selected.includes(tag.id):false;const dot=document.createElement('span');dot.style.display='inline-block';dot.style.width='10px';dot.style.height='10px';dot.style.borderRadius='50%';dot.style.background=tag.color;dot.style.marginRight='4px';label.appendChild(cb);label.appendChild(dot);label.appendChild(document.createTextNode(tag.name+(tag.isTravel?' 🚗':'')));formTagCheckboxContainer.appendChild(label)})}function getSelectedPersons(){return['Winter']}function setSelectedPersons(persons){}function openForm(itemData){if(!isEditMode)return;if(itemData){editModeId=itemData.id;formTitleEl.textContent='✏️ 编辑日程';formSubmitBtn.textContent='💾 更新';document.getElementById('formDate').value=itemData.date||'';document.getElementById('formTitleInput').value=itemData.title||'';document.getElementById('formLinks').value=itemData.links||'';document.getElementById('formVideo').value=itemData.videoEmbed||itemData.videoembed||'';document.getElementById('formThumbnail').value=itemData.thumbnail||'';renderFormTagCheckboxes(itemData.tags||[]);const statusRadios=document.querySelectorAll('input[name="formStatus"]');statusRadios.forEach(r=>r.checked=false);if(itemData.thumbnail||itemData.videoEmbed){document.querySelector('input[name="formStatus"][value="已补完"]').checked=true}else{document.querySelector('input[name="formStatus"][value="待补"]').checked=true}}else{editModeId=null;formTitleEl.textContent='📝 添加物料';formSubmitBtn.textContent='✅ 保存';document.getElementById('formDate').value='';document.getElementById('formTitleInput').value='';document.getElementById('formLinks').value='';document.getElementById('formVideo').value='';document.getElementById('formThumbnail').value='';renderFormTagCheckboxes([]);document.querySelector('input[name="formStatus"][value="已补完"]').checked=true}formModal.classList.add('active')}function closeForm(){formModal.classList.remove('active');editModeId=null}function renderTagManager(){}function renderMilestoneManager(){}modalClose.onclick=closeModal;modalMask.addEventListener('click',e=>{if(e.target===modalMask)closeModal()});modalDeleteBtn.onclick=function(){if(!isEditMode)return;if(currentDeleteId&&confirm('确定要删除此日程吗？')){deleteScheduleById(currentDeleteId);closeModal()}};modalEditBtn.onclick=function(){if(!isEditMode)return;if(currentDeleteId){const item=getScheduleById(currentDeleteId);if(item){closeModal();openForm(item)}}};formClose.onclick=closeForm;formCancel.onclick=closeForm;formModal.addEventListener('click',e=>{if(e.target===formModal)closeForm()});scheduleForm.onsubmit=async function(e){e.preventDefault();if(!isEditMode)return;const date=normalizeDateInput(document.getElementById('formDate').value.trim());const persons=['Winter'];const title=document.getElementById('formTitleInput').value.trim();const linksRaw=document.getElementById('formLinks').value.trim();const videoEmbed=document.getElementById('formVideo').value.trim();const thumbnail=document.getElementById('formThumbnail').value.trim();const selectedTags=Array.from(formTagCheckboxContainer.querySelectorAll('input:checked')).map(cb=>cb.value);if(!date||!isValidDate(date)){alert('请填写有效日期 (YYYY-MM-DD 或 6/8位数字)');return}if(!title){alert('请填写标题');return}let links='[]';if(linksRaw){if(linksRaw.startsWith('http')){links=JSON.stringify([{icon:'🔗',text:'查看',link:linksRaw}])}else{try{const parsed=JSON.parse(linksRaw);if(!Array.isArray(parsed))throw new Error();links=JSON.stringify(parsed)}catch{alert('链接格式错误，请输入URL或JSON数组');return}}}const shortName=title.length>20?title.slice(0,18)+'…':title;const formData={date,person:persons,tag:'',shortName,title,links,videoEmbed,thumbnail,tags:selectedTags};if(editModeId){await updateScheduleById(editModeId,formData)}else{await addSchedule(formData)}closeForm()};function initYMSelects(){const ymYear=document.getElementById('ymYearSelect');const ymMonth=document.getElementById('ymMonthSelect');const cy=new Date().getFullYear();ymYear.innerHTML='';for(let y=2020;y<=cy+2;y++){const opt=document.createElement('option');opt.value=y;opt.textContent=y+'年';ymYear.appendChild(opt)}ymMonth.innerHTML='';for(let m=1;m<=12;m++){const opt=document.createElement('option');opt.value=m;opt.textContent=m+'月';ymMonth.appendChild(opt)}ymYear.value=viewYear;ymMonth.value=viewMonth}document.getElementById('ymDisplay').onclick=function(){document.getElementById('ymYearSelect').value=viewYear;document.getElementById('ymMonthSelect').value=viewMonth;document.getElementById('ymPickerOverlay').classList.add('active')};document.getElementById('ymConfirm').onclick=function(){const y=parseInt(document.getElementById('ymYearSelect').value);const m=parseInt(document.getElementById('ymMonthSelect').value);if(y>=2020&&m>=1&&m<=12){viewYear=y;viewMonth=m;window.viewYear=y;window.viewMonth=m;syncJumpSelect();renderAll();document.getElementById('ymPickerOverlay').classList.remove('active')}};document.getElementById('ymCancel').onclick=()=>document.getElementById('ymPickerOverlay').classList.remove('active');document.getElementById('ymPickerOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)e.target.classList.remove('active')});document.getElementById('prevMonth').addEventListener('click',function(){if(currentView==='dashboard')switchToCalendar();viewMonth--;if(viewMonth<1){viewMonth=12;viewYear--}if(viewYear<2020)viewYear=2020;window.viewYear=viewYear;window.viewMonth=viewMonth;syncJumpSelect();renderAll()});document.getElementById('nextMonth').addEventListener('click',function(){if(currentView==='dashboard')switchToCalendar();viewMonth++;if(viewMonth>12){viewMonth=1;viewYear++}window.viewYear=viewYear;window.viewMonth=viewMonth;syncJumpSelect();renderAll()});document.getElementById('addBtn').onclick=function(){if(!isEditMode)return;renderPersonCheckboxes([]);openForm(null)};function initTogglePanels(){document.querySelectorAll('.toggle-btn').forEach(btn=>{btn.addEventListener('click',function(e){e.stopPropagation();const targetId=this.dataset.target;const panel=document.getElementById(targetId);if(panel){panel.classList.toggle('collapsed')}}})}function switchToCalendar(){window.viewYear=viewYear;window.viewMonth=viewMonth;currentView='calendar';document.getElementById('dashboard-view').classList.remove('active');document.getElementById('calendar-view').classList.add('active');document.getElementById('calendar-view').classList.add('view-fade-in');document.getElementById('goToDashboard').style.display='inline-block';document.querySelector('.person-filter-bar').style.display='flex';document.querySelector('.calendar-control').style.display='flex';renderAll();console.log('✅ 切换到日历视图',viewYear,viewMonth)}function switchToDashboard(){currentView='dashboard';document.getElementById('dashboard-view').classList.add('active');document.getElementById('dashboard-view').classList.add('view-fade-in');document.getElementById('calendar-view').classList.remove('active');document.getElementById('goToDashboard').style.display='none';document.querySelector('.person-filter-bar').style.display='none';document.querySelector('.calendar-control').style.display='none';renderDashboard();console.log('✅ 切换到仪表盘')}window.switchToCalendar=switchToCalendar;window.switchToDashboard=switchToDashboard;window.onload=async function(){loadTagsFromStorage();loadMilestonesFromStorage();initYMSelects();await loadScheduleData();syncJumpSelect();initTogglePanels();switchToDashboard();renderPersonCheckboxes([]);renderFormTagCheckboxes([]);document.getElementById('goToDashboard').addEventListener('click',function(){switchToDashboard()});document.getElementById('addBtn').onclick=function(){if(!isEditMode)return;renderPersonCheckboxes([]);openForm(null)};if(!isEditMode)console.log('🔒 只读模式。添加 ?key=20010101 开启编辑');else console.log('🔓 编辑模式已启用')};(function(){const ICONS=['❄️','✨','💠','❇️','✦','⬡'];const container=document.getElementById('ice-particle-container');function createIceBurst(x,y){const count=8+Math.floor(Math.random()*8);for(let i=0;i<count;i++){const el=document.createElement('div');el.className='ice-particle';el.textContent=ICONS[Math.floor(Math.random()*ICONS.length)];const angle=Math.random()*2*Math.PI;const distance=40+Math.random()*90;const tx=Math.cos(angle)*distance;const ty=Math.sin(angle)*distance-20;el.style.left=x+'px';el.style.top=y+'px';el.style.setProperty('--tx',tx+'px');el.style.setProperty('--ty',ty+'px');el.style.fontSize=(14+Math.random()*16)+'px';el.style.color=Math.random()>0.5?'#A8D8EA':'#F0F4F8';el.style.textShadow='0 0 12px rgba(168,216,234,0.3)';container.appendChild(el);setTimeout(()=>{if(el.parentNode)el.remove()},1400)}}document.addEventListener('click',function(e){const target=e.target.closest('.modal-mask, .modal-wrap, button, .btn-back, .cal-btn, .person-btn, .dashboard-item, .calendar-icon-block, .calendar-block');if(target)return;const rect=container.getBoundingClientRect();const x=e.clientX-rect.left;const y=e.clientY-rect.top;createIceBurst(x,y)});document.addEventListener('click',function(e){const item=e.target.closest('.dashboard-item');if(item){const rect=container.getBoundingClientRect();const x=e.clientX-rect.left;const y=e.clientY-rect.top;createIceBurst(x,y)}});console.log('❄️ 冰晶特效已加载')})();</script></body></html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>0101号空间站</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js">
+</script>
+<style>
+:root {
+    --bg-color: #0a0a14;
+    --text-color: #e9e9eb;
+    --border-color: rgba(168, 216, 234, 0.15);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(168, 216, 234, 0.20);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --ice-blue: #A8D8EA;
+    --moon-white: #F0F4F8;
+    --silver: #C0C8D4;
+    --purple: #B8A9D4;
+    --btn-active: #A8D8EA;
+    --danger: #b84863;
+    --modal-bg: rgba(0, 0, 0, 0.7);
+    --modal-card-bg: rgba(20, 20, 35, 0.9);
+    --bg-overlay: rgba(10, 10, 20, 0.7);
+}
+* {
+    box-sizing: border-box;
+}
+html {
+    min-height: 100vh;
+    background: #0a0a14;
+}
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: transparent;
+    font-family: 'Courier New', 'Microsoft Yahei', sans-serif;
+    line-height: 1.6;
+    font-size: 15px;
+    color: var(--text-color);
+    padding: 20px 30px 60px;
+    max-width: 1320px;
+    margin: 0 auto;
+    position: relative;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L14.5 9.5L22 10L16.5 15L18.5 22L12 18L5.5 22L7.5 15L2 10L9.5 9.5L12 2Z' fill='%23A8D8EA' opacity='0.85'/%3E%3C/svg%3E") 12 12, auto;
+}
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(168, 216, 234, 0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(184, 169, 212, 0.06) 0%, transparent 60%), radial-gradient(ellipse at 50% 100%, rgba(192, 200, 212, 0.04) 0%, transparent 40%), #0a0a14;
+    z-index: -2;
+}
+body::after {
+    content: '❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦';
+    position: fixed;
+    inset: 0;
+    font-size: 20px;
+    letter-spacing: 40px;
+    opacity: 0.06;
+    z-index: -1;
+    pointer-events: none;
+    animation: floatSnow 80s linear infinite;
+    white-space: nowrap;
+    overflow: hidden;
+    color: var(--ice-blue);
+}
+@keyframes floatSnow {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-100px) rotate(10deg);
+    }
+}
+h1 {
+    font-size: 42px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 6px;
+    color: var(--ice-blue);
+    text-shadow: 0 0 40px rgba(168, 216, 234, 0.15);
+    font-family: 'Courier New', monospace;
+    margin: 8px 0 2px;
+}
+.subtitle {
+    font-size: 16px;
+    opacity: 0.5;
+    text-align: center;
+    letter-spacing: 6px;
+    margin-bottom: 18px;
+    font-family: 'Courier New', monospace;
+    color: var(--moon-white);
+}
+.person-filter-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+.person-btn {
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(168, 216, 234, 0.15);
+    background: rgba(168, 216, 234, 0.08);
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    font-family: 'Courier New', monospace;
+}
+.person-btn:hover {
+    background: rgba(168, 216, 234, 0.2);
+    transform: translateY(-2px);
+}
+.person-btn.active {
+    background: rgba(168, 216, 234, 0.25);
+    border-color: var(--ice-blue);
+    box-shadow: 0 0 20px rgba(168, 216, 234, 0.15);
+}
+#dashboard-view {
+    display: none;
+    padding: 20px 0 30px;
+}
+#dashboard-view.active {
+    display: block;
+}
+#calendar-view {
+    display: none;
+    padding: 6px 0 20px;
+}
+#calendar-view.active {
+    display: block;
+}
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 30px 20px;
+    justify-items: center;
+}
+.dashboard-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    width: 140px;
+}
+.dashboard-item:hover {
+    transform: translateY(-6px) scale(1.03);
+}
+.dashboard-item .circular-progress {
+    position: relative;
+    width: 140px;
+    height: 140px;
+}
+.dashboard-item .circular-progress svg {
+    width: 140px;
+    height: 140px;
+    transform: rotate(-90deg);
+}
+.dashboard-item .circular-progress .bg-circle {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.06);
+    stroke-width: 6;
+}
+.dashboard-item .circular-progress .progress-circle {
+    fill: none;
+    stroke: #000;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.8s ease;
+    filter: drop-shadow(0 0 8px rgba(168, 216, 234, 0.15));
+}
+.dashboard-item .circular-progress .center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ice-blue);
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 20px rgba(168, 216, 234, 0.2);
+    text-align: center;
+    line-height: 1.2;
+    width: 80%;
+}
+.dashboard-item .item-info {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 13px;
+    opacity: 0.5;
+    font-family: 'Courier New', monospace;
+    color: var(--moon-white);
+}
+.dashboard-item .item-info .badge {
+    display: inline-block;
+    padding: 1px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(102, 187, 106, 0.15);
+    color: #66BB6A;
+    border: 1px solid rgba(102, 187, 106, 0.1);
+}
+.btn-back {
+    background: rgba(168, 216, 234, 0.08);
+    border: 1px solid rgba(168, 216, 234, 0.12);
+    color: var(--ice-blue);
+    padding: 5px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Courier New', monospace;
+    transition: all 0.25s ease;
+}
+.btn-back:hover {
+    background: rgba(168, 216, 234, 0.2);
+    transform: scale(1.02);
+}
+.control-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.calendar-control {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.cal-btn {
+    padding: 6px 14px;
+    font-size: 15px;
+    border: 1px solid rgba(168, 216, 234, 0.15);
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--text-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Courier New', monospace;
+}
+.cal-btn:hover {
+    background: rgba(168, 216, 234, 0.1);
+    border-color: var(--ice-blue);
+}
+.current-ym {
+    font-size: 18px;
+    font-weight: 700;
+    min-width: 130px;
+    text-align: center;
+    padding: 4px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid rgba(168, 216, 234, 0.1);
+    color: var(--ice-blue);
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 10px rgba(168, 216, 234, 0.1);
+}
+.current-ym:hover {
+    background: rgba(168, 216, 234, 0.05);
+}
+.add-btn {
+    background: rgba(168, 216, 234, 0.12);
+    border: 1px solid rgba(168, 216, 234, 0.15);
+    color: var(--ice-blue);
+    padding: 6px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Courier New', monospace;
+    transition: all 0.3s;
+}
+.add-btn:hover {
+    background: rgba(168, 216, 234, 0.25);
+}
+.search-area {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+#searchDateInput {
+    padding: 6px 12px;
+    font-size: 13px;
+    border: 1px solid rgba(168, 216, 234, 0.15);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    min-width: 150px;
+    font-family: 'Courier New', monospace;
+}
+#searchDateInput::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+#searchDateInput:focus {
+    border-color: var(--ice-blue);
+    outline: none;
+}
+#importBtn,
+#importExcelBtn {
+    background: rgba(168, 216, 234, 0.08);
+    border: 1px solid rgba(168, 216, 234, 0.12);
+    color: var(--ice-blue);
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Courier New', monospace;
+    transition: all 0.3s;
+}
+#importBtn:hover,
+#importExcelBtn:hover {
+    background: rgba(168, 216, 234, 0.2);
+}
+.calendar-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 3px;
+    table-layout: fixed;
+}
+.calendar-table th {
+    border: 1px solid rgba(168, 216, 234, 0.08);
+    padding: 6px 4px;
+    background: rgba(168, 216, 234, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    text-align: center;
+    font-weight: 400;
+    height: 34px;
+    color: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+.calendar-table td {
+    border: 1px solid rgba(168, 216, 234, 0.08);
+    vertical-align: top;
+    height: 90px;
+    padding: 4px 3px 2px;
+    transition: background 0.2s;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 8px;
+    position: relative;
+    min-width: 50px;
+}
+.calendar-table td:hover {
+    background: rgba(168, 216, 234, 0.06);
+}
+.cell-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    margin-bottom: 2px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.2;
+    font-family: 'Courier New', monospace;
+}
+.cell-header .date-num {
+    flex: 1;
+}
+.cell-header .milestone-icon {
+    font-size: 13px;
+    opacity: 0.5;
+}
+.calendar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-height: 70px;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.calendar-content::-webkit-scrollbar {
+    display: none;
+}
+.calendar-icon-block {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+    min-height: 20px;
+    background: rgba(168, 216, 234, 0.05);
+    border: 1px solid rgba(168, 216, 234, 0.05);
+}
+.calendar-icon-block:hover {
+    background: rgba(168, 216, 234, 0.12);
+    transform: scale(1.05);
+}
+.calendar-icon-block.is-travel {
+    border-left: 2px solid var(--ice-blue);
+}
+.cell-badge {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    background: rgba(168, 216, 234, 0.15);
+    color: var(--ice-blue);
+    font-size: 8px;
+    font-weight: 700;
+    padding: 0 4px;
+    border-radius: 8px;
+    line-height: 13px;
+    min-width: 14px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    border: 1px solid rgba(168, 216, 234, 0.06);
+}
+.side-panel {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(168, 216, 234, 0.10);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    width: 160px;
+}
+.side-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ice-blue);
+    border-bottom: 1px solid rgba(168, 216, 234, 0.05);
+    font-family: 'Courier New', monospace;
+}
+.side-panel-header .toggle-btn {
+    background: none;
+    border: none;
+    color: rgba(168, 216, 234, 0.4);
+    cursor: pointer;
+    font-size: 14px;
+    transition: transform 0.3s;
+}
+.side-panel-header .toggle-btn:hover {
+    color: var(--ice-blue);
+}
+.side-panel.collapsed .side-panel-body {
+    display: none;
+}
+.side-panel.collapsed .toggle-btn {
+    transform: rotate(-90deg);
+}
+.side-panel-body {
+    padding: 8px 10px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+.tag-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    transition: background 0.2s;
+    font-family: 'Courier New', monospace;
+}
+.tag-legend-item:hover {
+    background: rgba(168, 216, 234, 0.04);
+}
+.tag-legend-item .legend-icon {
+    font-size: 14px;
+}
+.tag-legend-item .legend-name {
+    flex: 1;
+    word-break: break-word;
+}
+.tag-legend-item .legend-count {
+    font-size: 10px;
+    opacity: 0.3;
+}
+.modal-mask {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 20px;
+}
+.modal-mask.active {
+    display: flex;
+}
+.modal-wrap {
+    display: flex;
+    width: min(1000px, 100%);
+    background: rgba(20, 20, 35, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(168, 216, 234, 0.10);
+    max-height: 90vh;
+}
+.modal-img-box {
+    width: 55%;
+    flex-shrink: 0;
+    aspect-ratio: 16/9;
+    background: #0a0a12;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-img-box img,
+.modal-img-box iframe,
+.modal-img-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border: none;
+}
+.modal-img-box .no-media {
+    color: #888;
+    font-size: 14px;
+    opacity: 0.6;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+}
+.modal-info {
+    width: 48%;
+    padding: 24px;
+    overflow-y: auto;
+    max-height: 85vh;
+}
+.modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+}
+.modal-link-item {
+    margin: 6px 0;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+.modal-link-item a {
+    color: var(--ice-blue);
+    text-decoration: none;
+}
+.modal-link-item a:hover {
+    color: var(--purple);
+}
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: rgba(100, 100, 100, 0.2);
+    color: #fff;
+    font-size: 15px;
+    transition: background 0.2s;
+}
+.modal-close:hover {
+    background: rgba(100, 100, 100, 0.4);
+}
+.modal-delete-btn {
+    padding: 6px 16px;
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Courier New', monospace;
+}
+.modal-delete-btn:hover {
+    opacity: 0.85;
+}
+.modal-edit-btn {
+    padding: 6px 16px;
+    background: var(--ice-blue);
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-right: 8px;
+    font-family: 'Courier New', monospace;
+}
+.modal-edit-btn:hover {
+    opacity: 0.85;
+}
+.modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+.readonly .modal-edit-btn,
+.readonly .modal-delete-btn,
+.readonly #addBtn,
+.readonly #importBtn,
+.readonly .manage-btn {
+    display: none !important;
+}
+.form-modal .modal-wrap {
+    max-width: 520px;
+    flex-direction: column;
+    padding: 24px;
+}
+.form-modal .modal-info {
+    width: 100%;
+    padding: 0;
+}
+.form-modal .modal-img-box {
+    display: none;
+}
+.form-title {
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--ice-blue);
+    font-family: 'Courier New', monospace;
+}
+.form-group {
+    margin-bottom: 14px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 3px;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Courier New', monospace;
+}
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid rgba(168, 216, 234, 0.1);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Courier New', monospace;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--ice-blue);
+    outline: none;
+}
+.form-group .hint {
+    font-size: 11px;
+    opacity: 0.3;
+    margin-top: 1px;
+    font-family: 'Courier New', monospace;
+}
+.person-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 3px;
+}
+.person-checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 400;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Courier New', monospace;
+}
+.person-checkbox-group label:hover {
+    background: rgba(168, 216, 234, 0.05);
+}
+.person-checkbox-group input[type=checkbox] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--ice-blue);
+}
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    justify-content: flex-end;
+}
+.form-actions button {
+    padding: 6px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Courier New', monospace;
+}
+.btn-cancel {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+.btn-submit {
+    background: var(--ice-blue);
+    color: #000;
+}
+.btn-submit:hover {
+    opacity: 0.85;
+}
+.ym-picker-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+.ym-picker-overlay.active {
+    display: flex;
+}
+.ym-picker-box {
+    background: rgba(20, 20, 35, 0.9);
+    padding: 24px 32px 30px;
+    border-radius: 16px;
+    border: 1px solid rgba(168, 216, 234, 0.1);
+    min-width: 280px;
+    text-align: center;
+}
+.ym-picker-box h3 {
+    margin: 0 0 14px;
+    color: var(--ice-blue);
+    font-family: 'Courier New', monospace;
+}
+.ym-picker-row {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0 16px;
+    flex-wrap: wrap;
+}
+.ym-picker-row select {
+    padding: 6px 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid rgba(168, 216, 234, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    cursor: pointer;
+    min-width: 80px;
+    font-family: 'Courier New', monospace;
+}
+.ym-picker-row select:focus {
+    border-color: var(--ice-blue);
+    outline: none;
+}
+.ym-picker-actions button {
+    padding: 6px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+}
+.ym-btn-confirm {
+    background: var(--ice-blue);
+    color: #000;
+}
+.ym-btn-cancel {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.ym-btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+#ice-particle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+.ice-particle {
+    position: absolute;
+    pointer-events: none;
+    font-size: 16px;
+    animation: iceBurst 1.2s ease-out forwards;
+    user-select: none;
+    opacity: 0.9;
+}
+@keyframes iceBurst {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+.import-modal .modal-wrap {
+    max-width: 780px;
+    flex-direction: column;
+    padding: 30px;
+}
+.import-modal .modal-info {
+    width: 100%;
+    padding: 0;
+}
+.import-modal .modal-img-box {
+    display: none;
+}
+#importDataText {
+    min-height: 160px;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    border: 1px solid rgba(168, 216, 234, 0.1);
+    border-radius: 6px;
+    padding: 8px 10px;
+    width: 100%;
+    resize: vertical;
+}
+#importDataText:focus {
+    border-color: var(--ice-blue);
+    outline: none;
+}
+.import-preview-table-wrap {
+    max-height: 240px;
+    overflow-y: auto;
+    border: 1px solid rgba(168, 216, 234, 0.08);
+    border-radius: 6px;
+    margin-top: 6px;
+}
+.import-preview-table-wrap table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.import-preview-table-wrap th {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 8px;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(168, 216, 234, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Courier New', monospace;
+}
+.import-preview-table-wrap td {
+    padding: 4px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    vertical-align: middle;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+}
+.import-stats-bar {
+    display: flex;
+    gap: 16px;
+    margin: 6px 0 10px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    font-family: 'Courier New', monospace;
+    color: rgba(255, 255, 255, 0.5);
+}
+.import-stats-bar .num {
+    font-weight: 700;
+    font-size: 15px;
+}
+.import-stats-bar .num.green {
+    color: #66BB6A;
+}
+.import-stats-bar .num.red {
+    color: #f87171;
+}
+.import-toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.import-toolbar .hint-text {
+    font-size: 12px;
+    opacity: 0.4;
+    margin-right: auto;
+    font-family: 'Courier New', monospace;
+}
+.import-toolbar button {
+    padding: 4px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Courier New', monospace;
+}
+.import-toolbar .btn-outline {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+.import-toolbar .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+.import-toolbar .btn-primary {
+    background: rgba(168, 216, 234, 0.15);
+    color: var(--ice-blue);
+    border: 1px solid rgba(168, 216, 234, 0.1);
+}
+.import-toolbar .btn-primary:hover {
+    background: rgba(168, 216, 234, 0.25);
+}
+#importFileInput {
+    display: none;
+}
+.import-progress {
+    margin-top: 8px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 13px;
+    display: none;
+    font-family: 'Courier New', monospace;
+}
+.import-progress.active {
+    display: block;
+}
+.import-progress .progress-bar {
+    height: 4px;
+    background: rgba(168, 216, 234, 0.1);
+    border-radius: 2px;
+    margin-top: 4px;
+    overflow: hidden;
+}
+.import-progress .progress-bar .fill {
+    height: 100%;
+    background: var(--ice-blue);
+    width: 0;
+    transition: width 0.3s;
+}
+.import-result-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: 10px;
+    background: rgba(20, 20, 35, 0.9);
+    border: 1px solid rgba(168, 216, 234, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    font-size: 14px;
+    text-align: center;
+    max-width: 90%;
+    backdrop-filter: blur(4px);
+    display: none;
+    font-family: 'Courier New', monospace;
+    color: #fff;
+}
+.import-result-toast.show {
+    display: block;
+    animation: fadeUp 0.3s ease;
+}
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+.import-result-toast .toast-close {
+    margin-left: 12px;
+    cursor: pointer;
+    opacity: 0.6;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+}
+.import-result-toast.success {
+    border-color: #66BB6A;
+}
+.import-result-toast.error {
+    border-color: #f87171;
+}
+@media (max-width:800px) {
+    .modal-wrap {
+        flex-direction: column
+    }
+    .modal-img-box,
+    .modal-info {
+        width: 100%
+    }
+    .modal-img-box {
+        max-height: 280px
+    }
+    h1 {
+        font-size: 28px
+    }
+    .dashboard-grid {
+        gap: 20px
+    }
+    .dashboard-item {
+        width: 110px
+    }
+    .dashboard-item .circular-progress {
+        width: 110px;
+        height: 110px
+    }
+    .dashboard-item .circular-progress svg {
+        width: 110px;
+        height: 110px
+    }
+    .side-panel {
+        width: 120px
+    }
+}
+@media (max-width:600px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 16px
+    }
+    .dashboard-item {
+        width: 90px
+    }
+    .dashboard-item .circular-progress {
+        width: 90px;
+        height: 90px
+    }
+    .dashboard-item .circular-progress svg {
+        width: 90px;
+        height: 90px
+    }
+    .dashboard-item .circular-progress .center-text {
+        font-size: 14px
+    }
+    .side-panel {
+        width: 90px
+    }
+    .calendar-table td {
+        height: 70px
+    }
+}
+@media (max-width:480px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 12px
+    }
+    .dashboard-item {
+        width: 70px
+    }
+    .dashboard-item .circular-progress {
+        width: 70px;
+        height: 70px
+    }
+    .dashboard-item .circular-progress svg {
+        width: 70px;
+        height: 70px
+    }
+    .dashboard-item .circular-progress .center-text {
+        font-size: 11px
+    }
+    .side-panel {
+        width: 70px
+    }
+    .side-panel-header {
+        font-size: 10px;
+        padding: 4px 6px
+    }
+    .tag-legend-item {
+        font-size: 10px
+    }
+    .calendar-table td {
+        height: 55px
+    }
+}
+</style>
+</head>
+<body>
+<div id="ice-particle-container"></div>
+<h1>❄️ 0101号空间站</h1>
+<div class="subtitle">幸福的终点是旼炡和你</div>
+<div class="person-filter-bar" id="personBar"></div>
+<div style="display:flex;gap:12px;justify-content:center;margin:6px 0 16px;flex-wrap:wrap;">
+    <button class="btn-back" id="goToDashboard" style="display:none;">← 返回仪表盘</button>
+</div>
+<div id="dashboard-view" class="active view-fade-in">
+    <div class="dashboard-grid" id="dashboardGrid"></div>
+</div>
+<div id="calendar-view">
+    <div class="control-group">
+        <div class="calendar-control">
+            <button class="cal-btn" id="prevMonth">◀</button>
+            <span class="current-ym" id="ymDisplay">2026年7月</span>
+            <button class="cal-btn" id="nextMonth">▶</button>
+            <button id="addBtn" class="add-btn">➕ 添加物料</button>
+        </div>
+        <div class="search-area">
+            <input id="searchDateInput" placeholder="搜索日期 如 2026-07-20" />
+            <button id="importBtn">📥 导入</button>
+            <button id="importExcelBtn">📊 Excel</button>
+        </div>
+    </div>
+    <div style="display:flex; gap:16px; align-items:flex-start; margin-top:6px;">
+        <div style="flex:1; min-width:0; overflow-x:auto;" id="calendar-area"></div>
+        <div class="side-panel" id="tagLegendPanel">
+            <div class="side-panel-header">
+                <span>🏷️ 行程</span>
+                <button class="toggle-btn" data-target="tagLegendPanel">▾</button>
+            </div>
+            <div class="side-panel-body" id="tagLegendBody"></div>
+        </div>
+    </div>
+</div>
+<div class="modal-mask" id="modalMask"><div class="modal-wrap"><div class="modal-img-box" id="modalMediaBox"><span class="no-media">暂无媒体</span></div><div class="modal-info"><div id="modalPersonTags" class="modal-person-tags" style="display:none;"></div><div class="modal-title" id="modalTitle"></div><div id="modalLinkList"></div><div style="margin:10px 0;display:flex;flex-wrap:wrap;gap:6px;" id="modalTagDisplay"></div><div class="modal-actions"><button class="modal-edit-btn" id="modalEditBtn">✏️ 编辑</button><button class="modal-delete-btn" id="modalDeleteBtn">🗑️ 删除</button></div></div><button class="modal-close" id="modalClose">×</button></div></div>
+<div class="modal-mask form-modal" id="formModal"><div class="modal-wrap"><div class="modal-info"><div class="form-title" id="formTitle">📝 添加物料</div><form id="scheduleForm" autocomplete="off">
+    <div class="form-row"><div class="form-group"><label>日期 <span class="required">*</span></label><input type="text" id="formDate" placeholder="YYYY-MM-DD 或 240529" required></div><div class="form-group"><label>状态</label><div style="display:flex;gap:16px;padding-top:6px;"><label><input type="radio" name="formStatus" value="已补完" checked> ✅ 已补完</label><label><input type="radio" name="formStatus" value="待补"> ⏳ 待补</label></div></div></div>
+    <div class="form-group" style="display:none;"><label>人物</label><div id="personCheckboxContainer" class="person-checkbox-group"></div></div>
+    <div class="form-group"><label>标题 <span class="required">*</span></label><input type="text" id="formTitleInput" placeholder="如：音乐银行 横版直拍" required></div>
+    <div class="form-group"><label>行程分类（可多选）</label><div id="formTagCheckboxContainer" class="person-checkbox-group" style="gap:6px;"></div></div>
+    <div class="form-group"><label>链接</label><input type="text" id="formLinks" placeholder="https://youtube.com/xxx 或 网盘链接"><div class="hint">支持图片/视频链接</div></div>
+    <div class="form-row"><div class="form-group"><label>缩略图</label><input type="text" id="formThumbnail" placeholder="图片URL"></div><div class="form-group"><label>视频嵌入</label><input type="text" id="formVideo" placeholder="YouTube / B站 链接"></div></div>
+    <div class="form-actions"><button type="button" class="btn-cancel" id="formCancel">取消</button><button type="submit" class="btn-submit" id="formSubmitBtn">✅ 保存</button></div>
+</form></div><button class="modal-close" id="formClose">×</button></div></div>
+<div class="ym-picker-overlay" id="ymPickerOverlay"><div class="ym-picker-box"><h3>📅 选择年月</h3><div class="ym-picker-row"><select id="ymYearSelect"></select><span>年</span><select id="ymMonthSelect"></select><span>月</span></div><div class="ym-picker-actions"><button class="ym-btn-confirm" id="ymConfirm">确认</button><button class="ym-btn-cancel" id="ymCancel">取消</button></div></div></div>
+<div class="modal-mask import-modal" id="importModal"><div class="modal-wrap"><div class="modal-info"><div class="form-title">📥 批量导入日程</div><div style="margin-bottom:12px;color:#aaa;font-size:14px;line-height:1.7;">粘贴 JSON 数组数据，或上传 JSON 文件。<button id="loadSampleBtn" style="background:transparent;border:1px solid #555;color:#aaa;border-radius:4px;padding:2px 12px;cursor:pointer;font-size:13px;margin-left:8px;">📄 加载示例</button></div><div class="form-group"><label>JSON 数据</label><textarea id="importDataText" placeholder='[{"date":"2026-07-20","person":["Winter"],"title":"Winter 新物料"}]'></textarea></div><div class="import-toolbar"><span class="hint-text">📌 支持数组格式</span><button class="btn-outline" id="importFileBtn">📁 上传 JSON</button><button class="btn-primary" id="previewImportBtn">🔍 预览</button><input type="file" id="importFileInput" accept=".json,.txt"></div><div id="importPreviewArea" style="display:none;"><div class="import-stats-bar"><span class="stat-item">📊 共 <span class="num" id="importTotalCount">0</span> 条</span><span class="stat-item">✅ 有效 <span class="num green" id="importValidCount">0</span> 条</span><span class="stat-item">❌ 无效 <span class="num red" id="importInvalidCount">0</span> 条</span></div><div class="import-preview-table-wrap" id="importPreviewTableWrap"><table><thead><tr><th>#</th><th>日期</th><th>人物</th><th>标题</th><th>状态</th></tr></thead><tbody id="importPreviewBody"></tbody></table></div><div class="import-progress" id="importProgress"><span id="importProgressText">正在导入...</span><div class="progress-bar"><div class="fill" id="importProgressFill"></div></div></div><div class="form-actions"><button class="btn-cancel" id="importCancel">取消</button><button class="btn-submit" id="importConfirmBtn" style="background:#66BB6A;">📥 确认导入</button></div></div></div><button class="modal-close" id="importClose">×</button></div></div>
+<div class="modal-mask" id="excelImportModal"><div class="modal-wrap" style="max-width:700px;flex-direction:column;padding:30px;"><div class="modal-info" style="width:100%;padding:0;"><div class="form-title">📊 Excel 导入日程</div><div style="margin-bottom:12px;color:#aaa;font-size:14px;line-height:1.7;">支持 .xlsx / .xls 格式。表头需包含：<code>date</code>、<code>person</code>、<code>title</code>。<a id="excelTemplateLink" href="#" style="color:#A8D8EA;text-decoration:underline;cursor:pointer;">📄 下载模板</a></div><div class="form-group"><label>选择 Excel 文件</label><input type="file" id="excelFileInput" accept=".xlsx,.xls" style="width:100%;padding:8px 12px;border:1px solid var(--border-color);border-radius:6px;background:rgba(0,0,0,.3);color:var(--text-color);font-size:14px;cursor:pointer;"></div><div id="excelPreviewArea" style="display:none;"><div class="import-stats-bar"><span class="stat-item">📊 共 <span class="num" id="excelTotalCount">0</span> 条</span><span class="stat-item">✅ 有效 <span class="num green" id="excelValidCount">0</span> 条</span><span class="stat-item">❌ 无效 <span class="num red" id="excelInvalidCount">0</span> 条</span></div><div class="import-preview-table-wrap" id="excelPreviewTableWrap"><table><thead><tr><th>#</th><th>日期</th><th>人物</th><th>标题</th><th>状态</th></tr></thead><tbody id="excelPreviewBody"></tbody></table></div><div class="form-actions"><button class="btn-cancel" id="excelImportCancel">取消</button><button class="btn-submit" id="excelConfirmBtn" style="background:#66BB6A;">📥 确认导入</button></div></div></div><button class="modal-close" id="excelImportClose">×</button></div></div>
+<div class="import-result-toast" id="importResultToast"><span id="importResultMsg"></span><button class="toast-close" id="importToastClose">×</button></div>
+<script>
+// ===== 压缩合并后的完整JS =====
+// config
+const API_BASE = 'https://time-capsule-backend-1-3mzs.onrender.com/api';
+const urlParams = new URLSearchParams(location.search);
+const isEditMode = urlParams.get('edit') === 'true' || urlParams.get('key') === '20010101';
+if (!isEditMode) document.body.classList.add('readonly');
+const weekCN = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+const personList = ['Winter', 'aespa', 'Karina', 'Giselle', 'NingNing'];
+const displayPersonList = ['Winter', 'aespa'];
+const personColorRule = { "Winter": "#4FC3F7", "aespa": "#66BB6A", "Karina": "#FF6B9D", "Giselle": "#B47EDC",
+    "NingNing": "#F9A95A" };
+const personDisplayMap = { "Winter": "⭐Winter", "aespa": "aespa", "Karina": "💙Karina", "Giselle": "🌙Giselle",
+    "NingNing": "🦋NingNing" };
+const MULTI_PERSON_COLOR = "#F9A95A";
+const STORAGE_TAGS = 'winter_tags';
+const STORAGE_MILESTONES = 'winter_milestones';
+const REGRESSION_LIST = [{ name: 'LEMON', year: 2026, month: 5 }, { name: 'WHIPLASH', year: 2024, month: 11 },
+{ name: 'DRAMA', year: 2024, month: 5 }, { name: 'SPICY', year: 2024, month: 2 }, { name: 'GIRLS', year: 2023,
+    month: 12 }, { name: 'SAVAGE', year: 2023, month: 10 }, { name: 'NEXT LEVEL', year: 2023, month: 7 }];
+let scheduleList = [];
+let tags = [];
+let milestones = [];
+let viewYear = new Date().getFullYear();
+let viewMonth = new Date().getMonth() + 1;
+let currentFilterPerson = "all";
+let searchDateKeyword = "";
+let currentView = 'dashboard';
+let editModeId = null;
+let currentDeleteId = null;
+
+function getPersonColor(p) { return personColorRule[p] || '#4FC3F7'; }
+
+function getTextColorForPerson(p) { return ['Winter', 'aespa', 'Karina', 'NingNing'].includes(p) ? '#000' : '#fff'; }
+
+function extractPersonKey(raw) { if (!raw || typeof raw !== 'string') return null; for (let name of personList) { if (raw
+            .includes(name)) return name; } return null; }
+
+function ensurePersonArray(item) { if (!item) return []; let persons = item.person; if (typeof persons === 'string') { try {
+            let parsed = JSON.parse(persons);
+            persons = Array.isArray(parsed) ? parsed : (typeof parsed === 'object' ? Object.values(parsed) : [parsed]);
+        } catch { persons = persons.includes(',') ? persons.split(',').map(s => s.trim()) : [persons.trim()]; } } else if (!
+        Array.isArray(persons)) persons = [];
+    persons = persons.map(p => { if (typeof p === 'string') { const key = extractPersonKey(p); return key || p; } return p; })
+        .filter(p => p && typeof p === 'string' && p.trim() !== '').map(p => p.trim());
+    persons = persons.map(p => personList.includes(p) ? p : (extractPersonKey(p) || p));
+    item.person = persons; return persons; }
+
+function ensureExtraFields(item) { if (!item.tags) item.tags = []; return item; }
+
+function hexToRgba(hex, alpha) { let h = hex.trim(); if (h.startsWith('#')) h = h.slice(1); if (h.length === 3) { h = h[0] +
+            h[0] + h[1] + h[1] + h[2] + h[2]; } const r = parseInt(h.slice(0, 2), 16); const g = parseInt(h.slice(2, 4),
+        16); const b = parseInt(h.slice(4, 6), 16); return `rgba(${r},${g},${b},${alpha})`; }
+
+function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+function isValidDate(dateStr) { const parts = dateStr.split('-'); if (parts.length !== 3) return false; const y = parseInt(
+        parts[0]), m = parseInt(parts[1]) - 1, d = parseInt(parts[2]); const dt = new Date(y, m, d); return dt
+        .getFullYear() === y && dt.getMonth() === m && dt.getDate() === d; }
+
+function normalizeDateInput(raw) { const s = raw.trim(); if (!s) return s; if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s; if (/
+        ^\d{6}$/.test(s)) { const yy = s.slice(0, 2), mm = s.slice(2, 4), dd = s.slice(4, 6); if (parseInt(mm) >= 1 &&
+            parseInt(mm) <= 12 && parseInt(dd) >= 1 && parseInt(dd) <= 31) return `20${yy}-${mm}-${dd}`; return s; } if (/^
+        \d{8}$/.test(s)) { const yyyy = s.slice(0, 4), mm = s.slice(4, 6), dd = s.slice(6, 8); if (parseInt(mm) >= 1 &&
+            parseInt(mm) <= 12 && parseInt(dd) >= 1 && parseInt(dd) <= 31) return `${yyyy}-${mm}-${dd}`; return s; } return s; }
+
+function urlToEmbed(rawUrl) { if (!rawUrl) return ""; const url = rawUrl.trim(); if (url.includes(
+            'player.bilibili.com/player.html') || url.includes('youtube.com/embed/')) return url; const bv = url.match(
+        /BV\w{10}/); if (bv) { const page = (url.match(/[?&]p=(\d+)/) || [])[1] || 1; return (
+            `https://player.bilibili.com/player.html?bvid=${bv[0]}&page=${page}&danmaku=0`); } const yt = url.match(
+        /youtu\.be\/([A-Za-z0-9_-]{11})/) || url.match(/[?&]v=([A-Za-z0-9_-]{11})/); if (yt) return (
+            `https://www.youtube.com/embed/${yt[1]}`); return null; }
+
+function showToast(msg, type) { const toast = document.getElementById('importResultToast'); const msgEl = document
+        .getElementById('importResultMsg');
+    msgEl.textContent = msg;
+    toast.className = 'import-result-toast show ' + type;
+    setTimeout(() => toast.classList.remove('show'), 6000); }
+
+function getProxiedImageUrl(url) { if (!url) return ''; const needsProxy = url.includes('instagram.com') || url.includes(
+        'cdninstagram.com') || url.includes('twitter.com') || url.includes('twimg.com') || url.includes('x.com') || url
+        .includes('sinaimg.cn') || url.includes('pic.sinaimg.cn') || url.includes('doubanio.com') || url.includes(
+        'douban.com'); if (needsProxy) { return `/api/image-proxy?url=${encodeURIComponent(url)}`; } return url; }
+
+function loadTagsFromStorage() { const stored = localStorage.getItem(STORAGE_TAGS); if (stored) { try { tags = JSON.parse(
+            stored); } catch { tags = []; } } else { tags = [{ id: 'tag1', name: '演唱会', color: '#ff6b9d', isTravel: true },
+        { id: 'tag2', name: '飞行', color: '#ffaa00', isTravel: true }, { id: 'tag3', name: '直播', color: '#4FC3F7',
+            isTravel: false }, { id: 'tag4', name: '画报', color: '#B47EDC', isTravel: false }];
+        saveTagsToStorage(); } tags = tags.map(t => ({ ...t, isTravel: t.isTravel || false }));
+    saveTagsToStorage(); }
+
+function saveTagsToStorage() { localStorage.setItem(STORAGE_TAGS, JSON.stringify(tags)); }
+
+function loadMilestonesFromStorage() { const stored = localStorage.getItem(STORAGE_MILESTONES); if (stored) { try {
+            milestones = JSON.parse(stored); } catch { milestones = []; } } else { milestones = [{ id: 'ms1',
+            date: '2020-11-17', title: '出道日', icon: '🌟' }, { id: 'ms2', date: '2001-01-01', title: '生日', icon: '🎂' }];
+        saveMilestonesToStorage(); } }
+
+function saveMilestonesToStorage() { localStorage.setItem(STORAGE_MILESTONES, JSON.stringify(milestones)); }
+
+async function loadScheduleData() { try { const resp = await fetch(`${API_BASE}/data`); if (!resp.ok) throw new Error(
+            '加载失败'); let data = await resp.json();
+        data = data.map(item => { ensurePersonArray(item);
+            ensureExtraFields(item); return item; });
+        scheduleList = data;
+        renderAll();
+        return scheduleList; } catch (err) { console.error('加载数据异常：', err);
+        scheduleList = [];
+        renderAll(); return []; } }
+
+async function addSchedule(formData) { if (!isEditMode) return null; try { const resp = await fetch(`${API_BASE}/data`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) }); if (!resp
+            .ok) throw new Error('添加失败'); const newItem = await resp.json();
+        ensurePersonArray(newItem);
+        ensureExtraFields(newItem);
+        scheduleList.push(newItem);
+        renderAll(); return newItem; } catch (err) { console.error('添加失败：', err);
+        alert('添加失败，请检查后端是否启动'); return null; } }
+
+async function updateScheduleById(id, formData) { if (!isEditMode) return null; try { const resp = await fetch(
+            `${API_BASE}/data/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData) }); if (!resp.ok) throw new Error('更新失败'); const updated = await resp.json();
+        ensurePersonArray(updated);
+        ensureExtraFields(updated);
+        const idx = scheduleList.findIndex(item => item.id === id); if (idx !== -1) scheduleList[idx] = updated;
+        renderAll(); return updated; } catch (err) { console.error('更新失败：', err);
+        alert('更新失败'); return null; } }
+
+async function deleteScheduleById(id) { if (!isEditMode) return; try { const resp = await fetch(`${API_BASE}/data/${id}`,
+            { method: 'DELETE' }); if (!resp.ok) throw new Error('删除失败');
+        scheduleList = scheduleList.filter(item => item.id !== id);
+        renderAll(); } catch (err) { console.error('删除失败：', err);
+        alert('删除失败'); } }
+
+function getScheduleById(id) { return scheduleList.find(item => item.id === id); }
+const TAG_ICON_MAP = { '打歌舞台': '🎤', '演唱会/拼盘': '🎵', '综艺录制': '📺', '颁奖礼/红毯': '🏆', '机场出境/入境': '✈️',
+    '品牌活动': '💄', '签售会（线上/线下）': '📸', '杂志/画报拍摄': '🎬', '直播/VLOG': '📱', '电台录制': '🎙️', '生日/周年活动': '🎂',
+    '粉丝见面会': '🤝', '舞蹈练习室/cover': '🩰', '官咖/社交媒体更新': '📝', '特别舞台/节日特辑': '🎄', '周边/快闪店活动': '🎁' };
+
+function getTagIcon(tagName) { return TAG_ICON_MAP[tagName] || '📌'; }
+
+function renderTagLegend() { const container = document.getElementById('tagLegendBody'); if (!container) return;
+    container.innerHTML = ''; const tagCounts = {};
+    scheduleList.forEach(item => { (item.tags || []).forEach(tagId => { const tag = tags.find(t => t.id === tagId); if (
+                tag) { tagCounts[tag.name] = (tagCounts[tag.name] || 0) + 1; } }); });
+    const sortedTags = [...tags].sort((a, b) => (tagCounts[b.name] || 0) - (tagCounts[a.name] || 0));
+    sortedTags.forEach(tag => { const div = document.createElement('div');
+        div.className = 'tag-legend-item'; const icon = getTagIcon(tag.name); const count = tagCounts[tag.name] || 0;
+        div.innerHTML =
+            `<span class="legend-icon">${icon}</span><span class="legend-name">${tag.name}</span><span class="legend-count">${count}</span>`;
+        container.appendChild(div); });
+    if (sortedTags.length === 0) { container.innerHTML =
+            '<div style="text-align:center;opacity:0.2;font-size:11px;padding:12px 0;font-family:Courier New,monospace;">暂无行程</div>'; } }
+
+function renderPersonButtons() { const bar = document.getElementById('personBar'); if (!bar) return;
+    bar.innerHTML = ''; const counts = {};
+    personList.forEach(p => counts[p] = 0); let multiCount = 0;
+    scheduleList.forEach(item => { const persons = ensurePersonArray(item); if (persons.length > 1) multiCount++;
+        persons.forEach(p => { let key = personList.includes(p) ? p : (extractPersonKey(p) || p); if (counts[key] !==
+                undefined) counts[key]++; }); });
+    const allBtn = document.createElement('button');
+    allBtn.className = 'person-btn active';
+    allBtn.dataset.val = 'all';
+    allBtn.innerText = `全部 (${scheduleList.length})`;
+    bar.appendChild(allBtn);
+    displayPersonList.forEach(p => { const btn = document.createElement('button');
+        btn.className = 'person-btn';
+        btn.dataset.val = p;
+        btn.innerText = `${personDisplayMap[p] || p} (${counts[p] || 0})`;
+        btn.style.background = 'rgba(255,255,255,0.08)'; if (currentFilterPerson === p) btn.classList.add('active');
+        bar.appendChild(btn); });
+    const multiBtn = document.createElement('button');
+    multiBtn.className = 'person-btn';
+    multiBtn.dataset.val = 'multi';
+    multiBtn.innerText = `👥 多人 (${multiCount})`;
+    multiBtn.style.background = 'rgba(249,169,90,0.25)'; if (currentFilterPerson === 'multi') multiBtn.classList.add(
+        'active');
+    bar.appendChild(multiBtn);
+    bar.querySelectorAll('.person-btn').forEach(btn => { btn.onclick = function() {
+            bar.querySelectorAll('.person-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentFilterPerson = this.dataset.val;
+            renderAll();
+        }; }); }
+
+function getFilterData() { let arr = [...scheduleList]; if (currentFilterPerson === 'multi') { arr = arr.filter(item =>
+            ensurePersonArray(item).length > 1); } else if (currentFilterPerson !== 'all') { arr = arr.filter(item =>
+            ensurePersonArray(item).includes(currentFilterPerson)); } if (searchDateKeyword) { arr = arr.filter(item =>
+            item.date && item.date.includes(searchDateKeyword)); }
+    arr.sort((a, b) => new Date(a.date) - new Date(b.date)); return arr; }
+
+function renderCalendar() { if (window.viewYear && window.viewMonth) { viewYear = window.viewYear;
+        viewMonth = window.viewMonth; } const calDom = document.getElementById('calendar-area');
+    calDom.innerHTML = '';
+    syncJumpSelect(); const data = getFilterData(); const targetYM =
+        `${viewYear}-${String(viewMonth).padStart(2, '0')}`; const monthData = data.filter(item => item.date && item.date
+            .startsWith(targetYM)); const dateGroup = {};
+    monthData.forEach(item => { if (!dateGroup[item.date]) dateGroup[item.date] = [];
+        dateGroup[item.date].push(item); });
+    const monthMilestones = milestones.filter(m => m.date && m.date.startsWith(targetYM));
+    const table = document.createElement('table');
+    table.className = 'calendar-table';
+    const thead = document.createElement('thead');
+    const trHead = document.createElement('tr');
+    weekCN.forEach(w => { const th = document.createElement('th');
+        th.innerText = w;
+        trHead.appendChild(th); });
+    thead.appendChild(trHead);
+    table.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    const firstDay = new Date(viewYear, viewMonth - 1, 1).getDay();
+    const totalDays = new Date(viewYear, viewMonth, 0).getDate();
+    let tr = document.createElement('tr'); for (let i = 0; i < firstDay; i++) { tr.appendChild(document.createElement(
+            'td')); } let col = firstDay;
+    for (let d = 1; d <= totalDays; d++) { const td = document.createElement('td'); const fullDate =
+            `${viewYear}-${String(viewMonth).padStart(2, '0')}-${String(d).padStart(2, '0')}`; const headerDiv =
+            document.createElement('div');
+        headerDiv.className = 'cell-header'; const dateSpan = document.createElement('span');
+        dateSpan.className = 'date-num';
+        dateSpan.textContent = `${d}日`;
+        headerDiv.appendChild(dateSpan);
+        if (isEditMode) { const ms = monthMilestones.find(m => m.date === fullDate); if (ms) { const iconSpan =
+                    document.createElement('span');
+                iconSpan.className = 'milestone-icon';
+                iconSpan.textContent = ms.icon || '🌟';
+                iconSpan.title = ms.title;
+                headerDiv.appendChild(iconSpan); } }
+        td.appendChild(headerDiv);
+        if (dateGroup[fullDate]) { const content = document.createElement('div');
+            content.className = 'calendar-content'; const items = dateGroup[fullDate]; const total = items.length;
+            const displayItems = items.slice(0, 3);
+            displayItems.forEach(item => { const block = document.createElement('div');
+                block.className = 'calendar-icon-block'; const tagId = (item.tags || [])[0]; let icon = '📌'; if (
+                    tagId) { const tag = tags.find(t => t.id === tagId); if (tag) icon = getTagIcon(tag.name); }
+                block.textContent = icon;
+                block.title = item.title || '未命名';
+                block.onclick = (e) => { e.stopPropagation();
+                    openModal(item); };
+                const travelTag = (item.tags || []).map(tid => tags.find(t => t.id === tid)).filter(t => t && t
+                .isTravel); if (travelTag.length > 0) { block.classList.add('is-travel'); }
+                content.appendChild(block); });
+            if (total > 3) { const moreBlock = document.createElement('div');
+                moreBlock.className = 'calendar-icon-block';
+                moreBlock.style.background = 'rgba(168,216,234,0.05)';
+                moreBlock.style.fontSize = '11px';
+                moreBlock.style.fontWeight = '700';
+                moreBlock.style.color = '#A8D8EA';
+                moreBlock.textContent = `+${total - 3}`;
+                moreBlock.title = `点击查看全部 ${total} 件物料`;
+                moreBlock.onclick = (e) => { e.stopPropagation();
+                    showDateDetail(fullDate, items); };
+                content.appendChild(moreBlock); }
+            td.appendChild(content);
+            if (total > 1) { const badge = document.createElement('span');
+                badge.className = 'cell-badge';
+                badge.textContent = total;
+                td.appendChild(badge); } }
+        tr.appendChild(td);
+        col++; if (col >= 7) { tbody.appendChild(tr);
+            tr = document.createElement('tr');
+            col = 0; } }
+    if (tr.children.length) tbody.appendChild(tr);
+    table.appendChild(tbody);
+    calDom.appendChild(table);
+    renderTagLegend(); }
+
+function showDateDetail(date, items) { if (items.length === 1) { openModal(items[0]); return; } let listHtml = items.map((
+        item, idx) =>
+        `<div style="padding:6px 10px;margin:3px 0;background:rgba(255,255,255,0.03);border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;border:1px solid rgba(168,216,234,0.03);font-family:Courier New,monospace;" onmouseover="this.style.background='rgba(168,216,234,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'" onclick="openModal(scheduleList.find(s=>s.id===${item.id}))">
+            <span style="color:rgba(255,255,255,0.3);font-size:12px;">${idx+1}.</span>
+            <span style="color:#fff;">${item.title || '未命名'}</span>
+            <span style="font-size:11px;opacity:0.3;margin-left:auto;">${item.date}</span>
+        </div>`
+    ).join('');
+    const tempModal = document.createElement('div');
+    tempModal.className = 'modal-mask active';
+    tempModal.style.display = 'flex';
+    tempModal.innerHTML =
+        `<div class="modal-wrap" style="max-width:480px;flex-direction:column;padding:20px;border-color:rgba(168,216,234,0.15);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 style="margin:0;font-size:16px;color:#A8D8EA;font-family:Courier New,monospace;">📅 ${date}</h3><button class="modal-close" style="position:static;background:rgba(100,100,100,0.15);">×</button></div><div style="max-height:400px;overflow-y:auto;padding:2px;">${listHtml}</div><div style="margin-top:12px;text-align:center;font-size:12px;opacity:0.3;font-family:Courier New,monospace;">共 ${items.length} 件物料</div></div>`;
+    document.body.appendChild(tempModal);
+    tempModal.querySelector('.modal-close').onclick = () => tempModal.remove();
+    tempModal.onclick = (e) => { if (e.target === tempModal) tempModal.remove(); }; }
+
+function renderAll() { if (currentView === 'dashboard') { return; }
+    renderPersonButtons();
+    renderCalendar();
+    syncJumpSelect(); }
+
+function syncJumpSelect() { document.getElementById('ymDisplay').innerText = `${viewYear}年${viewMonth}月`;
+    window.viewYear = viewYear;
+    window.viewMonth = viewMonth; }
+
+function renderDashboard() { const grid = document.getElementById('dashboardGrid'); if (!grid) return;
+    grid.innerHTML = '';
+    const sorted = [...REGRESSION_LIST].sort((a, b) => { if (a.year !== b.year) return b.year - a.year; return b.month - a
+            .month; });
+    sorted.forEach(reg => { const regStart = new Date(reg.year, reg.month - 1, 1); const regEnd = new Date(reg.year, reg
+            .month, 0); const items = scheduleList.filter(item => { const d = new Date(item.date); return d >=
+                regStart && d <= regEnd; });
+        const total = items.length;
+        const done = items.filter(item => { return item.title && (item.thumbnail || item.videoEmbed || (item.links &&
+                JSON.stringify(item.links) !== '[]')); }).length;
+        const progress = total > 0 ? Math.round((done / total) * 100) : 0;
+        const remaining = total - done;
+        const circumference = 2 * Math.PI * 44;
+        const offset = circumference * (1 - progress / 100);
+        const wrapper = document.createElement('div');
+        wrapper.className = 'dashboard-item';
+        wrapper.innerHTML =
+            `<div class="circular-progress"><svg viewBox="0 0 100 100"><circle class="bg-circle" cx="50" cy="50" r="44"/><circle class="progress-circle" cx="50" cy="50" r="44" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/></svg><div class="center-text">${reg.name}</div></div><div class="item-info"><div>${reg.year}年${reg.month}月</div><div>${remaining > 0 ? `剩余 ${remaining} 件` : '<span class="badge">✅ 已毕业</span>'}</div></div>`;
+        wrapper.addEventListener('click', function() {
+            window.viewYear = reg.year;
+            window.viewMonth = reg.month;
+            if (typeof window.switchToCalendar === 'function') { window.switchToCalendar(); } else {
+                alert('切换失败，请刷新页面重试'); }
+        });
+        grid.appendChild(wrapper); }); }
+
+function closeModal() { document.getElementById('modalMask').classList.remove('active');
+    document.getElementById('modalMediaBox').innerHTML = '<span class="no-media">暂无媒体</span>';
+    currentDeleteId = null; }
+
+function openModal(itemData) { currentDeleteId = itemData.id;
+    document.getElementById('modalTitle').innerText = itemData.title;
+    document.getElementById('modalPersonTags').innerHTML = '';
+    document.getElementById('modalPersonTags').style.display = 'none';
+    const tagDisplay = document.getElementById('modalTagDisplay');
+    tagDisplay.innerHTML = ''; if (itemData.tags && itemData.tags.length) { itemData.tags.forEach(tagId => { const tag =
+                tags.find(t => t.id === tagId); if (tag) { const span = document.createElement('span');
+                span.style.display = 'inline-block';
+                span.style.padding = '2px 10px';
+                span.style.borderRadius = '12px';
+                span.style.background = tag.color + '33';
+                span.style.border = '1px solid ' + tag.color;
+                span.style.color = '#fff';
+                span.textContent = tag.name + (tag.isTravel ? ' 🚗' : '');
+                tagDisplay.appendChild(span); } }); } else { const span = document.createElement('span');
+        span.style.color = '#666';
+        span.textContent = '无行程';
+        tagDisplay.appendChild(span); }
+    document.getElementById('modalMediaBox').innerHTML = '';
+    const thumb = (itemData.thumbnail || '').trim();
+    const video = (itemData.videoEmbed || itemData.videoembed || '').trim(); if (thumb) { const img = document
+            .createElement('img'); const proxyUrl = getProxiedImageUrl(thumb);
+        img.src = proxyUrl;
+        img.alt = itemData.title || '缩略图';
+        img.setAttribute('referrerpolicy', 'no-referrer');
+        img.onerror = function() { if (this.src.includes('images.weserv.nl')) { this.src = thumb; this.onerror =
+                function() { this.style.display = 'none';
+                document.getElementById('modalMediaBox').innerHTML =
+                    `<span class="no-media">图片加载失败</span>`; }; } else { this.style.display = 'none';
+                document.getElementById('modalMediaBox').innerHTML =
+                `<span class="no-media">图片加载失败</span>`; } };
+        document.getElementById('modalMediaBox').appendChild(img); } else if (video) { const embed = urlToEmbed(video); if (
+            embed === null) {
+            document.getElementById('modalMediaBox').innerHTML =
+                `<span class="no-media">此平台不支持内嵌，<a href="${video}" target="_blank" class="fallback-link">点击跳转</a></span>`; } else {
+            const iframe = document.createElement('iframe');
+            iframe.width = '100%';
+            iframe.height = '100%';
+            iframe.src = embed;
+            iframe.frameBorder = '0';
+            iframe.allow =
+                'accelerometer, autoplay, clipboard-write, encrypted-media, gyroscope, picture-in-picture';
+            iframe.allowFullscreen = true;
+            iframe.onerror = function() {
+                document.getElementById('modalMediaBox').innerHTML =
+                    `<span class="no-media">无法嵌入，<a href="${video}" target="_blank" class="fallback-link">点击跳转</a></span>`; };
+            document.getElementById('modalMediaBox').appendChild(iframe); } } else {
+        document.getElementById('modalMediaBox').innerHTML = '<span class="no-media">暂无媒体</span>'; }
+    document.getElementById('modalLinkList').innerHTML = '';
+    let links = itemData.links; if (typeof links === 'string') try { links = JSON.parse(links); } catch { links = []; } if (!
+        Array.isArray(links)) links = []; if (links.length) { links.forEach(link => { const div = document.createElement(
+                'div');
+            div.className = 'modal-link-item'; if (link.link) { div.innerHTML =
+                    `<span class="link-icon">${link.icon || '🔗'}</span> <a href="${link.link}" target="_blank">${link.text || '查看'}</a>`; } else {
+                div.innerText = `${link.icon || ''} ${link.text || ''}`; }
+            document.getElementById('modalLinkList').appendChild(div); }); } else { const empty = document.createElement(
+            'div');
+        empty.style.color = '#666';
+        empty.style.fontSize = '14px';
+        empty.innerText = '暂无链接';
+        document.getElementById('modalLinkList').appendChild(empty); }
+    document.getElementById('modalMask').classList.add('active'); }
+
+function renderPersonCheckboxes(selected) {
+    document.getElementById('personCheckboxContainer').innerHTML = '';
+    document.getElementById('personCheckboxContainer').style.display = 'none'; }
+
+function renderFormTagCheckboxes(selected) { const container = document.getElementById('formTagCheckboxContainer');
+    container.innerHTML = '';
+    tags.forEach(tag => { const label = document.createElement('label'); const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.value = tag.id;
+        cb.checked = selected ? selected.includes(tag.id) : false; const dot = document.createElement('span');
+        dot.style.display = 'inline-block';
+        dot.style.width = '10px';
+        dot.style.height = '10px';
+        dot.style.borderRadius = '50%';
+        dot.style.background = tag.color;
+        dot.style.marginRight = '4px';
+        label.appendChild(cb);
+        label.appendChild(dot);
+        label.appendChild(document.createTextNode(tag.name + (tag.isTravel ? ' 🚗' : '')));
+        container.appendChild(label); }); }
+
+function getSelectedPersons() { return ['Winter']; }
+
+function openForm(itemData) { if (!isEditMode) return; if (itemData) { editModeId = itemData.id;
+        document.getElementById('formTitle').textContent = '✏️ 编辑日程';
+        document.getElementById('formSubmitBtn').textContent = '💾 更新';
+        document.getElementById('formDate').value = itemData.date || '';
+        document.getElementById('formTitleInput').value = itemData.title || '';
+        document.getElementById('formLinks').value = itemData.links || '';
+        document.getElementById('formVideo').value = itemData.videoEmbed || itemData.videoembed || '';
+        document.getElementById('formThumbnail').value = itemData.thumbnail || '';
+        renderFormTagCheckboxes(itemData.tags || []);
+        const statusRadios = document.querySelectorAll('input[name="formStatus"]');
+        statusRadios.forEach(r => r.checked = false); if (itemData.thumbnail || itemData.videoEmbed) {
+            document.querySelector('input[name="formStatus"][value="已补完"]').checked = true; } else {
+            document.querySelector('input[name="formStatus"][value="待补"]').checked = true; } } else { editModeId = null;
+        document.getElementById('formTitle').textContent = '📝 添加物料';
+        document.getElementById('formSubmitBtn').textContent = '✅ 保存';
+        document.getElementById('formDate').value = '';
+        document.getElementById('formTitleInput').value = '';
+        document.getElementById('formLinks').value = '';
+        document.getElementById('formVideo').value = '';
+        document.getElementById('formThumbnail').value = '';
+        renderFormTagCheckboxes([]);
+        document.querySelector('input[name="formStatus"][value="已补完"]').checked = true; }
+    document.getElementById('formModal').classList.add('active'); }
+
+function closeForm() { document.getElementById('formModal').classList.remove('active');
+    editModeId = null; }
+
+function initYMSelects() { const ymYear = document.getElementById('ymYearSelect'); const ymMonth = document.getElementById(
+        'ymMonthSelect'); const cy = new Date().getFullYear();
+    ymYear.innerHTML = ''; for (let y = 2020; y <= cy + 2; y++) { const opt = document.createElement('option');
+        opt.value = y;
+        opt.textContent = y + '年';
+        ymYear.appendChild(opt); }
+    ymMonth.innerHTML = ''; for (let m = 1; m <= 12; m++) { const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = m + '月';
+        ymMonth.appendChild(opt); }
+    ymYear.value = viewYear;
+    ymMonth.value = viewMonth; }
+
+document.getElementById('ymDisplay').onclick = function() {
+    document.getElementById('ymYearSelect').value = viewYear;
+    document.getElementById('ymMonthSelect').value = viewMonth;
+    document.getElementById('ymPickerOverlay').classList.add('active');
+};
+document.getElementById('ymConfirm').onclick = function() { const y = parseInt(document.getElementById('ymYearSelect')
+        .value); const m = parseInt(document.getElementById('ymMonthSelect').value); if (y >= 2020 && m >= 1 && m <=
+        12) { viewYear = y;
+        viewMonth = m;
+        window.viewYear = y;
+        window.viewMonth = m;
+        syncJumpSelect();
+        renderAll();
+        document.getElementById('ymPickerOverlay').classList.remove('active'); } };
+document.getElementById('ymCancel').onclick = () => document.getElementById('ymPickerOverlay').classList.remove(
+    'active');
+document.getElementById('ymPickerOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) e.target
+        .classList.remove('active'); });
+document.getElementById('prevMonth').addEventListener('click', function() { if (currentView === 'dashboard')
+        switchToCalendar();
+    viewMonth--; if (viewMonth < 1) { viewMonth = 12;
+        viewYear--; } if (viewYear < 2020) viewYear = 2020;
+    window.viewYear = viewYear;
+    window.viewMonth = viewMonth;
+    syncJumpSelect();
+    renderAll(); });
+document.getElementById('nextMonth').addEventListener('click', function() { if (currentView === 'dashboard')
+        switchToCalendar();
+    viewMonth++; if (viewMonth > 12) { viewMonth = 1;
+        viewYear++; }
+    window.viewYear = viewYear;
+    window.viewMonth = viewMonth;
+    syncJumpSelect();
+    renderAll(); });
+document.getElementById('addBtn').onclick = function() { if (!isEditMode) return;
+    renderPersonCheckboxes([]);
+    openForm(null); };
+
+function initTogglePanels() { document.querySelectorAll('.toggle-btn').forEach(btn => { btn.addEventListener('click',
+            function(e) { e.stopPropagation(); const targetId = this.dataset.target; const panel = document
+                    .getElementById(targetId); if (panel) { panel.classList.toggle('collapsed'); } }); }); }
+
+function switchToCalendar() {
+    window.viewYear = viewYear;
+    window.viewMonth = viewMonth;
+    currentView = 'calendar';
+    document.getElementById('dashboard-view').classList.remove('active');
+    document.getElementById('calendar-view').classList.add('active');
+    document.getElementById('calendar-view').classList.add('view-fade-in');
+    document.getElementById('goToDashboard').style.display = 'inline-block';
+    document.querySelector('.person-filter-bar').style.display = 'flex';
+    document.querySelector('.calendar-control').style.display = 'flex';
+    renderAll();
+    console.log('✅ 切换到日历视图', viewYear, viewMonth);
+}
+
+function switchToDashboard() {
+    currentView = 'dashboard';
+    document.getElementById('dashboard-view').classList.add('active');
+    document.getElementById('dashboard-view').classList.add('view-fade-in');
+    document.getElementById('calendar-view').classList.remove('active');
+    document.getElementById('goToDashboard').style.display = 'none';
+    document.querySelector('.person-filter-bar').style.display = 'none';
+    document.querySelector('.calendar-control').style.display = 'none';
+    renderDashboard();
+    console.log('✅ 切换到仪表盘');
+}
+window.switchToCalendar = switchToCalendar;
+window.switchToDashboard = switchToDashboard;
+document.getElementById('modalClose').onclick = closeModal;
+document.getElementById('modalMask').addEventListener('click', e => { if (e.target === document.getElementById(
+        'modalMask')) closeModal(); });
+document.getElementById('modalDeleteBtn').onclick = function() { if (!isEditMode) return; if (currentDeleteId && confirm(
+            '确定要删除此日程吗？')) { deleteScheduleById(currentDeleteId);
+        closeModal(); } };
+document.getElementById('modalEditBtn').onclick = function() { if (!isEditMode) return; if (currentDeleteId) { const item =
+            getScheduleById(currentDeleteId); if (item) { closeModal();
+            openForm(item); } } };
+document.getElementById('formClose').onclick = closeForm;
+document.getElementById('formCancel').onclick = closeForm;
+document.getElementById('formModal').addEventListener('click', e => { if (e.target === document.getElementById(
+        'formModal')) closeForm(); });
+document.getElementById('scheduleForm').onsubmit = async function(e) { e.preventDefault(); if (!isEditMode) return; const
+        date = normalizeDateInput(document.getElementById('formDate').value.trim()); const persons = ['Winter']; const
+        title = document.getElementById('formTitleInput').value.trim(); const linksRaw = document.getElementById(
+        'formLinks').value.trim(); const videoEmbed = document.getElementById('formVideo').value.trim(); const
+        thumbnail = document.getElementById('formThumbnail').value.trim(); const selectedTags = Array.from(document
+        .getElementById('formTagCheckboxContainer').querySelectorAll('input:checked')).map(cb => cb.value); if (!date ||
+        !isValidDate(date)) { alert('请填写有效日期 (YYYY-MM-DD 或 6/8位数字)'); return; } if (!title) { alert(
+            '请填写标题'); return; } let links = '[]'; if (linksRaw) { if (linksRaw.startsWith('http')) { links =
+                JSON.stringify([{ icon: '🔗', text: '查看', link: linksRaw }]); } else { try { const parsed = JSON
+                    .parse(linksRaw); if (!Array.isArray(parsed)) throw new Error();
+                links = JSON.stringify(parsed); } catch { alert('链接格式错误，请输入URL或JSON数组'); return; } } } const
+        shortName = title.length > 20 ? title.slice(0, 18) + '…' : title; const formData = { date, person: persons,
+            tag: '', shortName, title, links, videoEmbed, thumbnail, tags: selectedTags }; if (editModeId) { await
+            updateScheduleById(editModeId, formData); } else { await addSchedule(formData); }
+    closeForm(); };
+document.getElementById('goToDashboard').addEventListener('click', function() { switchToDashboard(); });
+document.getElementById('searchDateInput').addEventListener('input', function(e) {
+    searchDateKeyword = e.target.value.trim();
+    renderAll();
+});
+const importModal = document.getElementById('importModal');
+const importClose = document.getElementById('importClose');
+const importCancel = document.getElementById('importCancel');
+const importDataText = document.getElementById('importDataText');
+const importFileBtn = document.getElementById('importFileBtn');
+const importFileInput = document.getElementById('importFileInput');
+const previewImportBtn = document.getElementById('previewImportBtn');
+const importConfirmBtn = document.getElementById('importConfirmBtn');
+const importPreviewArea = document.getElementById('importPreviewArea');
+const importPreviewBody = document.getElementById('importPreviewBody');
+const importTotalCount = document.getElementById('importTotalCount');
+const importValidCount = document.getElementById('importValidCount');
+const importInvalidCount = document.getElementById('importInvalidCount');
+const importProgress = document.getElementById('importProgress');
+const importProgressText = document.getElementById('importProgressText');
+const importProgressFill = document.getElementById('importProgressFill');
+const loadSampleBtn = document.getElementById('loadSampleBtn');
+let importPreviewData = [];
+
+function openImportModal() { if (!isEditMode) return;
+    importDataText.value = '';
+    importPreviewArea.style.display = 'none';
+    importProgress.classList.remove('active');
+    importModal.classList.add('active'); }
+
+function closeImportModal() { importModal.classList.remove('active');
+    importPreviewArea.style.display = 'none';
+    importProgress.classList.remove('active'); }
+importClose.onclick = closeImportModal;
+importCancel.onclick = closeImportModal;
+importModal.addEventListener('click', e => { if (e.target === importModal) closeImportModal(); });
+loadSampleBtn.onclick = function() {
+    importDataText.value = JSON.stringify([{ date: "2026-07-20", person: ["Winter"], title: "Winter 新物料发布",
+            links: [{ icon: "📸", text: "Instagram", link: "https://www.instagram.com/" }],
+            thumbnail: "https://i.postimg.cc/G38HFjNr/240516.jpg", videoEmbed: ""
+        },
+        { date: "2026-07-21", person: ["aespa"], title: "aespa 团体回归预告", links: [{ icon: "🎵", text: "YouTube",
+                link: "https://www.youtube.com/" }], videoEmbed: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
+        { date: "2026-07-22", person: ["Karina", "Winter"], title: "Karina & Winter 双人直播" }
+    ], null, 2);
+    setTimeout(() => previewImportBtn.click(), 200);
+};
+importFileBtn.onclick = () => importFileInput.click();
+importFileInput.onchange = function(e) { const file = e.target.files[0]; if (!file) return; const reader =
+    new FileReader();
+    reader.onload = function(ev) { try { JSON.parse(ev.target.result);
+            importDataText.value = ev.target.result;
+            setTimeout(() => previewImportBtn.click(), 300); } catch (err) { alert('文件不是有效的 JSON 格式'); } };
+    reader.readAsText(file);
+    importFileInput.value = ''; };
+previewImportBtn.onclick = function() { const raw = importDataText.value.trim(); if (!raw) { alert(
+            '请先粘贴或上传 JSON 数据。'); return; } let parsed; try { parsed = JSON.parse(raw); } catch (err) { alert(
+            'JSON 解析失败：' + err.message); return; } if (!Array.isArray(parsed) || parsed.length === 0) { alert(
+            '数据必须是非空数组。'); return; }
+    const result = parsed.map((item, idx) => { const errors = []; const norm = { ...item }; if (!item.date) errors.push(
+            '缺少 date'); else { norm.date = normalizeDateInput(item.date); if (!isValidDate(norm.date)) errors.push(
+                'date 格式无效'); } if (!item.person) errors.push('缺少 person'); else { let persons = item.person; if (
+                typeof persons === 'string') { persons = persons.includes(',') ? persons.split(',').map(s => s.trim()) :
+                    [persons.trim()]; } if (!Array.isArray(persons) || persons.length === 0) errors.push(
+                    'person 至少选一人'); else { const valid = persons.filter(p => personList.includes(p)); if (valid
+                        .length === 0) errors.push('person 不在允许列表中');
+                norm.person = valid.length ? valid : persons; } } if (!item.title) errors.push('缺少 title');
+        norm.shortName = item.shortName || (item.title ? (item.title.length > 20 ? item.title.slice(0, 18) + '…' : item
+            .title) : '未命名'); if (norm.links && !Array.isArray(norm.links)) { try { norm.links = typeof norm
+                    .links === 'string' ? JSON.parse(norm.links) : []; } catch { norm.links = []; } } if (!norm.links)
+            norm.links = [];
+        norm.tags = item.tags || []; return { index: idx + 1, raw: item, normalized: norm, valid: errors.length ===
+                0, errors }; });
+    importPreviewData = result; const tbody = importPreviewBody;
+    tbody.innerHTML = ''; let valid = 0,
+        invalid = 0;
+    result.forEach(r => { const tr = document.createElement('tr');
+        tr.className = r.valid ? 'valid' : 'invalid'; const personsDisplay = Array.isArray(r.normalized.person) ? r
+            .normalized.person.map(p => personDisplayMap[p] || p).join(', ') : String(r.normalized.person || '');
+        const statusHtml = r.valid ?
+            `<span class="status-badge valid">✅ 有效</span>` :
+            `<span class="status-badge invalid">❌ 无效</span><div class="err-msg">${r.errors.join('; ')}</div>`;
+        tr.innerHTML =
+            `<td>${r.index}</td><td>${r.normalized.date || '-'}</td><td>${personsDisplay || '-'}</td><td>${r.normalized.title || '-'}</td><td>${statusHtml}</td>`;
+        tbody.appendChild(tr); if (r.valid) valid++;
+        else invalid++; });
+    importTotalCount.textContent = result.length;
+    importValidCount.textContent = valid;
+    importInvalidCount.textContent = invalid;
+    importPreviewArea.style.display = 'block';
+    importProgress.classList.remove('active');
+    importConfirmBtn.disabled = valid === 0;
+    importConfirmBtn.style.opacity = valid === 0 ? '0.5' : '1'; };
+importConfirmBtn.onclick = async function() { if (this.disabled) return; const validItems = importPreviewData.filter(r =>
+        r.valid); if (!validItems.length) { alert('没有有效数据可导入。'); return; } if (!confirm(
+            `确定要导入 ${validItems.length} 条日程吗？`)) return;
+    importProgress.classList.add('active');
+    importProgressText.textContent = `正在导入 0 / ${validItems.length} ...`;
+    importProgressFill.style.width = '0%';
+    this.disabled = true; let success = 0,
+        fail = 0; for (let i = 0; i < validItems.length; i++) { const item = validItems[i].normalized; try { const
+            formData = { date: item.date, person: item.person, tag: item.tag || '', shortName: item.shortName,
+                title: item.title, links: JSON.stringify(item.links || []), videoEmbed: item.videoEmbed || '',
+                thumbnail: item.thumbnail || '', tags: item.tags || [] };
+            const resp = await fetch(`${API_BASE}/data`, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData) }); if (!resp.ok) throw new Error(`HTTP ${resp.status}`); const
+                newItem = await resp.json();
+            ensurePersonArray(newItem);
+            ensureExtraFields(newItem);
+            scheduleList.push(newItem);
+            success++; } catch (err) { fail++;
+            console.error(`第 ${i + 1} 条导入失败:`, err); } const done = i + 1;
+        importProgressText.textContent = `正在导入 ${done} / ${validItems.length} ...`;
+        importProgressFill.style.width = `${(done / validItems.length) * 100}%`; }
+    importProgressText.textContent = `✅ 导入完成！成功 ${success} 条，失败 ${fail} 条。`;
+    importProgressFill.style.width = '100%'; let msg = `📥 批量导入完成：成功 ${success} 条`; if (fail > 0) msg +=
+        `，失败 ${fail} 条`;
+    showToast(msg, fail === 0 ? 'success' : 'error');
+    renderAll();
+    setTimeout(() => { closeImportModal();
+        importConfirmBtn.disabled = false;
+        importProgress.classList.remove('active'); }, 1200); };
+document.getElementById('importBtn').onclick = openImportModal;
+const excelImportModal = document.getElementById('excelImportModal');
+const excelFileInput = document.getElementById('excelFileInput');
+const excelPreviewArea = document.getElementById('excelPreviewArea');
+const excelPreviewBody = document.getElementById('excelPreviewBody');
+const excelTotalCount = document.getElementById('excelTotalCount');
+const excelValidCount = document.getElementById('excelValidCount');
+const excelInvalidCount = document.getElementById('excelInvalidCount');
+const excelConfirmBtn = document.getElementById('excelConfirmBtn');
+const excelImportCancel = document.getElementById('excelImportCancel');
+const excelImportClose = document.getElementById('excelImportClose');
+const excelTemplateLink = document.getElementById('excelTemplateLink');
+let excelPreviewData = [];
+document.getElementById('importExcelBtn').addEventListener('click', function() {
+    excelFileInput.value = '';
+    excelPreviewArea.style.display = 'none';
+    excelPreviewData = [];
+    excelImportModal.classList.add('active');
+});
+excelImportClose.onclick = () => excelImportModal.classList.remove('active');
+excelImportCancel.onclick = () => excelImportModal.classList.remove('active');
+excelImportModal.addEventListener('click', e => { if (e.target === excelImportModal) excelImportModal.classList.remove(
+        'active'); });
+excelTemplateLink.onclick = function(e) { e.preventDefault(); const wb = XLSX.utils.book_new(); const data = [
+        ["date", "person", "title", "links", "thumbnail", "videoEmbed"],
+        ["2026-07-20", "Winter", "Winter 新物料发布",
+            '{"icon":"📸","text":"Instagram","link":"https://instagram.com/p/xxx"}',
+            "https://i.postimg.cc/G38HFjNr/240516.jpg", ""
+        ],
+        ["2026-07-21", "aespa", "aespa 团体回归预告",
+            '{"icon":"🎵","text":"YouTube","link":"https://youtube.com/watch?v=xxx"}', "",
+            "https://www.youtube.com/embed/dQw4w9WgXcQ"
+        ],
+        ["2026-07-22", "Karina,Winter", "Karina & Winter 双人直播", "", "", ""]
+    ];
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, "日程");
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: 'application/octet-stream' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = '日程导入模板.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+};
+excelFileInput.addEventListener('change', function(e) { const file = e.target.files[0]; if (!file) return; const reader =
+        new FileReader();
+    reader.onload = function(ev) { try { const data = new Uint8Array(ev.target.result); const workbook = XLSX.read(
+                data, { type: 'array' }); const sheet = workbook.Sheets[workbook.SheetNames[0]]; const jsonData =
+                XLSX.utils.sheet_to_json(sheet); if (!jsonData || jsonData.length === 0) { alert(
+                    'Excel 文件为空或格式不正确'); return; }
+            const result = jsonData.map((row, idx) => { const errors = []; const norm = {};
+                norm.date = row.date ? normalizeDateInput(String(row.date).trim()) : ''; if (!norm.date || !
+                    isValidDate(norm.date)) errors.push('日期无效'); if (row.person) { const persons = String(row
+                        .person).split(',').map(s => s.trim()).filter(s => s);
+                    norm.person = persons.length ? persons : []; if (!persons.length) errors.push('人物为空'); } else {
+                    errors.push('缺少 person');
+                    norm.person = []; }
+                norm.title = row.title ? String(row.title).trim() : ''; if (!norm.title) errors.push('缺少 title');
+                norm.shortName = norm.title.length > 20 ? norm.title.slice(0, 18) + '…' : norm.title;
+                norm.tags = []; if (row.links) { try { norm.links = typeof row.links === 'string' ? JSON.parse(row
+                            .links) : row.links; } catch { norm.links = []; } } else norm.links = [];
+                norm.thumbnail = row.thumbnail ? String(row.thumbnail).trim() : '';
+                norm.videoEmbed = row.videoEmbed ? String(row.videoEmbed).trim() : '';
+                norm.tag = ''; return { index: idx + 1, raw: row, normalized: norm, valid: errors.length === 0,
+                    errors }; });
+            excelPreviewData = result; const tbody = excelPreviewBody;
+            tbody.innerHTML = ''; let valid = 0,
+                invalid = 0;
+            result.forEach(r => { const tr = document.createElement('tr');
+                tr.className = r.valid ? 'valid' : 'invalid'; const personsDisplay = r.normalized.person && r
+                    .normalized.person.length ? r.normalized.person.join(', ') : '-'; const statusHtml = r
+                    .valid ?
+                    `<span class="status-badge valid">✅ 有效</span>` :
+                    `<span class="status-badge invalid">❌ 无效</span><div class="err-msg">${r.errors.join('; ')}</div>`;
+                tr.innerHTML =
+                    `<td>${r.index}</td><td>${r.normalized.date || '-'}</td><td>${personsDisplay}</td><td>${r.normalized.title || '-'}</td><td>${statusHtml}</td>`;
+                tbody.appendChild(tr); if (r.valid) valid++;
+                else invalid++; });
+            excelTotalCount.textContent = result.length;
+            excelValidCount.textContent = valid;
+            excelInvalidCount.textContent = invalid;
+            excelPreviewArea.style.display = 'block';
+            excelConfirmBtn.disabled = valid === 0;
+            excelConfirmBtn.style.opacity = valid === 0 ? '0.5' : '1'; } catch (err) { alert('解析 Excel 失败：' +
+                    err.message); } };
+    reader.readAsArrayBuffer(file); });
+excelConfirmBtn.onclick = async function() { if (this.disabled) return; const validItems = excelPreviewData.filter(r =>
+        r.valid); if (!validItems.length) { alert('没有有效数据可导入。'); return; } if (!confirm(
+            `确定要导入 ${validItems.length} 条日程吗？`)) return;
+    this.disabled = true;
+    this.textContent = '⏳ 导入中...'; let success = 0,
+        fail = 0; for (let i = 0; i < validItems.length; i++) { const item = validItems[i].normalized; try { const
+            formData = { date: item.date, person: item.person, tag: item.tag || '', shortName: item.shortName,
+                title: item.title, links: JSON.stringify(item.links || []), videoEmbed: item.videoEmbed || '',
+                thumbnail: item.thumbnail || '', tags: item.tags || [] };
+            const resp = await fetch(`${API_BASE}/data`, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData) }); if (!resp.ok) throw new Error(`HTTP ${resp.status}`); const
+                newItem = await resp.json();
+            ensurePersonArray(newItem);
+            ensureExtraFields(newItem);
+            scheduleList.push(newItem);
+            success++; } catch (err) { fail++;
+            console.error(`第 ${i + 1} 条导入失败:`, err); } } let msg = `📊 Excel 导入完成：成功 ${success} 条`; if (fail >
+        0) msg += `，失败 ${fail} 条`;
+    showToast(msg, fail === 0 ? 'success' : 'error');
+    renderAll();
+    this.textContent = '📥 确认导入';
+    this.disabled = false;
+    setTimeout(() => { excelImportModal.classList.remove('active');
+        excelPreviewArea.style.display = 'none'; }, 800); };
+loadTagsFromStorage();
+loadMilestonesFromStorage();
+initYMSelects();
+loadScheduleData().then(() => {
+    syncJumpSelect();
+    initTogglePanels();
+    switchToDashboard();
+    renderPersonCheckboxes([]);
+    renderFormTagCheckboxes([]);
+    if (!isEditMode) console.log('🔒 只读模式。添加 ?key=20010101 开启编辑');
+    else console.log('🔓 编辑模式已启用');
+});
+(function() {
+    const ICONS = ['❄️', '✨', '💠', '❇️', '✦', '⬡'];
+    const container = document.getElementById('ice-particle-container');
+
+    function createIceBurst(x, y) {
+        const count = 8 + Math.floor(Math.random() * 8);
+        for (let i = 0; i < count; i++) {
+            const el = document.createElement('div');
+            el.className = 'ice-particle';
+            el.textContent = ICONS[Math.floor(Math.random() * ICONS.length)];
+            const angle = Math.random() * 2 * Math.PI;
+            const distance = 40 + Math.random() * 90;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance - 20;
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            el.style.setProperty('--tx', tx + 'px');
+            el.style.setProperty('--ty', ty + 'px');
+            el.style.fontSize = (14 + Math.random() * 16) + 'px';
+            el.style.color = Math.random() > 0.5 ? '#A8D8EA' : '#F0F4F8';
+            el.style.textShadow = '0 0 12px rgba(168,216,234,0.3)';
+            container.appendChild(el);
+            setTimeout(() => { if (el.parentNode) el.remove(); }, 1400);
+        }
+    }
+    document.addEventListener('click', function(e) {
+        const target = e.target.closest(
+            '.modal-mask, .modal-wrap, button, .btn-back, .cal-btn, .person-btn, .dashboard-item, .calendar-icon-block, .calendar-block'
+            );
+        if (target) return;
+        const rect = container.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        createIceBurst(x, y);
+    });
+    document.addEventListener('click', function(e) {
+        const item = e.target.closest('.dashboard-item');
+        if (item) {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            createIceBurst(x, y);
+        }
+    });
+    console.log('❄️ 冰晶特效已加载');
+})();
+</script>
+</body>
+</html>
