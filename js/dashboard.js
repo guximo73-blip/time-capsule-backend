@@ -1,12 +1,12 @@
-// ===== 仪表盘渲染（圆形进度表） =====
+// ===== 仪表盘渲染（圆形进度表，赛博朋克风格）=====
 const REGRESSION_LIST = [
-    { name: 'LEMONADE', year: 2026, month: 5, start: '2026-05-01', end: '2026-05-31' },
-    { name: 'WHIPLASH', year: 2024, month: 11, start: '2024-11-01', end: '2024-11-30' },
-    { name: 'DRAMA',    year: 2024, month: 5, start: '2024-05-01', end: '2024-05-31' },
-    { name: 'SPICY',    year: 2024, month: 2, start: '2024-02-01', end: '2024-02-29' },
-    { name: 'GIRLS',    year: 2023, month: 12, start: '2023-12-01', end: '2023-12-31' },
-    { name: 'SAVAGE',   year: 2023, month: 10, start: '2023-10-01', end: '2023-10-31' },
-    { name: 'NEXT LEVEL', year: 2023, month: 7, start: '2023-07-01', end: '2023-07-31' },
+    { name: 'LEMONADE', year: 2026, month: 5 },
+    { name: 'WHIPLASH', year: 2024, month: 11 },
+    { name: 'DRAMA',    year: 2024, month: 5 },
+    { name: 'SPICY',    year: 2024, month: 2 },
+    { name: 'GIRLS',    year: 2023, month: 12 },
+    { name: 'SAVAGE',   year: 2023, month: 10 },
+    { name: 'NEXT LEVEL', year: 2023, month: 7 },
 ];
 
 function renderDashboard() {
@@ -37,7 +37,7 @@ function renderDashboard() {
         const offset = circumference * (1 - progress / 100);
 
         const card = document.createElement('div');
-        card.className = 'dashboard-card glass-card';
+        card.className = 'dashboard-card glass-card cyber-card';
         card.innerHTML = `
             <div class="card-title">${reg.name}</div>
             <div class="card-date">${reg.year}年${reg.month}月</div>
@@ -59,17 +59,19 @@ function renderDashboard() {
         `;
 
         card.addEventListener('click', function() {
-            viewYear = reg.year;
-            viewMonth = reg.month;
-            switchToCalendar();
-            syncJumpSelect();
-            renderAll();
+            window.viewYear = reg.year;
+            window.viewMonth = reg.month;
+            if (typeof window.switchToCalendar === 'function') {
+                window.switchToCalendar();
+            } else {
+                console.error('switchToCalendar 未定义，请检查 main.js');
+                alert('切换失败，请刷新页面重试');
+            }
         });
 
         grid.appendChild(card);
     });
 
-    // 更新出道天数
     updateDaysDisplay();
 }
 
@@ -82,7 +84,4 @@ function updateDaysDisplay() {
     daysEl.textContent = `D+${diff}`;
 }
 
-// 导出给 main.js 使用
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { renderDashboard, updateDaysDisplay };
-}
+window.renderDashboard = renderDashboard;
