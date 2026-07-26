@@ -1,6 +1,9 @@
 // ===== 日历渲染 =====
-let viewYear = new Date().getFullYear();
-let viewMonth = new Date().getMonth() + 1;
+// 使用 window 对象存储，方便跨脚本访问
+window.viewYear = window.viewYear || new Date().getFullYear();
+window.viewMonth = window.viewMonth || (new Date().getMonth() + 1);
+let viewYear = window.viewYear;
+let viewMonth = window.viewMonth;
 let currentFilterPerson = "all";
 let searchDateKeyword = "";
 let currentView = 'dashboard';
@@ -57,7 +60,7 @@ function renderTagLegend() {
         container.appendChild(div);
     });
     if (sortedTags.length === 0) {
-        container.innerHTML = '<div style="text-align:center;opacity:0.3;font-size:12px;padding:12px 0;">暂无行程</div>';
+        container.innerHTML = '<div style="text-align:center;opacity:0.2;font-size:11px;padding:12px 0;font-family:Courier New,monospace;">暂无行程</div>';
     }
 }
 
@@ -114,7 +117,6 @@ function getFilterData() {
     } else if (currentFilterPerson !== 'all') {
         arr = arr.filter(item => ensurePersonArray(item).includes(currentFilterPerson));
     }
-    // 日期搜索
     if (searchDateKeyword) {
         arr = arr.filter(item => item.date && item.date.includes(searchDateKeyword));
     }
@@ -123,6 +125,11 @@ function getFilterData() {
 }
 
 function renderCalendar() {
+    // 从 window 同步最新的年月
+    if (window.viewYear && window.viewMonth) {
+        viewYear = window.viewYear;
+        viewMonth = window.viewMonth;
+    }
     const calDom = document.getElementById('calendar-area');
     calDom.innerHTML = '';
     syncJumpSelect();
@@ -176,14 +183,12 @@ function renderCalendar() {
         }
         td.appendChild(headerDiv);
 
-        // 行程图标展示
         if (dateGroup[fullDate]) {
             const content = document.createElement('div');
             content.className = 'calendar-content';
             const items = dateGroup[fullDate];
             const total = items.length;
 
-            // 显示所有行程图标（最多显示3个，其余用数字角标）
             const displayItems = items.slice(0, 3);
             displayItems.forEach(item => {
                 const block = document.createElement('div');
@@ -200,7 +205,6 @@ function renderCalendar() {
                     e.stopPropagation();
                     openModal(item);
                 };
-                // 检查是否为行程标签
                 const travelTag = (item.tags || []).map(tid => tags.find(t => t.id === tid))
                     .filter(t => t && t.isTravel);
                 if (travelTag.length > 0) {
@@ -209,19 +213,17 @@ function renderCalendar() {
                 content.appendChild(block);
             });
 
-            // 如果多于3个，显示数字角标
             if (total > 3) {
                 const moreBlock = document.createElement('div');
                 moreBlock.className = 'calendar-icon-block';
-                moreBlock.style.background = 'rgba(168,216,234,0.08)';
-                moreBlock.style.fontSize = '12px';
+                moreBlock.style.background = 'rgba(0,255,255,0.05)';
+                moreBlock.style.fontSize = '11px';
                 moreBlock.style.fontWeight = '700';
-                moreBlock.style.color = '#A8D8EA';
+                moreBlock.style.color = '#00ffff';
                 moreBlock.textContent = `+${total - 3}`;
                 moreBlock.title = `点击查看全部 ${total} 件物料`;
                 moreBlock.onclick = (e) => {
                     e.stopPropagation();
-                    // 打开日期详情：显示该日所有物料
                     showDateDetail(fullDate, items);
                 };
                 content.appendChild(moreBlock);
@@ -229,7 +231,6 @@ function renderCalendar() {
 
             td.appendChild(content);
 
-            // 总数角标（右上角显示总数）
             if (total > 1) {
                 const badge = document.createElement('span');
                 badge.className = 'cell-badge';
@@ -249,43 +250,38 @@ function renderCalendar() {
     table.appendChild(tbody);
     calDom.appendChild(table);
 
-    // 渲染行程侧栏
     renderTagLegend();
 }
 
-// 日期详情弹窗（当日所有物料）
 function showDateDetail(date, items) {
-    // 使用查看弹窗展示所有物料
     if (items.length === 1) {
         openModal(items[0]);
         return;
     }
-    // 多个物料：显示列表选择
     let listHtml = items.map((item, idx) =>
-        `<div style="padding:6px 10px;margin:3px 0;background:rgba(255,255,255,0.04);border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;" 
-              onmouseover="this.style.background='rgba(168,216,234,0.12)'" 
-              onmouseout="this.style.background='rgba(255,255,255,0.04)'"
+        `<div style="padding:6px 10px;margin:3px 0;background:rgba(255,255,255,0.03);border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s;border:1px solid rgba(0,255,255,0.03);font-family:Courier New,monospace;" 
+              onmouseover="this.style.background='rgba(0,255,255,0.06)'" 
+              onmouseout="this.style.background='rgba(255,255,255,0.03)'"
               onclick="openModal(scheduleList.find(s=>s.id===${item.id}))">
-            <span>${idx+1}.</span>
-            <span>${item.title || '未命名'}</span>
-            <span style="font-size:12px;opacity:0.4;margin-left:auto;">${item.date}</span>
+            <span style="color:rgba(255,255,255,0.3);font-size:12px;">${idx+1}.</span>
+            <span style="color:#fff;">${item.title || '未命名'}</span>
+            <span style="font-size:11px;opacity:0.3;margin-left:auto;">${item.date}</span>
         </div>`
     ).join('');
 
-    // 临时展示列表
     const tempModal = document.createElement('div');
     tempModal.className = 'modal-mask active';
     tempModal.style.display = 'flex';
     tempModal.innerHTML = `
-        <div class="modal-wrap" style="max-width:480px;flex-direction:column;padding:20px;">
+        <div class="modal-wrap" style="max-width:480px;flex-direction:column;padding:20px;border-color:rgba(0,255,255,0.15);">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                <h3 style="margin:0;font-size:18px;">📅 ${date}</h3>
-                <button class="modal-close" style="position:static;background:rgba(100,100,100,0.2);">×</button>
+                <h3 style="margin:0;font-size:16px;color:#00ffff;font-family:Courier New,monospace;">📅 ${date}</h3>
+                <button class="modal-close" style="position:static;background:rgba(100,100,100,0.15);">×</button>
             </div>
-            <div style="max-height:400px;overflow-y:auto;">
+            <div style="max-height:400px;overflow-y:auto;padding:2px;">
                 ${listHtml}
             </div>
-            <div style="margin-top:12px;text-align:center;font-size:13px;opacity:0.4;">共 ${items.length} 件物料</div>
+            <div style="margin-top:12px;text-align:center;font-size:12px;opacity:0.3;font-family:Courier New,monospace;">共 ${items.length} 件物料</div>
         </div>
     `;
     document.body.appendChild(tempModal);
@@ -295,7 +291,6 @@ function showDateDetail(date, items) {
 
 function renderAll() {
     if (currentView === 'dashboard') {
-        // dashboard 由 dashboard.js 处理
         return;
     }
     renderPersonButtons();
@@ -311,9 +306,10 @@ function renderAll() {
 
 function syncJumpSelect() {
     document.getElementById('ymDisplay').innerText = `${viewYear}年${viewMonth}月`;
+    window.viewYear = viewYear;
+    window.viewMonth = viewMonth;
 }
 
-// 日期搜索事件绑定
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchDateInput');
     if (searchInput) {
