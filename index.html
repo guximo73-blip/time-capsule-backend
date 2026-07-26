@@ -4,8 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>0101号空间站</title>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 :root {
     --bg: #0a0a14;
@@ -14,1390 +13,251 @@
     --moon: #F0F4F8;
     --silver: #C0C8D4;
     --purple: #B8A9D4;
-    --glass: rgba(255, 255, 255, 0.04);
-    --border: rgba(168, 216, 234, 0.12);
-    --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --glass: rgba(255,255,255,0.04);
+    --border: rgba(168,216,234,0.12);
+    --shadow: 0 8px 32px rgba(0,0,0,0.4);
     --danger: #b84863;
 }
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-html {
-    min-height: 100vh;
-    background: var(--bg);
-}
+* { box-sizing: border-box; margin:0; padding:0; }
+html { min-height:100vh; background:var(--bg); }
 body {
-    min-height: 100vh;
-    font-family: 'Courier New', 'Microsoft Yahei', sans-serif;
-    font-size: 15px;
-    color: var(--text);
-    padding: 16px 20px 40px;
-    max-width: 1440px;
-    margin: 0 auto;
-    position: relative;
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L14.5 9.5L22 10L16.5 15L18.5 22L12 18L5.5 22L7.5 15L2 10L9.5 9.5L12 2Z' fill='%23A8D8EA' opacity='0.85'/%3E%3C/svg%3E") 12 12, auto;
-    background: radial-gradient(ellipse at 20% 50%, rgba(168, 216, 234, 0.06) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 50%, rgba(184, 169, 212, 0.04) 0%, transparent 60%),
-        radial-gradient(ellipse at 50% 100%, rgba(192, 200, 212, 0.03) 0%, transparent 40%), var(--bg);
+    min-height:100vh;
+    font-family:'Courier New','Microsoft Yahei',sans-serif;
+    font-size:15px;
+    color:var(--text);
+    padding:16px 20px 40px;
+    max-width:1440px;
+    margin:0 auto;
+    position:relative;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L14.5 9.5L22 10L16.5 15L18.5 22L12 18L5.5 22L7.5 15L2 10L9.5 9.5L12 2Z' fill='%23A8D8EA' opacity='0.85'/%3E%3C/svg%3E") 12 12, auto;
+    background: radial-gradient(ellipse at 20% 50%, rgba(168,216,234,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(184,169,212,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 100%, rgba(192,200,212,0.03) 0%, transparent 40%),
+                var(--bg);
 }
 body::after {
     content: '❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦ ❄️ ✦';
-    position: fixed;
-    inset: 0;
-    font-size: 20px;
-    letter-spacing: 40px;
-    opacity: 0.05;
-    z-index: -1;
-    pointer-events: none;
-    animation: floatSnow 80s linear infinite;
-    white-space: nowrap;
-    overflow: hidden;
-    color: var(--ice);
-}
-@keyframes floatSnow {
-    0% {
-        transform: translateY(0) rotate(0deg);
-    }
-    100% {
-        transform: translateY(-80px) rotate(8deg);
-    }
-}
-h1 {
-    font-size: 40px;
-    font-weight: 700;
-    text-align: center;
-    letter-spacing: 6px;
-    color: var(--ice);
-    text-shadow: 0 0 40px rgba(168, 216, 234, 0.12);
-    font-family: 'Courier New', monospace;
-    margin: 4px 0 2px;
-}
-.subtitle {
-    font-size: 15px;
-    opacity: 0.45;
-    text-align: center;
-    letter-spacing: 6px;
-    margin-bottom: 14px;
-    font-family: 'Courier New', monospace;
-    color: var(--moon);
-}
-.view-fade-in {
-    animation: fadeIn 0.35s ease;
-}
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-/* ===== 页面A：三栏首页 ===== */
-#dashboard-view {
-    display: none;
-    padding: 10px 0 20px;
-}
-#dashboard-view.active {
-    display: block;
-}
-.dashboard-layout {
-    display: flex;
-    gap: 18px;
-    align-items: stretch;
-    min-height: 420px;
-}
-/* 左栏：人物介绍 */
-.side-panel-left {
-    flex: 0 0 200px;
-    background: var(--glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 14px 18px;
-    position: relative;
-    transition: flex 0.35s ease, opacity 0.3s ease, transform 0.35s ease;
-    overflow: hidden;
-}
-.side-panel-left.collapsed {
-    flex: 0 0 0;
-    padding: 0;
-    border: none;
-    opacity: 0;
-    transform: scaleX(0.7);
-    margin: 0;
-    min-width: 0;
-    overflow: hidden;
-}
-.side-panel-left .toggle-btn {
-    position: absolute;
-    right: -12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 22px;
-    height: 44px;
-    background: rgba(168, 216, 234, 0.08);
-    border: 1px solid var(--border);
-    border-radius: 0 10px 10px 0;
-    color: var(--ice);
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Courier New', monospace;
-    z-index: 5;
-}
-.side-panel-left .toggle-btn:hover {
-    background: rgba(168, 216, 234, 0.18);
-}
-.side-panel-left.collapsed .toggle-btn {
-    right: -22px;
-    border-radius: 10px;
-    transform: translateY(-50%) rotate(180deg);
-}
-.panel-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ice);
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'Courier New', monospace;
-}
-.panel-title .edit-icon {
-    font-size: 14px;
-    opacity: 0.4;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
-.panel-title .edit-icon:hover {
-    opacity: 0.9;
-}
-.bio-content {
-    font-size: 13px;
-    line-height: 1.7;
-    color: rgba(255, 255, 255, 0.6);
-    font-family: 'Courier New', monospace;
-}
-.bio-content .name {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--ice);
-    display: block;
-    margin-bottom: 4px;
-}
-.bio-content .desc {
-    font-size: 12px;
-    opacity: 0.5;
-}
-/* 中栏：仪表盘 */
-.dashboard-center {
-    flex: 1;
-    min-width: 0;
-    padding: 0 2px;
-}
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 20px 16px;
-    justify-items: center;
-}
-.dashboard-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.3s ease, filter 0.3s;
-    width: 140px;
-    position: relative;
-}
-.dashboard-item:hover {
-    transform: translateY(-6px) scale(1.04);
-    filter: drop-shadow(0 0 20px rgba(168, 216, 234, 0.12));
-}
-/* 赛博朋克仪表盘 */
-.cyber-gauge {
-    position: relative;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, rgba(168, 216, 234, 0.04), rgba(10, 10, 20, 0.8));
-    border: 1px solid rgba(168, 216, 234, 0.10);
-    box-shadow: 0 0 30px rgba(168, 216, 234, 0.03), inset 0 0 40px rgba(168, 216, 234, 0.02);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-.cyber-gauge svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-}
-.cyber-gauge .bg-ring {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.04);
-    stroke-width: 5;
-}
-.cyber-gauge .progress-ring {
-    fill: none;
-    stroke: #1a1a2e;
-    stroke-width: 5;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 1s ease;
-}
-.cyber-gauge .gauge-center {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    padding: 0 6px;
-}
-.cyber-gauge .gauge-center .song-name {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--ice);
-    text-shadow: 0 0 20px rgba(168, 216, 234, 0.15);
-    font-family: 'Courier New', monospace;
-    letter-spacing: 1px;
-    line-height: 1.2;
-}
-.cyber-gauge .gauge-center .song-year {
-    font-size: 10px;
-    opacity: 0.25;
-    font-family: 'Courier New', monospace;
-    margin-top: 2px;
-}
-.cyber-gauge .glow-ring {
-    position: absolute;
-    inset: -3px;
-    border-radius: 50%;
-    border: 1px solid transparent;
-    background: conic-gradient(from 0deg, transparent, rgba(168, 216, 234, 0.04), transparent, rgba(168, 216, 234, 0.02), transparent);
-    pointer-events: none;
-    animation: gaugeGlow 8s linear infinite;
-}
-@keyframes gaugeGlow {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-.dashboard-item .item-info {
-    margin-top: 8px;
-    text-align: center;
-    font-size: 12px;
-    opacity: 0.35;
-    font-family: 'Courier New', monospace;
-    color: var(--moon);
-}
-.dashboard-item .item-info .badge {
-    display: inline-block;
-    padding: 1px 10px;
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: 600;
-    background: rgba(102, 187, 106, 0.12);
-    color: #66BB6A;
-    border: 1px solid rgba(102, 187, 106, 0.06);
-}
-/* 右栏：出道天数 */
-.side-panel-right {
-    flex: 0 0 160px;
-    background: var(--glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 14px 18px;
-    position: relative;
-    transition: flex 0.35s ease, opacity 0.3s ease, transform 0.35s ease;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.side-panel-right.collapsed {
-    flex: 0 0 0;
-    padding: 0;
-    border: none;
-    opacity: 0;
-    transform: scaleX(0.7);
-    margin: 0;
-    min-width: 0;
-    overflow: hidden;
-}
-.side-panel-right .toggle-btn {
-    position: absolute;
-    left: -12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 22px;
-    height: 44px;
-    background: rgba(168, 216, 234, 0.08);
-    border: 1px solid var(--border);
-    border-radius: 10px 0 0 10px;
-    color: var(--ice);
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Courier New', monospace;
-    z-index: 5;
-}
-.side-panel-right .toggle-btn:hover {
-    background: rgba(168, 216, 234, 0.18);
-}
-.side-panel-right.collapsed .toggle-btn {
-    left: -22px;
-    border-radius: 10px;
-    transform: translateY(-50%) rotate(180deg);
-}
-.debut-number {
-    font-size: 48px;
-    font-weight: 700;
-    color: var(--ice);
-    text-shadow: 0 0 30px rgba(168, 216, 234, 0.08);
-    font-family: 'Courier New', monospace;
-    line-height: 1;
-    letter-spacing: 2px;
-}
-.debut-label {
-    font-size: 12px;
-    opacity: 0.35;
-    margin-top: 4px;
-    font-family: 'Courier New', monospace;
-    letter-spacing: 2px;
-}
-/* ===== 页面B：日历页 ===== */
-#calendar-view {
-    display: none;
-    padding: 4px 0 16px;
-}
-#calendar-view.active {
-    display: block;
-}
-.calendar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 12px;
-}
-.calendar-header .page-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--ice);
-    letter-spacing: 4px;
-    font-family: 'Courier New', monospace;
-    text-shadow: 0 0 30px rgba(168, 216, 234, 0.06);
-}
-.calendar-control {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-.cal-btn {
-    padding: 5px 12px;
-    font-size: 14px;
-    border: 1px solid var(--border);
-    background: rgba(0, 0, 0, 0.25);
-    color: var(--text);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'Courier New', monospace;
-}
-.cal-btn:hover {
-    background: rgba(168, 216, 234, 0.06);
-    border-color: var(--ice);
-}
-.current-ym {
-    font-size: 16px;
-    font-weight: 700;
-    min-width: 110px;
-    text-align: center;
-    padding: 4px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    border: 1px solid rgba(168, 216, 234, 0.06);
-    color: var(--ice);
-    font-family: 'Courier New', monospace;
-}
-.current-ym:hover {
-    background: rgba(168, 216, 234, 0.03);
-}
-.add-btn {
-    background: rgba(168, 216, 234, 0.08);
-    border: 1px solid var(--border);
-    color: var(--ice);
-    padding: 5px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    font-family: 'Courier New', monospace;
-    transition: all 0.3s;
-}
-.add-btn:hover {
-    background: rgba(168, 216, 234, 0.18);
-}
-.search-area {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-#searchDateInput {
-    padding: 5px 10px;
-    font-size: 12px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: rgba(0, 0, 0, 0.25);
-    color: #fff;
-    min-width: 130px;
-    font-family: 'Courier New', monospace;
-}
-#searchDateInput::placeholder {
-    color: rgba(255, 255, 255, 0.2);
-}
-#searchDateInput:focus {
-    border-color: var(--ice);
-    outline: none;
-}
-#importBtn,
-#importExcelBtn {
-    background: rgba(168, 216, 234, 0.04);
-    border: 1px solid var(--border);
-    color: var(--ice);
-    padding: 5px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    font-family: 'Courier New', monospace;
-    transition: all 0.3s;
-}
-#importBtn:hover,
-#importExcelBtn:hover {
-    background: rgba(168, 216, 234, 0.12);
-}
-.calendar-body {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-}
-.calendar-table-wrap {
-    flex: 1;
-    min-width: 0;
-    overflow-x: auto;
-}
-.calendar-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 3px;
-    table-layout: fixed;
-}
-.calendar-table th {
-    border: 1px solid rgba(168, 216, 234, 0.04);
-    padding: 5px 2px;
-    background: rgba(168, 216, 234, 0.03);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    text-align: center;
-    font-weight: 400;
-    height: 30px;
-    color: rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
-}
-.calendar-table td {
-    border: 1px solid rgba(168, 216, 234, 0.04);
-    vertical-align: top;
-    height: 82px;
-    padding: 3px 3px 2px;
-    transition: background 0.2s;
-    background: rgba(255, 255, 255, 0.02);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border-radius: 8px;
-    position: relative;
-    min-width: 44px;
-}
-.calendar-table td:hover {
-    background: rgba(168, 216, 234, 0.03);
-}
-.cell-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 700;
-    margin-bottom: 1px;
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.3);
-    line-height: 1.2;
-    font-family: 'Courier New', monospace;
-}
-.cell-header .date-num {
-    flex: 1;
-}
-.cell-header .milestone-icon {
-    font-size: 12px;
-    opacity: 0.3;
-}
-.calendar-content {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    max-height: 60px;
-    overflow-y: auto;
-    scrollbar-width: none;
-}
-.calendar-content::-webkit-scrollbar {
-    display: none;
-}
-.calendar-icon-block {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2px 3px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: all 0.2s;
-    min-height: 22px;
-    background: rgba(168, 216, 234, 0.02);
-    border: 1px solid rgba(168, 216, 234, 0.02);
-}
-.calendar-icon-block:hover {
-    background: rgba(168, 216, 234, 0.08);
-    transform: scale(1.06);
-}
-.calendar-icon-block.is-travel {
-    border-left: 2px solid var(--ice);
-}
-.cell-badge {
-    position: absolute;
-    top: 1px;
-    right: 3px;
-    background: rgba(168, 216, 234, 0.10);
-    color: var(--ice);
-    font-size: 8px;
-    font-weight: 700;
-    padding: 0 4px;
-    border-radius: 8px;
-    line-height: 12px;
-    min-width: 12px;
-    text-align: center;
-    font-family: 'Courier New', monospace;
-    border: 1px solid rgba(168, 216, 234, 0.03);
-}
-/* 右侧行程标签 */
-.tag-legend-panel {
-    flex: 0 0 140px;
-    background: var(--glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-.tag-legend-panel .panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--ice);
-    border-bottom: 1px solid rgba(168, 216, 234, 0.03);
-    font-family: 'Courier New', monospace;
-}
-.tag-legend-panel .panel-header .toggle-btn {
-    background: none;
-    border: none;
-    color: rgba(168, 216, 234, 0.3);
-    cursor: pointer;
-    font-size: 13px;
-    transition: transform 0.3s;
-}
-.tag-legend-panel .panel-header .toggle-btn:hover {
-    color: var(--ice);
-}
-.tag-legend-panel.collapsed .panel-body {
-    display: none;
-}
-.tag-legend-panel.collapsed .toggle-btn {
-    transform: rotate(-90deg);
-}
-.tag-legend-panel .panel-body {
-    padding: 6px 8px;
-    max-height: 380px;
-    overflow-y: auto;
-}
-.tag-legend-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 2px 5px;
-    border-radius: 4px;
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
-    transition: background 0.2s;
-    font-family: 'Courier New', monospace;
-}
-.tag-legend-item:hover {
-    background: rgba(168, 216, 234, 0.03);
-}
-.tag-legend-item .legend-icon {
-    font-size: 13px;
-}
-.tag-legend-item .legend-name {
-    flex: 1;
-    word-break: break-word;
-    font-size: 10px;
-}
-.tag-legend-item .legend-count {
-    font-size: 9px;
-    opacity: 0.25;
-}
-/* ===== 弹窗 ===== */
-.modal-mask {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-    padding: 20px;
-}
-.modal-mask.active {
-    display: flex;
-}
-.modal-wrap {
-    display: flex;
-    width: min(920px, 100%);
-    background: rgba(20, 20, 35, 0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    max-height: 90vh;
-    position: relative;
-}
-.modal-img-box {
-    width: 52%;
-    flex-shrink: 0;
-    aspect-ratio: 16/10;
-    background: #0a0a12;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.modal-img-box img,
-.modal-img-box iframe,
-.modal-img-box video {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    border: none;
-}
-.modal-img-box .no-media {
-    color: #666;
-    font-size: 13px;
-    opacity: 0.5;
-    text-align: center;
-    font-family: 'Courier New', monospace;
-}
-.modal-info {
-    width: 48%;
-    padding: 20px 22px;
-    overflow-y: auto;
-    max-height: 85vh;
-}
-.modal-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: #fff;
-    font-family: 'Courier New', monospace;
-}
-.modal-link-item {
-    margin: 4px 0;
-    padding: 2px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-}
-.modal-link-item a {
-    color: var(--ice);
-    text-decoration: none;
-    font-size: 13px;
-}
-.modal-link-item a:hover {
-    color: var(--purple);
-}
-.modal-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    background: rgba(100, 100, 100, 0.15);
-    color: #fff;
-    font-size: 16px;
-    transition: background 0.2s;
-    z-index: 10;
-}
-.modal-close:hover {
-    background: rgba(100, 100, 100, 0.3);
-}
-.modal-delete-btn {
-    padding: 5px 14px;
-    background: var(--danger);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    font-family: 'Courier New', monospace;
-}
-.modal-delete-btn:hover {
-    opacity: 0.85;
-}
-.modal-edit-btn {
-    padding: 5px 14px;
-    background: var(--ice);
-    color: #000;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    margin-right: 6px;
-    font-family: 'Courier New', monospace;
-}
-.modal-edit-btn:hover {
-    opacity: 0.85;
-}
-.modal-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 12px;
-}
-.readonly .modal-edit-btn,
-.readonly .modal-delete-btn,
-.readonly #addBtn,
-.readonly #importBtn,
-.readonly .manage-btn {
-    display: none !important;
-}
-/* 表单弹窗 */
-.form-modal .modal-wrap {
-    max-width: 520px;
-    flex-direction: column;
-    padding: 22px 26px;
-}
-.form-modal .modal-info {
-    width: 100%;
-    padding: 0;
-}
-.form-modal .modal-img-box {
-    display: none;
-}
-.form-title {
-    font-size: 20px;
-    font-weight: 700;
-    text-align: center;
-    color: var(--ice);
-    font-family: 'Courier New', monospace;
-    margin-bottom: 14px;
-}
-.form-group {
-    margin-bottom: 12px;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 2px;
-    font-weight: 500;
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.5);
-    font-family: 'Courier New', monospace;
-}
-.form-group input,
-.form-group textarea,
-.form-group select {
-    width: 100%;
-    padding: 5px 10px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: rgba(0, 0, 0, 0.25);
-    color: #fff;
-    font-size: 13px;
-    font-family: 'Courier New', monospace;
-}
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    border-color: var(--ice);
-    outline: none;
-}
-.form-group .hint {
-    font-size: 10px;
-    opacity: 0.25;
-    margin-top: 1px;
-    font-family: 'Courier New', monospace;
-}
-.person-checkbox-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 2px;
-}
-.person-checkbox-group label {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    font-weight: 400;
-    font-size: 12px;
-    cursor: pointer;
-    padding: 2px 8px;
-    border-radius: 14px;
-    background: rgba(0, 0, 0, 0.15);
-    color: rgba(255, 255, 255, 0.5);
-    font-family: 'Courier New', monospace;
-}
-.person-checkbox-group label:hover {
-    background: rgba(168, 216, 234, 0.04);
-}
-.person-checkbox-group input[type=checkbox] {
-    width: 13px;
-    height: 13px;
-    accent-color: var(--ice);
-}
-.form-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 14px;
-    justify-content: flex-end;
-}
-.form-actions button {
-    padding: 5px 18px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
-    font-family: 'Courier New', monospace;
-}
-.btn-cancel {
-    background: rgba(255, 255, 255, 0.04);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.04);
-}
-.btn-cancel:hover {
-    background: rgba(255, 255, 255, 0.08);
-}
-.btn-submit {
-    background: var(--ice);
-    color: #000;
-}
-.btn-submit:hover {
-    opacity: 0.85;
-}
-/* 年月选择器 */
-.ym-picker-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(6px);
-    z-index: 1000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-}
-.ym-picker-overlay.active {
-    display: flex;
-}
-.ym-picker-box {
-    background: rgba(20, 20, 35, 0.92);
-    padding: 22px 30px 26px;
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    min-width: 260px;
-    text-align: center;
-}
-.ym-picker-box h3 {
-    margin: 0 0 12px;
-    color: var(--ice);
-    font-family: 'Courier New', monospace;
-    font-size: 17px;
-}
-.ym-picker-row {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    align-items: center;
-    margin: 8px 0 14px;
-    flex-wrap: wrap;
-}
-.ym-picker-row select {
-    padding: 5px 10px;
-    font-size: 15px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: rgba(0, 0, 0, 0.25);
-    color: #fff;
-    cursor: pointer;
-    min-width: 70px;
-    font-family: 'Courier New', monospace;
-}
-.ym-picker-row select:focus {
-    border-color: var(--ice);
-    outline: none;
-}
-.ym-picker-actions button {
-    padding: 5px 20px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    font-family: 'Courier New', monospace;
-}
-.ym-btn-confirm {
-    background: var(--ice);
-    color: #000;
-}
-.ym-btn-cancel {
-    background: rgba(255, 255, 255, 0.04);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.04);
-}
-.ym-btn-cancel:hover {
-    background: rgba(255, 255, 255, 0.08);
-}
-/* 冰晶特效 */
-#ice-particle-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
-    overflow: hidden;
-}
-.ice-particle {
-    position: absolute;
-    pointer-events: none;
-    font-size: 16px;
-    animation: iceBurst 1.2s ease-out forwards;
-    user-select: none;
-    opacity: 0.9;
-}
-@keyframes iceBurst {
-    0% {
-        transform: translate(0, 0) scale(1) rotate(0deg);
-        opacity: 0.9;
-    }
-    100% {
-        transform: translate(var(--tx), var(--ty)) scale(0) rotate(360deg);
-        opacity: 0;
-    }
-}
-/* ===== 导入弹窗 ===== */
-.import-modal .modal-wrap {
-    max-width: 760px;
-    flex-direction: column;
-    padding: 24px 28px;
-}
-.import-modal .modal-info {
-    width: 100%;
-    padding: 0;
-}
-.import-modal .modal-img-box {
-    display: none;
-}
-#importDataText {
-    min-height: 120px;
-    font-family: Consolas, monospace;
-    font-size: 12px;
-    background: rgba(0, 0, 0, 0.25);
-    color: #fff;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 6px 10px;
-    width: 100%;
-    resize: vertical;
-}
-#importDataText:focus {
-    border-color: var(--ice);
-    outline: none;
-}
-.import-toolbar {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 8px;
-    flex-wrap: wrap;
-    align-items: center;
-}
-.import-toolbar .hint-text {
-    font-size: 11px;
-    opacity: 0.3;
-    margin-right: auto;
-    font-family: 'Courier New', monospace;
-}
-.import-toolbar button {
-    padding: 3px 12px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    font-size: 12px;
-    font-family: 'Courier New', monospace;
-}
-.import-toolbar .btn-outline {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    color: #fff;
-}
-.import-toolbar .btn-outline:hover {
-    background: rgba(255, 255, 255, 0.03);
-}
-.import-toolbar .btn-primary {
-    background: rgba(168, 216, 234, 0.08);
-    color: var(--ice);
-    border: 1px solid var(--border);
-}
-.import-toolbar .btn-primary:hover {
-    background: rgba(168, 216, 234, 0.16);
-}
-#importFileInput {
-    display: none;
-}
-.import-preview-table-wrap {
-    max-height: 200px;
-    overflow-y: auto;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    margin-top: 4px;
-}
-.import-preview-table-wrap table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-}
-.import-preview-table-wrap th {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 3px 6px;
-    text-align: left;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    font-weight: 600;
-    border-bottom: 1px solid var(--border);
-    color: rgba(255, 255, 255, 0.4);
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-}
-.import-preview-table-wrap td {
-    padding: 3px 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-    vertical-align: middle;
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-}
-.import-stats-bar {
-    display: flex;
-    gap: 14px;
-    margin: 4px 0 8px;
-    flex-wrap: wrap;
-    font-size: 12px;
-    font-family: 'Courier New', monospace;
-    color: rgba(255, 255, 255, 0.4);
-}
-.import-stats-bar .num {
-    font-weight: 700;
-    font-size: 14px;
-}
-.import-stats-bar .num.green {
-    color: #66BB6A;
-}
-.import-stats-bar .num.red {
-    color: #f87171;
-}
-.import-progress {
-    margin-top: 6px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.02);
-    font-size: 12px;
-    display: none;
-    font-family: 'Courier New', monospace;
-}
-.import-progress.active {
-    display: block;
-}
-.import-progress .progress-bar {
-    height: 3px;
-    background: rgba(168, 216, 234, 0.06);
-    border-radius: 2px;
-    margin-top: 3px;
-    overflow: hidden;
-}
-.import-progress .progress-bar .fill {
-    height: 100%;
-    background: var(--ice);
-    width: 0;
-    transition: width 0.3s;
-}
-.import-result-toast {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px 22px;
-    border-radius: 10px;
-    background: rgba(20, 20, 35, 0.92);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    z-index: 2000;
-    font-size: 13px;
-    text-align: center;
-    max-width: 90%;
-    backdrop-filter: blur(4px);
-    display: none;
-    font-family: 'Courier New', monospace;
-    color: #fff;
-}
-.import-result-toast.show {
-    display: block;
-    animation: fadeUp 0.3s ease;
-}
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(16px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-    }
-}
-.import-result-toast .toast-close {
-    margin-left: 10px;
-    cursor: pointer;
-    opacity: 0.5;
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 15px;
-}
-.import-result-toast.success {
-    border-color: #66BB6A;
-}
-.import-result-toast.error {
-    border-color: #f87171;
-}
-/* ===== 响应式 ===== */
-@media (max-width: 1024px) {
-    .dashboard-layout {
-        flex-wrap: wrap;
-    }
-    .side-panel-left,
-    .side-panel-right {
-        flex: 1 1 100% !important;
-        min-width: 0;
-        padding: 12px 16px;
-    }
-    .side-panel-left .toggle-btn,
-    .side-panel-right .toggle-btn {
-        display: none;
-    }
-    .side-panel-left.collapsed,
-    .side-panel-right.collapsed {
-        flex: 1 1 100% !important;
-        padding: 12px 16px;
-        opacity: 1;
-        transform: none;
-        border: 1px solid var(--border);
-        margin: 0;
-        min-width: 0;
-        overflow: visible;
-        height: auto;
-    }
-    .dashboard-center {
-        flex: 1 1 100%;
-    }
-    .tag-legend-panel {
-        flex: 0 0 100px;
-    }
-    .modal-wrap {
-        flex-direction: column;
-    }
-    .modal-img-box,
-    .modal-info {
-        width: 100%;
-    }
-    .modal-img-box {
-        max-height: 240px;
-        aspect-ratio: auto;
-    }
-}
-@media (max-width: 768px) {
-    .dashboard-grid {
-        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-        gap: 14px;
-    }
-    .cyber-gauge {
-        width: 110px;
-        height: 110px;
-    }
-    .cyber-gauge .gauge-center .song-name {
-        font-size: 14px;
-    }
-    .dashboard-item {
-        width: 110px;
-    }
-    .tag-legend-panel {
-        flex: 0 0 80px;
-    }
-    .tag-legend-item .legend-name {
-        font-size: 9px;
-    }
-    .calendar-table td {
-        height: 64px;
-        padding: 2px;
-    }
-    .calendar-icon-block {
-        font-size: 14px;
-        min-height: 18px;
-    }
-    .cell-header .date-num {
-        font-size: 9px;
-    }
-    .debut-number {
-        font-size: 32px;
-    }
-    .side-panel-left,
-    .side-panel-right {
-        padding: 10px 12px;
-    }
-    .bio-content {
-        font-size: 12px;
-    }
-}
-@media (max-width: 480px) {
-    .dashboard-grid {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-        gap: 10px;
-    }
-    .cyber-gauge {
-        width: 80px;
-        height: 80px;
-    }
-    .cyber-gauge .gauge-center .song-name {
-        font-size: 11px;
-    }
-    .cyber-gauge .gauge-center .song-year {
-        font-size: 8px;
-    }
-    .dashboard-item {
-        width: 80px;
-    }
-    .tag-legend-panel {
-        flex: 0 0 60px;
-    }
-    .tag-legend-item {
-        font-size: 9px;
-        padding: 1px 3px;
-    }
-    .tag-legend-item .legend-icon {
-        font-size: 10px;
-    }
-    .tag-legend-item .legend-name {
-        font-size: 8px;
-    }
-    .calendar-table td {
-        height: 50px;
-        padding: 1px;
-    }
-    .calendar-icon-block {
-        font-size: 12px;
-        min-height: 16px;
-        padding: 1px 2px;
-    }
-    .cell-header .date-num {
-        font-size: 8px;
-    }
-    .cell-badge {
-        font-size: 7px;
-        line-height: 10px;
-        min-width: 10px;
-        padding: 0 3px;
-    }
-    .debut-number {
-        font-size: 24px;
-    }
-    .calendar-header .page-title {
-        font-size: 17px;
-    }
-    .current-ym {
-        font-size: 13px;
-        min-width: 80px;
-        padding: 3px 8px;
-    }
-    .cal-btn {
-        font-size: 12px;
-        padding: 3px 8px;
-    }
-    .add-btn {
-        font-size: 11px;
-        padding: 3px 10px;
-    }
-    .modal-wrap {
-        padding: 14px !important;
-    }
-    .modal-info {
-        padding: 14px 16px !important;
-    }
-    .modal-title {
-        font-size: 15px;
-    }
-    .form-modal .modal-wrap {
-        padding: 16px !important;
-    }
-    .side-panel-left,
-    .side-panel-right {
-        padding: 8px 10px;
-    }
-    .bio-content .name {
-        font-size: 15px;
-    }
+    position:fixed; inset:0; font-size:20px; letter-spacing:40px; opacity:0.05; z-index:-1; pointer-events:none;
+    animation:floatSnow 80s linear infinite; white-space:nowrap; overflow:hidden; color:var(--ice);
+}
+@keyframes floatSnow { 0% { transform:translateY(0) rotate(0deg); } 100% { transform:translateY(-80px) rotate(8deg); } }
+h1 { font-size:40px; font-weight:700; text-align:center; letter-spacing:6px; color:var(--ice); text-shadow:0 0 40px rgba(168,216,234,0.12); font-family:'Courier New',monospace; margin:4px 0 2px; }
+.subtitle { font-size:15px; opacity:0.45; text-align:center; letter-spacing:6px; margin-bottom:14px; font-family:'Courier New',monospace; color:var(--moon); }
+.view-fade-in { animation:fadeIn 0.35s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+#dashboard-view { display:none; padding:10px 0 20px; }
+#dashboard-view.active { display:block; }
+.dashboard-layout { display:flex; gap:18px; align-items:stretch; min-height:420px; }
+.side-panel-left { flex:0 0 200px; background:var(--glass); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--border); border-radius:14px; padding:14px 14px 18px; position:relative; transition:flex 0.35s, opacity 0.3s, transform 0.35s; overflow:hidden; }
+.side-panel-left.collapsed { flex:0 0 0; padding:0; border:none; opacity:0; transform:scaleX(0.7); margin:0; min-width:0; overflow:hidden; }
+.side-panel-left .toggle-btn { position:absolute; right:-12px; top:50%; transform:translateY(-50%); width:22px; height:44px; background:rgba(168,216,234,0.08); border:1px solid var(--border); border-radius:0 10px 10px 0; color:var(--ice); font-size:14px; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; justify-content:center; font-family:'Courier New',monospace; z-index:5; }
+.side-panel-left .toggle-btn:hover { background:rgba(168,216,234,0.18); }
+.side-panel-left.collapsed .toggle-btn { right:-22px; border-radius:10px; transform:translateY(-50%) rotate(180deg); }
+.panel-title { font-size:13px; font-weight:600; color:var(--ice); letter-spacing:2px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; font-family:'Courier New',monospace; }
+.panel-title .edit-icon { font-size:14px; opacity:0.4; cursor:pointer; transition:opacity 0.2s; }
+.panel-title .edit-icon:hover { opacity:0.9; }
+.bio-content { font-size:13px; line-height:1.7; color:rgba(255,255,255,0.6); font-family:'Courier New',monospace; }
+.bio-content .name { font-size:18px; font-weight:700; color:var(--ice); display:block; margin-bottom:4px; }
+.bio-content .desc { font-size:12px; opacity:0.5; }
+.dashboard-center { flex:1; min-width:0; padding:0 2px; }
+.dashboard-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:20px 16px; justify-items:center; }
+.dashboard-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; transition:transform 0.3s, filter 0.3s; width:140px; position:relative; }
+.dashboard-item:hover { transform:translateY(-6px) scale(1.04); filter:drop-shadow(0 0 20px rgba(168,216,234,0.12)); }
+.cyber-gauge { position:relative; width:140px; height:140px; border-radius:50%; background:radial-gradient(circle at 30% 30%, rgba(168,216,234,0.04), rgba(10,10,20,0.8)); border:1px solid rgba(168,216,234,0.10); box-shadow:0 0 30px rgba(168,216,234,0.03), inset 0 0 40px rgba(168,216,234,0.02); display:flex; align-items:center; justify-content:center; flex-direction:column; }
+.cyber-gauge svg { position:absolute; top:0; left:0; width:100%; height:100%; transform:rotate(-90deg); }
+.cyber-gauge .bg-ring { fill:none; stroke:rgba(255,255,255,0.04); stroke-width:5; }
+.cyber-gauge .progress-ring { fill:none; stroke:#1a1a2e; stroke-width:5; stroke-linecap:round; transition:stroke-dashoffset 1s ease; }
+.cyber-gauge .gauge-center { position:relative; z-index:2; text-align:center; padding:0 6px; }
+.cyber-gauge .gauge-center .song-name { font-size:17px; font-weight:700; color:var(--ice); text-shadow:0 0 20px rgba(168,216,234,0.15); font-family:'Courier New',monospace; letter-spacing:1px; line-height:1.2; }
+.cyber-gauge .gauge-center .song-year { font-size:10px; opacity:0.25; font-family:'Courier New',monospace; margin-top:2px; }
+.cyber-gauge .glow-ring { position:absolute; inset:-3px; border-radius:50%; border:1px solid transparent; background:conic-gradient(from 0deg, transparent, rgba(168,216,234,0.04), transparent, rgba(168,216,234,0.02), transparent); pointer-events:none; animation:gaugeGlow 8s linear infinite; }
+@keyframes gaugeGlow { 0% { transform:rotate(0deg); } 100% { transform:rotate(360deg); } }
+.dashboard-item .item-info { margin-top:8px; text-align:center; font-size:12px; opacity:0.35; font-family:'Courier New',monospace; color:var(--moon); }
+.dashboard-item .item-info .badge { display:inline-block; padding:1px 10px; border-radius:10px; font-size:10px; font-weight:600; background:rgba(102,187,106,0.12); color:#66BB6A; border:1px solid rgba(102,187,106,0.06); }
+.side-panel-right { flex:0 0 160px; background:var(--glass); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--border); border-radius:14px; padding:14px 14px 18px; position:relative; transition:flex 0.35s, opacity 0.3s, transform 0.35s; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.side-panel-right.collapsed { flex:0 0 0; padding:0; border:none; opacity:0; transform:scaleX(0.7); margin:0; min-width:0; overflow:hidden; }
+.side-panel-right .toggle-btn { position:absolute; left:-12px; top:50%; transform:translateY(-50%); width:22px; height:44px; background:rgba(168,216,234,0.08); border:1px solid var(--border); border-radius:10px 0 0 10px; color:var(--ice); font-size:14px; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; justify-content:center; font-family:'Courier New',monospace; z-index:5; }
+.side-panel-right .toggle-btn:hover { background:rgba(168,216,234,0.18); }
+.side-panel-right.collapsed .toggle-btn { left:-22px; border-radius:10px; transform:translateY(-50%) rotate(180deg); }
+.debut-number { font-size:48px; font-weight:700; color:var(--ice); text-shadow:0 0 30px rgba(168,216,234,0.08); font-family:'Courier New',monospace; line-height:1; letter-spacing:2px; }
+.debut-label { font-size:12px; opacity:0.35; margin-top:4px; font-family:'Courier New',monospace; letter-spacing:2px; }
+#calendar-view { display:none; padding:4px 0 16px; }
+#calendar-view.active { display:block; }
+.calendar-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:12px; }
+.calendar-header .page-title { font-size:22px; font-weight:700; color:var(--ice); letter-spacing:4px; font-family:'Courier New',monospace; text-shadow:0 0 30px rgba(168,216,234,0.06); }
+.calendar-control { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.cal-btn { padding:5px 12px; font-size:14px; border:1px solid var(--border); background:rgba(0,0,0,0.25); color:var(--text); border-radius:6px; cursor:pointer; transition:all 0.2s; font-family:'Courier New',monospace; }
+.cal-btn:hover { background:rgba(168,216,234,0.06); border-color:var(--ice); }
+.current-ym { font-size:16px; font-weight:700; min-width:110px; text-align:center; padding:4px 14px; border-radius:8px; cursor:pointer; border:1px solid rgba(168,216,234,0.06); color:var(--ice); font-family:'Courier New',monospace; }
+.current-ym:hover { background:rgba(168,216,234,0.03); }
+.add-btn { background:rgba(168,216,234,0.08); border:1px solid var(--border); color:var(--ice); padding:5px 16px; border-radius:6px; cursor:pointer; font-size:13px; font-family:'Courier New',monospace; transition:all 0.3s; }
+.add-btn:hover { background:rgba(168,216,234,0.18); }
+.search-area { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+#searchDateInput { padding:5px 10px; font-size:12px; border:1px solid var(--border); border-radius:6px; background:rgba(0,0,0,0.25); color:#fff; min-width:130px; font-family:'Courier New',monospace; }
+#searchDateInput::placeholder { color:rgba(255,255,255,0.2); }
+#searchDateInput:focus { border-color:var(--ice); outline:none; }
+#importBtn, #importExcelBtn { background:rgba(168,216,234,0.04); border:1px solid var(--border); color:var(--ice); padding:5px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-family:'Courier New',monospace; transition:all 0.3s; }
+#importBtn:hover, #importExcelBtn:hover { background:rgba(168,216,234,0.12); }
+.calendar-body { display:flex; gap:14px; align-items:flex-start; }
+.calendar-table-wrap { flex:1; min-width:0; overflow-x:auto; }
+.calendar-table { width:100%; border-collapse:separate; border-spacing:3px; table-layout:fixed; }
+.calendar-table th { border:1px solid rgba(168,216,234,0.04); padding:5px 2px; background:rgba(168,216,234,0.03); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); text-align:center; font-weight:400; height:30px; color:rgba(255,255,255,0.3); border-radius:8px; font-family:'Courier New',monospace; font-size:11px; letter-spacing:1px; }
+.calendar-table td { border:1px solid rgba(168,216,234,0.04); vertical-align:top; height:82px; padding:3px 3px 2px; transition:background 0.2s; background:rgba(255,255,255,0.02); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border-radius:8px; position:relative; min-width:44px; }
+.calendar-table td:hover { background:rgba(168,216,234,0.03); }
+.cell-header { display:flex; justify-content:space-between; align-items:center; font-weight:700; margin-bottom:1px; font-size:11px; color:rgba(255,255,255,0.3); line-height:1.2; font-family:'Courier New',monospace; }
+.cell-header .date-num { flex:1; }
+.cell-header .milestone-icon { font-size:12px; opacity:0.3; }
+.calendar-content { display:flex; flex-direction:column; gap:2px; max-height:60px; overflow-y:auto; scrollbar-width:none; }
+.calendar-content::-webkit-scrollbar { display:none; }
+.calendar-icon-block { position:relative; display:flex; align-items:center; justify-content:center; padding:2px 3px; border-radius:4px; cursor:pointer; font-size:18px; transition:all 0.2s; min-height:22px; background:rgba(168,216,234,0.02); border:1px solid rgba(168,216,234,0.02); }
+.calendar-icon-block:hover { background:rgba(168,216,234,0.08); transform:scale(1.06); }
+.calendar-icon-block.is-travel { border-left:2px solid var(--ice); }
+.cell-badge { position:absolute; top:1px; right:3px; background:rgba(168,216,234,0.10); color:var(--ice); font-size:8px; font-weight:700; padding:0 4px; border-radius:8px; line-height:12px; min-width:12px; text-align:center; font-family:'Courier New',monospace; border:1px solid rgba(168,216,234,0.03); }
+.tag-legend-panel { flex:0 0 140px; background:var(--glass); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--border); border-radius:12px; overflow:hidden; transition:all 0.3s; }
+.tag-legend-panel .panel-header { display:flex; justify-content:space-between; align-items:center; padding:8px 12px; font-size:12px; font-weight:600; color:var(--ice); border-bottom:1px solid rgba(168,216,234,0.03); font-family:'Courier New',monospace; }
+.tag-legend-panel .panel-header .toggle-btn { background:none; border:none; color:rgba(168,216,234,0.3); cursor:pointer; font-size:13px; transition:transform 0.3s; }
+.tag-legend-panel .panel-header .toggle-btn:hover { color:var(--ice); }
+.tag-legend-panel.collapsed .panel-body { display:none; }
+.tag-legend-panel.collapsed .toggle-btn { transform:rotate(-90deg); }
+.tag-legend-panel .panel-body { padding:6px 8px; max-height:380px; overflow-y:auto; }
+.tag-legend-item { display:flex; align-items:center; gap:5px; padding:2px 5px; border-radius:4px; font-size:11px; color:rgba(255,255,255,0.4); transition:background 0.2s; font-family:'Courier New',monospace; }
+.tag-legend-item:hover { background:rgba(168,216,234,0.03); }
+.tag-legend-item .legend-icon { font-size:13px; }
+.tag-legend-item .legend-name { flex:1; word-break:break-word; font-size:10px; }
+.tag-legend-item .legend-count { font-size:9px; opacity:0.25; }
+.modal-mask { position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; z-index:999; padding:20px; }
+.modal-mask.active { display:flex; }
+.modal-wrap { display:flex; width:min(920px,100%); background:rgba(20,20,35,0.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); border:1px solid var(--border); max-height:90vh; position:relative; }
+.modal-img-box { width:52%; flex-shrink:0; aspect-ratio:16/10; background:#0a0a12; display:flex; align-items:center; justify-content:center; }
+.modal-img-box img, .modal-img-box iframe, .modal-img-box video { width:100%; height:100%; object-fit:contain; display:block; border:none; }
+.modal-img-box .no-media { color:#666; font-size:13px; opacity:0.5; text-align:center; font-family:'Courier New',monospace; }
+.modal-info { width:48%; padding:20px 22px; overflow-y:auto; max-height:85vh; }
+.modal-title { font-size:17px; font-weight:700; color:#fff; font-family:'Courier New',monospace; }
+.modal-link-item { margin:4px 0; padding:2px 0; border-bottom:1px solid rgba(255,255,255,0.03); }
+.modal-link-item a { color:var(--ice); text-decoration:none; font-size:13px; }
+.modal-link-item a:hover { color:var(--purple); }
+.modal-close { position:absolute; top:10px; right:10px; width:28px; height:28px; border-radius:50%; border:none; cursor:pointer; background:rgba(100,100,100,0.15); color:#fff; font-size:16px; transition:background 0.2s; z-index:10; }
+.modal-close:hover { background:rgba(100,100,100,0.3); }
+.modal-delete-btn { padding:5px 14px; background:var(--danger); color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:12px; font-family:'Courier New',monospace; }
+.modal-delete-btn:hover { opacity:0.85; }
+.modal-edit-btn { padding:5px 14px; background:var(--ice); color:#000; border:none; border-radius:6px; cursor:pointer; font-size:12px; margin-right:6px; font-family:'Courier New',monospace; }
+.modal-edit-btn:hover { opacity:0.85; }
+.modal-actions { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.readonly .modal-edit-btn, .readonly .modal-delete-btn, .readonly #addBtn, .readonly #importBtn, .readonly .manage-btn { display:none !important; }
+.form-modal .modal-wrap { max-width:520px; flex-direction:column; padding:22px 26px; }
+.form-modal .modal-info { width:100%; padding:0; }
+.form-modal .modal-img-box { display:none; }
+.form-title { font-size:20px; font-weight:700; text-align:center; color:var(--ice); font-family:'Courier New',monospace; margin-bottom:14px; }
+.form-group { margin-bottom:12px; }
+.form-group label { display:block; margin-bottom:2px; font-weight:500; font-size:13px; color:rgba(255,255,255,0.5); font-family:'Courier New',monospace; }
+.form-group input, .form-group textarea, .form-group select { width:100%; padding:5px 10px; border:1px solid var(--border); border-radius:6px; background:rgba(0,0,0,0.25); color:#fff; font-size:13px; font-family:'Courier New',monospace; }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:var(--ice); outline:none; }
+.form-group .hint { font-size:10px; opacity:0.25; margin-top:1px; font-family:'Courier New',monospace; }
+.person-checkbox-group { display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
+.person-checkbox-group label { display:flex; align-items:center; gap:3px; font-weight:400; font-size:12px; cursor:pointer; padding:2px 8px; border-radius:14px; background:rgba(0,0,0,0.15); color:rgba(255,255,255,0.5); font-family:'Courier New',monospace; }
+.person-checkbox-group label:hover { background:rgba(168,216,234,0.04); }
+.person-checkbox-group input[type=checkbox] { width:13px; height:13px; accent-color:var(--ice); }
+.form-actions { display:flex; gap:10px; margin-top:14px; justify-content:flex-end; }
+.form-actions button { padding:5px 18px; border:none; border-radius:6px; cursor:pointer; font-size:13px; font-weight:500; font-family:'Courier New',monospace; }
+.btn-cancel { background:rgba(255,255,255,0.04); color:#fff; border:1px solid rgba(255,255,255,0.04); }
+.btn-cancel:hover { background:rgba(255,255,255,0.08); }
+.btn-submit { background:var(--ice); color:#000; }
+.btn-submit:hover { opacity:0.85; }
+.ym-picker-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(6px); z-index:1000; display:none; align-items:center; justify-content:center; }
+.ym-picker-overlay.active { display:flex; }
+.ym-picker-box { background:rgba(20,20,35,0.92); padding:22px 30px 26px; border-radius:16px; border:1px solid var(--border); min-width:260px; text-align:center; }
+.ym-picker-box h3 { margin:0 0 12px; color:var(--ice); font-family:'Courier New',monospace; font-size:17px; }
+.ym-picker-row { display:flex; gap:12px; justify-content:center; align-items:center; margin:8px 0 14px; flex-wrap:wrap; }
+.ym-picker-row select { padding:5px 10px; font-size:15px; border-radius:6px; border:1px solid var(--border); background:rgba(0,0,0,0.25); color:#fff; cursor:pointer; min-width:70px; font-family:'Courier New',monospace; }
+.ym-picker-row select:focus { border-color:var(--ice); outline:none; }
+.ym-picker-actions button { padding:5px 20px; border:none; border-radius:6px; font-size:14px; cursor:pointer; font-family:'Courier New',monospace; }
+.ym-btn-confirm { background:var(--ice); color:#000; }
+.ym-btn-cancel { background:rgba(255,255,255,0.04); color:#fff; border:1px solid rgba(255,255,255,0.04); }
+.ym-btn-cancel:hover { background:rgba(255,255,255,0.08); }
+#ice-particle-container { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; overflow:hidden; }
+.ice-particle { position:absolute; pointer-events:none; font-size:16px; animation:iceBurst 1.2s ease-out forwards; user-select:none; opacity:0.9; }
+@keyframes iceBurst { 0% { transform:translate(0,0) scale(1) rotate(0deg); opacity:0.9; } 100% { transform:translate(var(--tx), var(--ty)) scale(0) rotate(360deg); opacity:0; } }
+.import-modal .modal-wrap { max-width:760px; flex-direction:column; padding:24px 28px; }
+.import-modal .modal-info { width:100%; padding:0; }
+.import-modal .modal-img-box { display:none; }
+#importDataText { min-height:120px; font-family:Consolas,monospace; font-size:12px; background:rgba(0,0,0,0.25); color:#fff; border:1px solid var(--border); border-radius:6px; padding:6px 10px; width:100%; resize:vertical; }
+#importDataText:focus { border-color:var(--ice); outline:none; }
+.import-toolbar { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; align-items:center; }
+.import-toolbar .hint-text { font-size:11px; opacity:0.3; margin-right:auto; font-family:'Courier New',monospace; }
+.import-toolbar button { padding:3px 12px; border-radius:6px; border:none; cursor:pointer; font-size:12px; font-family:'Courier New',monospace; }
+.import-toolbar .btn-outline { background:transparent; border:1px solid rgba(255,255,255,0.06); color:#fff; }
+.import-toolbar .btn-outline:hover { background:rgba(255,255,255,0.03); }
+.import-toolbar .btn-primary { background:rgba(168,216,234,0.08); color:var(--ice); border:1px solid var(--border); }
+.import-toolbar .btn-primary:hover { background:rgba(168,216,234,0.16); }
+#importFileInput { display:none; }
+.import-preview-table-wrap { max-height:200px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; margin-top:4px; }
+.import-preview-table-wrap table { width:100%; border-collapse:collapse; font-size:12px; }
+.import-preview-table-wrap th { background:rgba(0,0,0,0.3); padding:3px 6px; text-align:left; position:sticky; top:0; z-index:2; font-weight:600; border-bottom:1px solid var(--border); color:rgba(255,255,255,0.4); font-family:'Courier New',monospace; font-size:10px; }
+.import-preview-table-wrap td { padding:3px 6px; border-bottom:1px solid rgba(255,255,255,0.02); vertical-align:middle; font-family:'Courier New',monospace; font-size:11px; }
+.import-stats-bar { display:flex; gap:14px; margin:4px 0 8px; flex-wrap:wrap; font-size:12px; font-family:'Courier New',monospace; color:rgba(255,255,255,0.4); }
+.import-stats-bar .num { font-weight:700; font-size:14px; }
+.import-stats-bar .num.green { color:#66BB6A; }
+.import-stats-bar .num.red { color:#f87171; }
+.import-progress { margin-top:6px; padding:4px 10px; border-radius:6px; background:rgba(255,255,255,0.02); font-size:12px; display:none; font-family:'Courier New',monospace; }
+.import-progress.active { display:block; }
+.import-progress .progress-bar { height:3px; background:rgba(168,216,234,0.06); border-radius:2px; margin-top:3px; overflow:hidden; }
+.import-progress .progress-bar .fill { height:100%; background:var(--ice); width:0; transition:width 0.3s; }
+.import-result-toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); padding:10px 22px; border-radius:10px; background:rgba(20,20,35,0.92); border:1px solid var(--border); box-shadow:var(--shadow); z-index:2000; font-size:13px; text-align:center; max-width:90%; backdrop-filter:blur(4px); display:none; font-family:'Courier New',monospace; color:#fff; }
+.import-result-toast.show { display:block; animation:fadeUp 0.3s ease; }
+@keyframes fadeUp { from { opacity:0; transform:translateX(-50%) translateY(16px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+.import-result-toast .toast-close { margin-left:10px; cursor:pointer; opacity:0.5; background:none; border:none; color:#fff; font-size:15px; }
+.import-result-toast.success { border-color:#66BB6A; }
+.import-result-toast.error { border-color:#f87171; }
+@media (max-width:1024px) {
+    .dashboard-layout { flex-wrap:wrap; }
+    .side-panel-left, .side-panel-right { flex:1 1 100% !important; min-width:0; padding:12px 16px; }
+    .side-panel-left .toggle-btn, .side-panel-right .toggle-btn { display:none; }
+    .side-panel-left.collapsed, .side-panel-right.collapsed { flex:1 1 100% !important; padding:12px 16px; opacity:1; transform:none; border:1px solid var(--border); margin:0; min-width:0; overflow:visible; height:auto; }
+    .dashboard-center { flex:1 1 100%; }
+    .tag-legend-panel { flex:0 0 100px; }
+    .modal-wrap { flex-direction:column; }
+    .modal-img-box, .modal-info { width:100%; }
+    .modal-img-box { max-height:240px; aspect-ratio:auto; }
+}
+@media (max-width:768px) {
+    .dashboard-grid { grid-template-columns:repeat(auto-fill, minmax(110px,1fr)); gap:14px; }
+    .cyber-gauge { width:110px; height:110px; }
+    .cyber-gauge .gauge-center .song-name { font-size:14px; }
+    .dashboard-item { width:110px; }
+    .tag-legend-panel { flex:0 0 80px; }
+    .tag-legend-item .legend-name { font-size:9px; }
+    .calendar-table td { height:64px; padding:2px; }
+    .calendar-icon-block { font-size:14px; min-height:18px; }
+    .cell-header .date-num { font-size:9px; }
+    .debut-number { font-size:32px; }
+    .side-panel-left, .side-panel-right { padding:10px 12px; }
+    .bio-content { font-size:12px; }
+}
+@media (max-width:480px) {
+    .dashboard-grid { grid-template-columns:repeat(auto-fill, minmax(80px,1fr)); gap:10px; }
+    .cyber-gauge { width:80px; height:80px; }
+    .cyber-gauge .gauge-center .song-name { font-size:11px; }
+    .cyber-gauge .gauge-center .song-year { font-size:8px; }
+    .dashboard-item { width:80px; }
+    .tag-legend-panel { flex:0 0 60px; }
+    .tag-legend-item { font-size:9px; padding:1px 3px; }
+    .tag-legend-item .legend-icon { font-size:10px; }
+    .tag-legend-item .legend-name { font-size:8px; }
+    .calendar-table td { height:50px; padding:1px; }
+    .calendar-icon-block { font-size:12px; min-height:16px; padding:1px 2px; }
+    .cell-header .date-num { font-size:8px; }
+    .cell-badge { font-size:7px; line-height:10px; min-width:10px; padding:0 3px; }
+    .debut-number { font-size:24px; }
+    .calendar-header .page-title { font-size:17px; }
+    .current-ym { font-size:13px; min-width:80px; padding:3px 8px; }
+    .cal-btn { font-size:12px; padding:3px 8px; }
+    .add-btn { font-size:11px; padding:3px 10px; }
+    .modal-wrap { padding:14px !important; }
+    .modal-info { padding:14px 16px !important; }
+    .modal-title { font-size:15px; }
+    .form-modal .modal-wrap { padding:16px !important; }
+    .side-panel-left, .side-panel-right { padding:8px 10px; }
+    .bio-content .name { font-size:15px; }
 }
 </style>
 </head>
@@ -1406,10 +266,8 @@ h1 {
 <h1>❄️ 0101号空间站</h1>
 <div class="subtitle">幸福的终点是旼炡和你</div>
 
-<!-- ===== 页面A：首页 ===== -->
 <div id="dashboard-view" class="active view-fade-in">
     <div class="dashboard-layout">
-        <!-- 左栏：人物介绍 -->
         <div class="side-panel-left" id="leftPanel">
             <button class="toggle-btn" id="leftToggle">◀</button>
             <div class="panel-title">
@@ -1429,13 +287,9 @@ h1 {
                 </div>
             </div>
         </div>
-
-        <!-- 中栏：仪表盘 -->
         <div class="dashboard-center">
             <div class="dashboard-grid" id="dashboardGrid"></div>
         </div>
-
-        <!-- 右栏：出道天数 -->
         <div class="side-panel-right" id="rightPanel">
             <button class="toggle-btn" id="rightToggle">▶</button>
             <div class="debut-number" id="debutDays">--</div>
@@ -1445,7 +299,6 @@ h1 {
     </div>
 </div>
 
-<!-- ===== 页面B：日历页 ===== -->
 <div id="calendar-view">
     <div class="calendar-header">
         <span class="page-title">❄️ WINTER RECORD</span>
@@ -1473,7 +326,6 @@ h1 {
     </div>
 </div>
 
-<!-- ===== 弹窗：查看行程 ===== -->
 <div class="modal-mask" id="modalMask">
     <div class="modal-wrap">
         <div class="modal-img-box" id="modalMediaBox"><span class="no-media">暂无媒体</span></div>
@@ -1491,7 +343,6 @@ h1 {
     </div>
 </div>
 
-<!-- ===== 弹窗：添加/编辑物料 ===== -->
 <div class="modal-mask form-modal" id="formModal">
     <div class="modal-wrap">
         <div class="modal-info">
@@ -1511,7 +362,6 @@ h1 {
     </div>
 </div>
 
-<!-- ===== 年月选择器 ===== -->
 <div class="ym-picker-overlay" id="ymPickerOverlay">
     <div class="ym-picker-box">
         <h3>📅 选择年月</h3>
@@ -1520,7 +370,6 @@ h1 {
     </div>
 </div>
 
-<!-- ===== 导入弹窗 ===== -->
 <div class="modal-mask import-modal" id="importModal">
     <div class="modal-wrap">
         <div class="modal-info">
@@ -1539,7 +388,6 @@ h1 {
     </div>
 </div>
 
-<!-- ===== Excel导入弹窗 ===== -->
 <div class="modal-mask" id="excelImportModal">
     <div class="modal-wrap" style="max-width:680px;flex-direction:column;padding:24px 28px;">
         <div class="modal-info" style="width:100%;padding:0;">
@@ -1556,10 +404,10 @@ h1 {
     </div>
 </div>
 
-<!-- ===== Toast ===== -->
 <div class="import-result-toast" id="importResultToast"><span id="importResultMsg"></span><button class="toast-close" id="importToastClose">×</button></div>
 
 <script>
+(function(){
     // ===== 配置 =====
     const API_BASE = 'https://time-capsule-backend-1-3mzs.onrender.com/api';
     const urlParams = new URLSearchParams(location.search);
@@ -1568,10 +416,8 @@ h1 {
     const weekCN = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
     const personList = ['Winter', 'aespa', 'Karina', 'Giselle', 'NingNing'];
     const displayPersonList = ['Winter', 'aespa'];
-    const personColorRule = { "Winter": "#4FC3F7", "aespa": "#66BB6A", "Karina": "#FF6B9D", "Giselle": "#B47EDC",
-        "NingNing": "#F9A95A" };
-    const personDisplayMap = { "Winter": "⭐Winter", "aespa": "aespa", "Karina": "💙Karina", "Giselle": "🌙Giselle",
-        "NingNing": "🦋NingNing" };
+    const personColorRule = { "Winter": "#4FC3F7", "aespa": "#66BB6A", "Karina": "#FF6B9D", "Giselle": "#B47EDC", "NingNing": "#F9A95A" };
+    const personDisplayMap = { "Winter": "⭐Winter", "aespa": "aespa", "Karina": "💙Karina", "Giselle": "🌙Giselle", "NingNing": "🦋NingNing" };
     const STORAGE_TAGS = 'winter_tags';
     const STORAGE_MILESTONES = 'winter_milestones';
     const REGRESSION_LIST = [
@@ -1584,824 +430,135 @@ h1 {
         { name: 'NEXT LEVEL', year: 2023, month: 7 }
     ];
     const TAG_ICON_MAP = {
-        '打歌舞台': '🎤',
-        '演唱会/拼盘': '🎵',
-        '综艺录制': '📺',
-        '颁奖礼/红毯': '🏆',
-        '机场出境/入境': '✈️',
-        '品牌活动': '💄',
-        '签售会（线上/线下）': '📸',
-        '杂志/画报拍摄': '🎬',
-        '直播/VLOG': '📱',
-        '电台录制': '🎙️',
-        '生日/周年活动': '🎂',
-        '粉丝见面会': '🤝',
-        '舞蹈练习室/cover': '🩰',
-        '官咖/社交媒体更新': '📝',
-        '特别舞台/节日特辑': '🎄',
-        '周边/快闪店活动': '🎁'
+        '打歌舞台': '🎤', '演唱会/拼盘': '🎵', '综艺录制': '📺', '颁奖礼/红毯': '🏆',
+        '机场出境/入境': '✈️', '品牌活动': '💄', '签售会（线上/线下）': '📸', '杂志/画报拍摄': '🎬',
+        '直播/VLOG': '📱', '电台录制': '🎙️', '生日/周年活动': '🎂', '粉丝见面会': '🤝',
+        '舞蹈练习室/cover': '🩰', '官咖/社交媒体更新': '📝', '特别舞台/节日特辑': '🎄', '周边/快闪店活动': '🎁'
     };
-    let scheduleList = [],
-        tags = [],
-        milestones = [];
-    let viewYear = new Date().getFullYear(),
-        viewMonth = new Date().getMonth() + 1;
-    let currentFilterPerson = "all",
-        searchDateKeyword = "";
-    let currentView = 'dashboard',
-        editModeId = null,
-        currentDeleteId = null;
+    let scheduleList = [], tags = [], milestones = [];
+    let viewYear = new Date().getFullYear(), viewMonth = new Date().getMonth() + 1;
+    let currentFilterPerson = "all", searchDateKeyword = "";
+    let currentView = 'dashboard', editModeId = null, currentDeleteId = null;
 
     function getTagIcon(n) { return TAG_ICON_MAP[n] || '📌'; }
-
     function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+    function isValidDate(s) { const p = s.split('-'); if (p.length!==3) return false; const y=parseInt(p[0]), m=parseInt(p[1])-1, d=parseInt(p[2]); const dt=new Date(y,m,d); return dt.getFullYear()===y && dt.getMonth()===m && dt.getDate()===d; }
+    function normalizeDateInput(r) { const s=r.trim(); if(!s) return s; if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return s; if(/^\d{6}$/.test(s)){ const yy=s.slice(0,2), mm=s.slice(2,4), dd=s.slice(4,6); if(parseInt(mm)>=1&&parseInt(mm)<=12&&parseInt(dd)>=1&&parseInt(dd)<=31) return `20${yy}-${mm}-${dd}`; return s; } if(/^\d{8}$/.test(s)){ const yyyy=s.slice(0,4), mm=s.slice(4,6), dd=s.slice(6,8); if(parseInt(mm)>=1&&parseInt(mm)<=12&&parseInt(dd)>=1&&parseInt(dd)<=31) return `${yyyy}-${mm}-${dd}`; return s; } return s; }
+    function urlToEmbed(u) { if(!u) return ""; const url=u.trim(); if(url.includes('player.bilibili.com/player.html')||url.includes('youtube.com/embed/')) return url; const bv=url.match(/BV\w{10}/); if(bv){ const p=(url.match(/[?&]p=(\d+)/)||[])[1]||1; return `https://player.bilibili.com/player.html?bvid=${bv[0]}&page=${p}&danmaku=0`; } const yt=url.match(/youtu\.be\/([A-Za-z0-9_-]{11})/)||url.match(/[?&]v=([A-Za-z0-9_-]{11})/); if(yt) return `https://www.youtube.com/embed/${yt[1]}`; return null; }
+    function getProxiedImageUrl(u){ if(!u) return ''; const p=u.includes('instagram.com')||u.includes('cdninstagram.com')||u.includes('twitter.com')||u.includes('twimg.com')||u.includes('x.com')||u.includes('sinaimg.cn')||u.includes('pic.sinaimg.cn')||u.includes('doubanio.com')||u.includes('douban.com'); return p?`/api/image-proxy?url=${encodeURIComponent(u)}`:u; }
+    function showToast(msg,type){ const t=document.getElementById('importResultToast'), m=document.getElementById('importResultMsg'); m.textContent=msg; t.className='import-result-toast show '+type; setTimeout(()=>t.classList.remove('show'),5000); }
+    function hexToRgba(h,a){ let H=h.trim(); if(H.startsWith('#')) H=H.slice(1); if(H.length===3){ H=H[0]+H[0]+H[1]+H[1]+H[2]+H[2]; } const r=parseInt(H.slice(0,2),16), g=parseInt(H.slice(2,4),16), b=parseInt(H.slice(4,6),16); return `rgba(${r},${g},${b},${a})`; }
+    function ensurePersonArray(item){ if(!item) return []; let p=item.person; if(typeof p==='string'){ try{ let parsed=JSON.parse(p); p=Array.isArray(parsed)?parsed:(typeof parsed==='object'?Object.values(parsed):[parsed]); }catch{ p=p.includes(',')?p.split(',').map(s=>s.trim()):[p.trim()]; } }else if(!Array.isArray(p)) p=[]; p=p.map(x=>{ if(typeof x==='string'){ const k=personList.find(n=>x.includes(n)); return k||x; } return x; }).filter(x=>x&&typeof x==='string'&&x.trim()!=='').map(x=>x.trim()); p=p.map(x=>personList.includes(x)?x:(personList.find(n=>x.includes(n))||x)); item.person=p; return p; }
 
-    function isValidDate(s) { const p = s.split('-'); if (p.length !== 3) return false; const y = parseInt(p[0]),
-            m = parseInt(p[1]) - 1,
-            d = parseInt(p[2]); const dt = new Date(y, m, d); return dt.getFullYear() === y && dt.getMonth() === m && dt
-            .getDate() === d; }
+    function loadTagsFromStorage(){ const s=localStorage.getItem(STORAGE_TAGS); if(s){ try{ tags=JSON.parse(s); }catch{ tags=[]; } }else{ tags=[{id:'tag1',name:'演唱会',color:'#ff6b9d',isTravel:true},{id:'tag2',name:'飞行',color:'#ffaa00',isTravel:true},{id:'tag3',name:'直播',color:'#4FC3F7',isTravel:false},{id:'tag4',name:'画报',color:'#B47EDC',isTravel:false}]; saveTagsToStorage(); } tags=tags.map(t=>({...t,isTravel:t.isTravel||false})); saveTagsToStorage(); }
+    function saveTagsToStorage(){ localStorage.setItem(STORAGE_TAGS,JSON.stringify(tags)); }
+    function loadMilestonesFromStorage(){ const s=localStorage.getItem(STORAGE_MILESTONES); if(s){ try{ milestones=JSON.parse(s); }catch{ milestones=[]; } }else{ milestones=[{id:'ms1',date:'2020-11-17',title:'出道日',icon:'🌟'},{id:'ms2',date:'2001-01-01',title:'生日',icon:'🎂'}]; saveMilestonesToStorage(); } }
+    function saveMilestonesToStorage(){ localStorage.setItem(STORAGE_MILESTONES,JSON.stringify(milestones)); }
 
-    function normalizeDateInput(r) { const s = r.trim(); if (!s) return s; if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s; if (/
-            ^\d{6}$/.test(s)) { const yy = s.slice(0, 2),
-            mm = s.slice(2, 4),
-            dd = s.slice(4, 6); if (parseInt(mm) >= 1 && parseInt(mm) <= 12 && parseInt(dd) >= 1 && parseInt(dd) <= 31)
-            return `20${yy}-${mm}-${dd}`; return s; } if (/^\d{8}$/.test(s)) { const yyyy = s.slice(0, 4),
-            mm = s.slice(4, 6),
-            dd = s.slice(6, 8); if (parseInt(mm) >= 1 && parseInt(mm) <= 12 && parseInt(dd) >= 1 && parseInt(dd) <= 31)
-            return `${yyyy}-${mm}-${dd}`; return s; } return s; }
+    async function loadScheduleData(){ try{ const r=await fetch(API_BASE+'/data'); if(!r.ok) throw new Error('加载失败'); let data=await r.json(); data=data.map(item=>{ ensurePersonArray(item); if(!item.tags) item.tags=[]; return item; }); scheduleList=data; renderAll(); return scheduleList; }catch(e){ console.error('加载数据异常：',e); scheduleList=[]; renderAll(); return []; } }
+    async function addSchedule(fd){ if(!isEditMode) return null; try{ const r=await fetch(API_BASE+'/data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(fd)}); if(!r.ok) throw new Error('添加失败'); const item=await r.json(); ensurePersonArray(item); if(!item.tags) item.tags=[]; scheduleList.push(item); renderAll(); return item; }catch(e){ console.error('添加失败：',e); alert('添加失败，请检查后端是否启动'); return null; } }
+    async function updateScheduleById(id,fd){ if(!isEditMode) return null; try{ const r=await fetch(API_BASE+'/data/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(fd)}); if(!r.ok) throw new Error('更新失败'); const item=await r.json(); ensurePersonArray(item); if(!item.tags) item.tags=[]; const idx=scheduleList.findIndex(x=>x.id===id); if(idx!==-1) scheduleList[idx]=item; renderAll(); return item; }catch(e){ console.error('更新失败：',e); alert('更新失败'); return null; } }
+    async function deleteScheduleById(id){ if(!isEditMode) return; try{ const r=await fetch(API_BASE+'/data/'+id,{method:'DELETE'}); if(!r.ok) throw new Error('删除失败'); scheduleList=scheduleList.filter(x=>x.id!==id); renderAll(); }catch(e){ console.error('删除失败：',e); alert('删除失败'); } }
+    function getScheduleById(id){ return scheduleList.find(x=>x.id===id); }
 
-    function urlToEmbed(u) {
-    if (!u) return "";
-    const url = u.trim();
-    if (url.includes('player.bilibili.com/player.html') || url.includes('youtube.com/embed/')) return url;
-    const bv = url.match(/BV\w{10}/);
-    if (bv) {
-        const p = (url.match(/[?&]p=(\d+)/) || [])[1] || 1;
-        return `https://player.bilibili.com/player.html?bvid=${bv[0]}&page=${p}&danmaku=0`;
-    }
-    const yt = url.match(/youtu\.be\/([A-Za-z0-9_-]{11})/) || url.match(/[?&]v=([A-Za-z0-9_-]{11})/);
-    if (yt) {
-        return `https://www.youtube.com/embed/${yt[1]}`;
-    }
-    return null;
-}
+    function getFilterData(){ let arr=[...scheduleList]; if(currentFilterPerson==='multi'){ arr=arr.filter(item=>ensurePersonArray(item).length>1); }else if(currentFilterPerson!=='all'){ arr=arr.filter(item=>ensurePersonArray(item).includes(currentFilterPerson)); } if(searchDateKeyword){ arr=arr.filter(item=>item.date && item.date.includes(searchDateKeyword)); } arr.sort((a,b)=>new Date(a.date)-new Date(b.date)); return arr; }
 
-    function getProxiedImageUrl(u) { if (!u) return ''; const p = u.includes('instagram.com') || u.includes(
-            'cdninstagram.com') || u.includes('twitter.com') || u.includes('twimg.com') || u.includes('x.com') || u
-            .includes('sinaimg.cn') || u.includes('pic.sinaimg.cn') || u.includes('doubanio.com') || u.includes(
-            'douban.com'); return p ? `/api/image-proxy?url=${encodeURIComponent(u)}` : u; }
+    function renderDashboard(){ const grid=document.getElementById('dashboardGrid'); if(!grid) return; grid.innerHTML=''; const sorted=[...REGRESSION_LIST].sort((a,b)=>{ if(a.year!==b.year) return b.year-a.year; return b.month-a.month; }); sorted.forEach(reg=>{ const start=new Date(reg.year,reg.month-1,1), end=new Date(reg.year,reg.month,0); const items=scheduleList.filter(item=>{ const d=new Date(item.date); return d>=start && d<=end; }); const total=items.length; const done=items.filter(item=>item.title && (item.thumbnail || item.videoEmbed || (item.links && JSON.stringify(item.links)!=='[]'))).length; const pct=total>0?Math.round((done/total)*100):0; const circumference=2*Math.PI*46; const offset=circumference*(1-pct/100); const wrapper=document.createElement('div'); wrapper.className='dashboard-item'; wrapper.innerHTML=`<div class="cyber-gauge"><svg viewBox="0 0 100 100"><circle class="bg-ring" cx="50" cy="50" r="46"/><circle class="progress-ring" cx="50" cy="50" r="46" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/></svg><div class="gauge-center"><div class="song-name">${reg.name}</div><div class="song-year">${reg.year}.${String(reg.month).padStart(2,'0')}</div></div><div class="glow-ring"></div></div><div class="item-info">${total>0?(done===total?'<span class="badge">✅ 已毕业</span>':'剩余 '+(total-done)+' 件'):'暂无物料'}</div>`; wrapper.addEventListener('click',function(){ viewYear=reg.year; viewMonth=reg.month; switchToCalendar(); }); grid.appendChild(wrapper); }); updateDebutDays(); }
 
-    function showToast(msg, type) { const t = document.getElementById('importResultToast'),
-            m = document.getElementById('importResultMsg');
-        m.textContent = msg;
-        t.className = 'import-result-toast show ' + type;
-        setTimeout(() => t.classList.remove('show'), 5000); }
+    function updateDebutDays(){ const debut=new Date(2020,10,17); const now=new Date(); const diff=Math.floor((now-debut)/(1000*60*60*24)); document.getElementById('debutDays').textContent=diff>0?diff:'--'; }
 
-    function hexToRgba(h, a) { let H = h.trim(); if (H.startsWith('#')) H = H.slice(1); if (H.length === 3) { H = H[0] + H[
-                0] + H[1] + H[1] + H[2] + H[2]; } const r = parseInt(H.slice(0, 2), 16),
-            g = parseInt(H.slice(2, 4), 16),
-            b = parseInt(H.slice(4, 6), 16); return `rgba(${r},${g},${b},${a})`; }
+    function renderTagLegend(){ const c=document.getElementById('tagLegendBody'); if(!c) return; c.innerHTML=''; const counts={}; scheduleList.forEach(item=>{ (item.tags||[]).forEach(tid=>{ const tag=tags.find(t=>t.id===tid); if(tag) counts[tag.name]=(counts[tag.name]||0)+1; }); }); const sorted=[...tags].sort((a,b)=>(counts[b.name]||0)-(counts[a.name]||0)); sorted.forEach(tag=>{ const div=document.createElement('div'); div.className='tag-legend-item'; const icon=getTagIcon(tag.name); const cnt=counts[tag.name]||0; div.innerHTML=`<span class="legend-icon">${icon}</span><span class="legend-name">${tag.name}</span><span class="legend-count">${cnt}</span>`; c.appendChild(div); }); if(!sorted.length){ c.innerHTML='<div style="text-align:center;opacity:0.15;font-size:10px;padding:10px 0;font-family:Courier New,monospace;">暂无行程</div>'; } }
 
-    function ensurePersonArray(item) { if (!item) return []; let p = item.person; if (typeof p === 'string') { try { let
-                parsed = JSON.parse(p);
-                p = Array.isArray(parsed) ? parsed : (typeof parsed === 'object' ? Object.values(parsed) : [parsed]); } catch {
-                p = p.includes(',') ? p.split(',').map(s => s.trim()) : [p.trim()]; } } else if (!Array.isArray(p)) p = [];
-        p = p.map(x => { if (typeof x === 'string') { const k = personList.find(n => x.includes(n)); return k || x; } return x; })
-            .filter(x => x && typeof x === 'string' && x.trim() !== '').map(x => x.trim());
-        p = p.map(x => personList.includes(x) ? x : (personList.find(n => x.includes(n)) || x));
-        item.person = p;
-        return p; }
+    function renderCalendar(){ const calDom=document.getElementById('calendar-area'); calDom.innerHTML=''; syncJumpSelect(); const data=getFilterData(); const targetYM=`${viewYear}-${String(viewMonth).padStart(2,'0')}`; const monthData=data.filter(item=>item.date && item.date.startsWith(targetYM)); const dateGroup={}; monthData.forEach(item=>{ if(!dateGroup[item.date]) dateGroup[item.date]=[]; dateGroup[item.date].push(item); }); const monthMilestones=milestones.filter(m=>m.date && m.date.startsWith(targetYM)); const table=document.createElement('table'); table.className='calendar-table'; const thead=document.createElement('thead'); const trHead=document.createElement('tr'); weekCN.forEach(w=>{ const th=document.createElement('th'); th.innerText=w; trHead.appendChild(th); }); thead.appendChild(trHead); table.appendChild(thead); const tbody=document.createElement('tbody'); const firstDay=new Date(viewYear,viewMonth-1,1).getDay(); const totalDays=new Date(viewYear,viewMonth,0).getDate(); let tr=document.createElement('tr'); for(let i=0;i<firstDay;i++){ tr.appendChild(document.createElement('td')); } let col=firstDay; for(let d=1;d<=totalDays;d++){ const td=document.createElement('td'); const fullDate=`${viewYear}-${String(viewMonth).padStart(2,'0')}-${String(d).padStart(2,'0')}`; const headerDiv=document.createElement('div'); headerDiv.className='cell-header'; const dateSpan=document.createElement('span'); dateSpan.className='date-num'; dateSpan.textContent=`${d}日`; headerDiv.appendChild(dateSpan); if(isEditMode){ const ms=monthMilestones.find(m=>m.date===fullDate); if(ms){ const iconSpan=document.createElement('span'); iconSpan.className='milestone-icon'; iconSpan.textContent=ms.icon||'🌟'; iconSpan.title=ms.title; headerDiv.appendChild(iconSpan); } } td.appendChild(headerDiv); if(dateGroup[fullDate]){ const content=document.createElement('div'); content.className='calendar-content'; const items=dateGroup[fullDate]; const total=items.length; const displayItems=items.slice(0,3); displayItems.forEach(item=>{ const block=document.createElement('div'); block.className='calendar-icon-block'; const tagId=(item.tags||[])[0]; let icon='📌'; if(tagId){ const tag=tags.find(t=>t.id===tagId); if(tag) icon=getTagIcon(tag.name); } block.textContent=icon; block.title=item.title||'未命名'; block.onclick=(e)=>{ e.stopPropagation(); openModal(item); }; const travelTag=(item.tags||[]).map(tid=>tags.find(t=>t.id===tid)).filter(t=>t && t.isTravel); if(travelTag.length>0) block.classList.add('is-travel'); content.appendChild(block); }); if(total>3){ const more=document.createElement('div'); more.className='calendar-icon-block'; more.style.background='rgba(168,216,234,0.03)'; more.style.fontSize='10px'; more.style.fontWeight='700'; more.style.color='#A8D8EA'; more.textContent=`+${total-3}`; more.title=`点击查看全部 ${total} 件物料`; more.onclick=(e)=>{ e.stopPropagation(); showDateDetail(fullDate,items); }; content.appendChild(more); } td.appendChild(content); if(total>1){ const badge=document.createElement('span'); badge.className='cell-badge'; badge.textContent=total; td.appendChild(badge); } } tr.appendChild(td); col++; if(col>=7){ tbody.appendChild(tr); tr=document.createElement('tr'); col=0; } } if(tr.children.length) tbody.appendChild(tr); table.appendChild(tbody); calDom.appendChild(table); renderTagLegend(); }
 
-    function loadTagsFromStorage() { const s = localStorage.getItem(STORAGE_TAGS); if (s) { try { tags = JSON.parse(s); } catch
-            { tags = []; } } else { tags = [{ id: 'tag1', name: '演唱会', color: '#ff6b9d', isTravel: true }, { id: 'tag2',
-                name: '飞行', color: '#ffaa00', isTravel: true }, { id: 'tag3', name: '直播', color: '#4FC3F7',
-                isTravel: false }, { id: 'tag4', name: '画报', color: '#B47EDC', isTravel: false }];
-        saveTagsToStorage(); } tags = tags.map(t => ({ ...t, isTravel: t.isTravel || false }));
-        saveTagsToStorage(); }
+    function showDateDetail(date,items){ if(items.length===1){ openModal(items[0]); return; } let listHtml=items.map((item,idx)=>`<div style="padding:5px 10px;margin:2px 0;background:rgba(255,255,255,0.02);border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .2s;border:1px solid rgba(168,216,234,0.02);font-family:Courier New,monospace;" onmouseover="this.style.background='rgba(168,216,234,0.04)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'" onclick="openModal(scheduleList.find(s=>s.id===${item.id}))"><span style="color:rgba(255,255,255,0.2);font-size:11px;">${idx+1}.</span><span style="color:#fff;font-size:13px;">${item.title||'未命名'}</span><span style="font-size:10px;opacity:0.2;margin-left:auto;">${item.date}</span></div>`).join(''); const tmp=document.createElement('div'); tmp.className='modal-mask active'; tmp.style.display='flex'; tmp.innerHTML=`<div class="modal-wrap" style="max-width:440px;flex-direction:column;padding:16px 20px;border-color:rgba(168,216,234,0.10);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><h3 style="margin:0;font-size:15px;color:#A8D8EA;font-family:Courier New,monospace;">📅 ${date}</h3><button class="modal-close" style="position:static;background:rgba(100,100,100,0.12);">×</button></div><div style="max-height:360px;overflow-y:auto;padding:2px;">${listHtml}</div><div style="margin-top:10px;text-align:center;font-size:11px;opacity:0.2;font-family:Courier New,monospace;">共 ${items.length} 件物料</div></div>`; document.body.appendChild(tmp); tmp.querySelector('.modal-close').onclick=()=>tmp.remove(); tmp.onclick=(e)=>{ if(e.target===tmp) tmp.remove(); }; }
 
-    function saveTagsToStorage() { localStorage.setItem(STORAGE_TAGS, JSON.stringify(tags)); }
+    function renderAll(){ if(currentView==='dashboard'){ renderDashboard(); return; } renderCalendar(); }
 
-    function loadMilestonesFromStorage() { const s = localStorage.getItem(STORAGE_MILESTONES); if (s) { try { milestones =
-                JSON.parse(s); } catch { milestones = []; } } else { milestones = [{ id: 'ms1', date: '2020-11-17',
-                title: '出道日', icon: '🌟' }, { id: 'ms2', date: '2001-01-01', title: '生日', icon: '🎂' }];
-        saveMilestonesToStorage(); } }
+    function syncJumpSelect(){ document.getElementById('ymDisplay').innerText=`${viewYear}年${viewMonth}月`; }
 
-    function saveMilestonesToStorage() { localStorage.setItem(STORAGE_MILESTONES, JSON.stringify(milestones)); }
+    function switchToCalendar(){ currentView='calendar'; document.getElementById('dashboard-view').classList.remove('active'); document.getElementById('calendar-view').classList.add('active'); document.getElementById('calendar-view').classList.add('view-fade-in'); renderAll(); }
+    function switchToDashboard(){ currentView='dashboard'; document.getElementById('dashboard-view').classList.add('active'); document.getElementById('dashboard-view').classList.add('view-fade-in'); document.getElementById('calendar-view').classList.remove('active'); renderDashboard(); }
+    window.switchToCalendar=switchToCalendar; window.switchToDashboard=switchToDashboard;
 
-    // ===== API =====
-    async function loadScheduleData() { try { const r = await fetch(`${API_BASE}/data`); if (!r.ok) throw new Error(
-                '加载失败'); let data = await r.json();
-            data = data.map(item => { ensurePersonArray(item); if (!item.tags) item.tags = []; return item; });
-            scheduleList = data;
-            renderAll();
-            return scheduleList; } catch (e) { console.error('加载数据异常：', e);
-            scheduleList = [];
-            renderAll(); return []; } }
+    function closeModal(){ document.getElementById('modalMask').classList.remove('active'); document.getElementById('modalMediaBox').innerHTML='<span class="no-media">暂无媒体</span>'; currentDeleteId=null; }
+    function openModal(item){ currentDeleteId=item.id; document.getElementById('modalTitle').innerText=item.title||'未命名'; document.getElementById('modalPersonTags').innerHTML=''; document.getElementById('modalPersonTags').style.display='none'; const tagDisplay=document.getElementById('modalTagDisplay'); tagDisplay.innerHTML=''; if(item.tags && item.tags.length){ item.tags.forEach(tid=>{ const tag=tags.find(t=>t.id===tid); if(tag){ const span=document.createElement('span'); span.style.display='inline-block'; span.style.padding='2px 8px'; span.style.borderRadius='10px'; span.style.background=tag.color+'33'; span.style.border='1px solid '+tag.color; span.style.color='#fff'; span.style.fontSize='11px'; span.textContent=tag.name+(tag.isTravel?' 🚗':''); tagDisplay.appendChild(span); } }); }else{ const span=document.createElement('span'); span.style.color='#555'; span.style.fontSize='12px'; span.textContent='无行程'; tagDisplay.appendChild(span); } document.getElementById('modalMediaBox').innerHTML=''; const thumb=(item.thumbnail||'').trim(); const video=(item.videoEmbed||item.videoembed||'').trim(); if(thumb){ const img=document.createElement('img'); img.src=getProxiedImageUrl(thumb); img.alt=item.title||'缩略图'; img.setAttribute('referrerpolicy','no-referrer'); img.onerror=function(){ if(this.src.includes('images.weserv.nl')){ this.src=thumb; this.onerror=function(){ this.style.display='none'; document.getElementById('modalMediaBox').innerHTML='<span class="no-media">图片加载失败</span>'; }; }else{ this.style.display='none'; document.getElementById('modalMediaBox').innerHTML='<span class="no-media">图片加载失败</span>'; } }; document.getElementById('modalMediaBox').appendChild(img); }else if(video){ const embed=urlToEmbed(video); if(embed===null){ document.getElementById('modalMediaBox').innerHTML=`<span class="no-media">此平台不支持内嵌，<a href="${video}" target="_blank" style="color:#A8D8EA;">点击跳转</a></span>`; }else{ const iframe=document.createElement('iframe'); iframe.width='100%'; iframe.height='100%'; iframe.src=embed; iframe.frameBorder='0'; iframe.allow='accelerometer, autoplay, clipboard-write, encrypted-media, gyroscope, picture-in-picture'; iframe.allowFullscreen=true; iframe.onerror=function(){ document.getElementById('modalMediaBox').innerHTML=`<span class="no-media">无法嵌入，<a href="${video}" target="_blank" style="color:#A8D8EA;">点击跳转</a></span>`; }; document.getElementById('modalMediaBox').appendChild(iframe); } }else{ document.getElementById('modalMediaBox').innerHTML='<span class="no-media">暂无媒体</span>'; } document.getElementById('modalLinkList').innerHTML=''; let links=item.links; if(typeof links==='string') try{ links=JSON.parse(links); }catch{ links=[]; } if(!Array.isArray(links)) links=[]; if(links.length){ links.forEach(link=>{ const div=document.createElement('div'); div.className='modal-link-item'; if(link.link){ div.innerHTML=`<span style="font-size:13px;">${link.icon||'🔗'}</span> <a href="${link.link}" target="_blank" style="font-size:13px;">${link.text||'查看'}</a>`; }else{ div.innerText=`${link.icon||''} ${link.text||''}`; } document.getElementById('modalLinkList').appendChild(div); }); }else{ const empty=document.createElement('div'); empty.style.color='#555'; empty.style.fontSize='13px'; empty.innerText='暂无链接'; document.getElementById('modalLinkList').appendChild(empty); } document.getElementById('modalMask').classList.add('active'); }
 
-    async function addSchedule(fd) { if (!isEditMode) return null; try { const r = await fetch(`${API_BASE}/data`, { method: 'POST',
-                headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(fd) }); if (!r.ok) throw new Error(
-                '添加失败'); const item = await r.json();
-            ensurePersonArray(item); if (!item.tags) item.tags = [];
-            scheduleList.push(item);
-            renderAll(); return item; } catch (e) { console.error('添加失败：', e);
-            alert('添加失败，请检查后端是否启动'); return null; } }
+    function renderFormTagCheckboxes(selected){ const c=document.getElementById('formTagCheckboxContainer'); c.innerHTML=''; tags.forEach(tag=>{ const label=document.createElement('label'); const cb=document.createElement('input'); cb.type='checkbox'; cb.value=tag.id; cb.checked=selected?selected.includes(tag.id):false; const dot=document.createElement('span'); dot.style.display='inline-block'; dot.style.width='8px'; dot.style.height='8px'; dot.style.borderRadius='50%'; dot.style.background=tag.color; dot.style.marginRight='3px'; label.appendChild(cb); label.appendChild(dot); label.appendChild(document.createTextNode(tag.name+(tag.isTravel?' 🚗':''))); c.appendChild(label); }); }
 
-    async function updateScheduleById(id, fd) { if (!isEditMode) return null; try { const r = await fetch(
-                `${API_BASE}/data/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(fd) }); if (!r.ok) throw new Error('更新失败'); const item = await r.json();
-            ensurePersonArray(item); if (!item.tags) item.tags = [];
-            const idx = scheduleList.findIndex(x => x.id === id); if (idx !== -1) scheduleList[idx] = item;
-            renderAll(); return item; } catch (e) { console.error('更新失败：', e);
-            alert('更新失败'); return null; } }
+    function openForm(item){ if(!isEditMode) return; if(item){ editModeId=item.id; document.getElementById('formTitle').textContent='✏️ 编辑物料'; document.getElementById('formSubmitBtn').textContent='💾 更新'; document.getElementById('formDate').value=item.date||''; document.getElementById('formTitleInput').value=item.title||''; document.getElementById('formLinks').value=item.links||''; document.getElementById('formVideo').value=item.videoEmbed||item.videoembed||''; document.getElementById('formThumbnail').value=item.thumbnail||''; renderFormTagCheckboxes(item.tags||[]); const radios=document.querySelectorAll('input[name="formStatus"]'); radios.forEach(r=>r.checked=false); if(item.thumbnail||item.videoEmbed){ document.querySelector('input[name="formStatus"][value="已补完"]').checked=true; }else{ document.querySelector('input[name="formStatus"][value="待补"]').checked=true; } }else{ editModeId=null; document.getElementById('formTitle').textContent='📝 添加物料'; document.getElementById('formSubmitBtn').textContent='✅ 保存'; document.getElementById('formDate').value=''; document.getElementById('formTitleInput').value=''; document.getElementById('formLinks').value=''; document.getElementById('formVideo').value=''; document.getElementById('formThumbnail').value=''; renderFormTagCheckboxes([]); document.querySelector('input[name="formStatus"][value="已补完"]').checked=true; } document.getElementById('formModal').classList.add('active'); }
+    function closeForm(){ document.getElementById('formModal').classList.remove('active'); editModeId=null; }
 
-    async function deleteScheduleById(id) { if (!isEditMode) return; try { const r = await fetch(`${API_BASE}/data/${id}`,
-                { method: 'DELETE' }); if (!r.ok) throw new Error('删除失败');
-            scheduleList = scheduleList.filter(x => x.id !== id);
-            renderAll(); } catch (e) { console.error('删除失败：', e);
-            alert('删除失败'); } }
+    function initYMSelects(){ const y=document.getElementById('ymYearSelect'), m=document.getElementById('ymMonthSelect'); const cy=new Date().getFullYear(); y.innerHTML=''; for(let i=2020;i<=cy+2;i++){ const opt=document.createElement('option'); opt.value=i; opt.textContent=i+'年'; y.appendChild(opt); } m.innerHTML=''; for(let i=1;i<=12;i++){ const opt=document.createElement('option'); opt.value=i; opt.textContent=i+'月'; m.appendChild(opt); } y.value=viewYear; m.value=viewMonth; }
 
-    function getScheduleById(id) { return scheduleList.find(x => x.id === id); }
+    // 事件绑定
+    document.getElementById('ymDisplay').onclick=function(){ document.getElementById('ymYearSelect').value=viewYear; document.getElementById('ymMonthSelect').value=viewMonth; document.getElementById('ymPickerOverlay').classList.add('active'); };
+    document.getElementById('ymConfirm').onclick=function(){ const y=parseInt(document.getElementById('ymYearSelect').value), m=parseInt(document.getElementById('ymMonthSelect').value); if(y>=2020 && m>=1 && m<=12){ viewYear=y; viewMonth=m; syncJumpSelect(); renderAll(); document.getElementById('ymPickerOverlay').classList.remove('active'); } };
+    document.getElementById('ymCancel').onclick=()=>document.getElementById('ymPickerOverlay').classList.remove('active');
+    document.getElementById('ymPickerOverlay').addEventListener('click',e=>{ if(e.target===e.currentTarget) e.target.classList.remove('active'); });
+    document.getElementById('prevMonth').addEventListener('click',function(){ if(currentView==='dashboard') switchToCalendar(); viewMonth--; if(viewMonth<1){ viewMonth=12; viewYear--; } if(viewYear<2020) viewYear=2020; syncJumpSelect(); renderAll(); });
+    document.getElementById('nextMonth').addEventListener('click',function(){ if(currentView==='dashboard') switchToCalendar(); viewMonth++; if(viewMonth>12){ viewMonth=1; viewYear++; } syncJumpSelect(); renderAll(); });
+    document.getElementById('addBtn').onclick=function(){ if(!isEditMode) return; openForm(null); };
+    document.getElementById('modalClose').onclick=closeModal;
+    document.getElementById('modalMask').addEventListener('click',e=>{ if(e.target===document.getElementById('modalMask')) closeModal(); });
+    document.getElementById('modalDeleteBtn').onclick=function(){ if(!isEditMode) return; if(currentDeleteId && confirm('确定要删除此日程吗？')){ deleteScheduleById(currentDeleteId); closeModal(); } };
+    document.getElementById('modalEditBtn').onclick=function(){ if(!isEditMode) return; if(currentDeleteId){ const item=getScheduleById(currentDeleteId); if(item){ closeModal(); openForm(item); } } };
+    document.getElementById('formClose').onclick=closeForm;
+    document.getElementById('formCancel').onclick=closeForm;
+    document.getElementById('formModal').addEventListener('click',e=>{ if(e.target===document.getElementById('formModal')) closeForm(); });
+    document.getElementById('scheduleForm').onsubmit=async function(e){ e.preventDefault(); if(!isEditMode) return; const date=normalizeDateInput(document.getElementById('formDate').value.trim()); const title=document.getElementById('formTitleInput').value.trim(); const linksRaw=document.getElementById('formLinks').value.trim(); const videoEmbed=document.getElementById('formVideo').value.trim(); const thumbnail=document.getElementById('formThumbnail').value.trim(); const selectedTags=Array.from(document.getElementById('formTagCheckboxContainer').querySelectorAll('input:checked')).map(cb=>cb.value); const persons=['Winter']; if(!date || !isValidDate(date)){ alert('请填写有效日期 (YYYY-MM-DD 或 6/8位数字)'); return; } if(!title){ alert('请填写标题'); return; } let links='[]'; if(linksRaw){ if(linksRaw.startsWith('http')){ links=JSON.stringify([{icon:'🔗',text:'查看',link:linksRaw}]); }else{ try{ const parsed=JSON.parse(linksRaw); if(!Array.isArray(parsed)) throw new Error(); links=JSON.stringify(parsed); }catch{ alert('链接格式错误，请输入URL或JSON数组'); return; } } } const shortName=title.length>20?title.slice(0,18)+'…':title; const fd={date,person:persons,tag:'',shortName,title,links,videoEmbed,thumbnail,tags:selectedTags}; if(editModeId){ await updateScheduleById(editModeId,fd); }else{ await addSchedule(fd); } closeForm(); };
+    document.getElementById('searchDateInput').addEventListener('input',function(e){ searchDateKeyword=e.target.value.trim(); if(currentView!=='calendar') switchToCalendar(); else renderAll(); });
 
-    // ===== 渲染 =====
-    function getFilterData() { let arr = [...scheduleList]; if (currentFilterPerson === 'multi') { arr = arr.filter(item =>
-                ensurePersonArray(item).length > 1); } else if (currentFilterPerson !== 'all') { arr = arr.filter(item =>
-                ensurePersonArray(item).includes(currentFilterPerson)); } if (searchDateKeyword) { arr = arr.filter(item =>
-                item.date && item.date.includes(searchDateKeyword)); }
-        arr.sort((a, b) => new Date(a.date) - new Date(b.date)); return arr; }
-
-    function renderDashboard() { const grid = document.getElementById('dashboardGrid'); if (!grid) return;
-        grid.innerHTML = '';
-        const sorted = [...REGRESSION_LIST].sort((a, b) => { if (a.year !== b.year) return b.year - a.year; return b.month - a
-                .month; });
-        sorted.forEach(reg => { const start = new Date(reg.year, reg.month - 1, 1),
-                end = new Date(reg.year, reg.month, 0); const items = scheduleList.filter(item => { const d = new Date(
-                    item.date); return d >= start && d <= end; });
-            const total = items.length;
-            const done = items.filter(item => item.title && (item.thumbnail || item.videoEmbed || (item.links && JSON
-                    .stringify(item.links) !== '[]'))).length;
-            const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-            const circumference = 2 * Math.PI * 46;
-            const offset = circumference * (1 - pct / 100);
-            const wrapper = document.createElement('div');
-            wrapper.className = 'dashboard-item';
-            wrapper.innerHTML =
-                `<div class="cyber-gauge"><svg viewBox="0 0 100 100"><circle class="bg-ring" cx="50" cy="50" r="46"/><circle class="progress-ring" cx="50" cy="50" r="46" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/></svg><div class="gauge-center"><div class="song-name">${reg.name}</div><div class="song-year">${reg.year}.${String(reg.month).padStart(2,'0')}</div></div><div class="glow-ring"></div></div><div class="item-info">${total > 0 ? (done === total ? '<span class="badge">✅ 已毕业</span>' : `剩余 ${total - done} 件`) : '暂无物料'}</div>`;
-            wrapper.addEventListener('click', function() {
-                viewYear = reg.year;
-                viewMonth = reg.month;
-                switchToCalendar();
-            });
-            grid.appendChild(wrapper); });
-        updateDebutDays(); }
-
-    function updateDebutDays() { const debut = new Date(2020, 10, 17); const now = new Date(); const diff = Math.floor((now -
-            debut) / (1000 * 60 * 60 * 24)); document.getElementById('debutDays').textContent = diff > 0 ? diff : '--'; }
-
-    function renderTagLegend() { const c = document.getElementById('tagLegendBody'); if (!c) return;
-        c.innerHTML = '';
-        const counts = {};
-        scheduleList.forEach(item => { (item.tags || []).forEach(tid => { const tag = tags.find(t => t.id === tid); if (
-                    tag) counts[tag.name] = (counts[tag.name] || 0) + 1; }); });
-        const sorted = [...tags].sort((a, b) => (counts[b.name] || 0) - (counts[a.name] || 0));
-        sorted.forEach(tag => { const div = document.createElement('div');
-            div.className = 'tag-legend-item';
-            const icon = getTagIcon(tag.name);
-            const cnt = counts[tag.name] || 0;
-            div.innerHTML =
-                `<span class="legend-icon">${icon}</span><span class="legend-name">${tag.name}</span><span class="legend-count">${cnt}</span>`;
-            c.appendChild(div); });
-        if (!sorted.length) { c.innerHTML =
-                '<div style="text-align:center;opacity:0.15;font-size:10px;padding:10px 0;font-family:Courier New,monospace;">暂无行程</div>'; } }
-
-    function renderCalendar() { const calDom = document.getElementById('calendar-area');
-        calDom.innerHTML = '';
-        syncJumpSelect();
-        const data = getFilterData();
-        const targetYM = `${viewYear}-${String(viewMonth).padStart(2,'0')}`;
-        const monthData = data.filter(item => item.date && item.date.startsWith(targetYM));
-        const dateGroup = {};
-        monthData.forEach(item => { if (!dateGroup[item.date]) dateGroup[item.date] = [];
-            dateGroup[item.date].push(item); });
-        const monthMilestones = milestones.filter(m => m.date && m.date.startsWith(targetYM));
-        const table = document.createElement('table');
-        table.className = 'calendar-table';
-        const thead = document.createElement('thead');
-        const trHead = document.createElement('tr');
-        weekCN.forEach(w => { const th = document.createElement('th');
-            th.innerText = w;
-            trHead.appendChild(th); });
-        thead.appendChild(trHead);
-        table.appendChild(thead);
-        const tbody = document.createElement('tbody');
-        const firstDay = new Date(viewYear, viewMonth - 1, 1).getDay();
-        const totalDays = new Date(viewYear, viewMonth, 0).getDate();
-        let tr = document.createElement('tr');
-        for (let i = 0; i < firstDay; i++) { tr.appendChild(document.createElement('td')); }
-        let col = firstDay;
-        for (let d = 1; d <= totalDays; d++) { const td = document.createElement('td');
-            const fullDate = `${viewYear}-${String(viewMonth).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-            const headerDiv = document.createElement('div');
-            headerDiv.className = 'cell-header';
-            const dateSpan = document.createElement('span');
-            dateSpan.className = 'date-num';
-            dateSpan.textContent = `${d}日`;
-            headerDiv.appendChild(dateSpan);
-            if (isEditMode) { const ms = monthMilestones.find(m => m.date === fullDate); if (ms) { const iconSpan =
-                        document.createElement('span');
-                    iconSpan.className = 'milestone-icon';
-                    iconSpan.textContent = ms.icon || '🌟';
-                    iconSpan.title = ms.title;
-                    headerDiv.appendChild(iconSpan); } }
-            td.appendChild(headerDiv);
-            if (dateGroup[fullDate]) { const content = document.createElement('div');
-                content.className = 'calendar-content';
-                const items = dateGroup[fullDate];
-                const total = items.length;
-                const displayItems = items.slice(0, 3);
-                displayItems.forEach(item => { const block = document.createElement('div');
-                    block.className = 'calendar-icon-block';
-                    const tagId = (item.tags || [])[0];
-                    let icon = '📌'; if (tagId) { const tag = tags.find(t => t.id === tagId); if (tag) icon =
-                            getTagIcon(tag.name); }
-                    block.textContent = icon;
-                    block.title = item.title || '未命名';
-                    block.onclick = (e) => { e.stopPropagation();
-                        openModal(item); };
-                    const travelTag = (item.tags || []).map(tid => tags.find(t => t.id === tid)).filter(t => t && t
-                        .isTravel);
-                    if (travelTag.length > 0) block.classList.add('is-travel');
-                    content.appendChild(block); });
-                if (total > 3) { const more = document.createElement('div');
-                    more.className = 'calendar-icon-block';
-                    more.style.background = 'rgba(168,216,234,0.03)';
-                    more.style.fontSize = '10px';
-                    more.style.fontWeight = '700';
-                    more.style.color = '#A8D8EA';
-                    more.textContent = `+${total - 3}`;
-                    more.title = `点击查看全部 ${total} 件物料`;
-                    more.onclick = (e) => { e.stopPropagation();
-                        showDateDetail(fullDate, items); };
-                    content.appendChild(more); }
-                td.appendChild(content);
-                if (total > 1) { const badge = document.createElement('span');
-                    badge.className = 'cell-badge';
-                    badge.textContent = total;
-                    td.appendChild(badge); } }
-            tr.appendChild(td);
-            col++;
-            if (col >= 7) { tbody.appendChild(tr);
-                tr = document.createElement('tr');
-                col = 0; } }
-        if (tr.children.length) tbody.appendChild(tr);
-        table.appendChild(tbody);
-        calDom.appendChild(table);
-        renderTagLegend(); }
-
-    function showDateDetail(date, items) { if (items.length === 1) { openModal(items[0]); return; } let listHtml = items.map((
-            item, idx) =>
-            `<div style="padding:5px 10px;margin:2px 0;background:rgba(255,255,255,0.02);border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .2s;border:1px solid rgba(168,216,234,0.02);font-family:Courier New,monospace;" onmouseover="this.style.background='rgba(168,216,234,0.04)'" onmouseout="this.style.background='rgba(255,255,255,0.02)'" onclick="openModal(scheduleList.find(s=>s.id===${item.id}))">
-            <span style="color:rgba(255,255,255,0.2);font-size:11px;">${idx+1}.</span>
-            <span style="color:#fff;font-size:13px;">${item.title || '未命名'}</span>
-            <span style="font-size:10px;opacity:0.2;margin-left:auto;">${item.date}</span>
-        </div>`
-        ).join('');
-        const tmp = document.createElement('div');
-        tmp.className = 'modal-mask active';
-        tmp.style.display = 'flex';
-        tmp.innerHTML =
-            `<div class="modal-wrap" style="max-width:440px;flex-direction:column;padding:16px 20px;border-color:rgba(168,216,234,0.10);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><h3 style="margin:0;font-size:15px;color:#A8D8EA;font-family:Courier New,monospace;">📅 ${date}</h3><button class="modal-close" style="position:static;background:rgba(100,100,100,0.12);">×</button></div><div style="max-height:360px;overflow-y:auto;padding:2px;">${listHtml}</div><div style="margin-top:10px;text-align:center;font-size:11px;opacity:0.2;font-family:Courier New,monospace;">共 ${items.length} 件物料</div></div>`;
-        document.body.appendChild(tmp);
-        tmp.querySelector('.modal-close').onclick = () => tmp.remove();
-        tmp.onclick = (e) => { if (e.target === tmp) tmp.remove(); }; }
-
-    function renderAll() { if (currentView === 'dashboard') { renderDashboard(); return; }
-        renderCalendar(); }
-
-    function syncJumpSelect() { document.getElementById('ymDisplay').innerText = `${viewYear}年${viewMonth}月`; }
-
-    // ===== 视图切换 =====
-    function switchToCalendar() {
-        currentView = 'calendar';
-        document.getElementById('dashboard-view').classList.remove('active');
-        document.getElementById('calendar-view').classList.add('active');
-        document.getElementById('calendar-view').classList.add('view-fade-in');
-        renderAll();
-    }
-
-    function switchToDashboard() {
-        currentView = 'dashboard';
-        document.getElementById('dashboard-view').classList.add('active');
-        document.getElementById('dashboard-view').classList.add('view-fade-in');
-        document.getElementById('calendar-view').classList.remove('active');
-        renderDashboard();
-    }
-    window.switchToCalendar = switchToCalendar;
-    window.switchToDashboard = switchToDashboard;
-
-    // ===== 弹窗 =====
-    function closeModal() { document.getElementById('modalMask').classList.remove('active');
-        document.getElementById('modalMediaBox').innerHTML = '<span class="no-media">暂无媒体</span>';
-        currentDeleteId = null; }
-
-    function openModal(item) { currentDeleteId = item.id;
-        document.getElementById('modalTitle').innerText = item.title || '未命名';
-        document.getElementById('modalPersonTags').innerHTML = '';
-        document.getElementById('modalPersonTags').style.display = 'none';
-        const tagDisplay = document.getElementById('modalTagDisplay');
-        tagDisplay.innerHTML = '';
-        if (item.tags && item.tags.length) { item.tags.forEach(tid => { const tag = tags.find(t => t.id === tid); if (tag) {
-                    const span = document.createElement('span');
-                    span.style.display = 'inline-block';
-                    span.style.padding = '2px 8px';
-                    span.style.borderRadius = '10px';
-                    span.style.background = tag.color + '33';
-                    span.style.border = '1px solid ' + tag.color;
-                    span.style.color = '#fff';
-                    span.style.fontSize = '11px';
-                    span.textContent = tag.name + (tag.isTravel ? ' 🚗' : '');
-                    tagDisplay.appendChild(span); } }); } else { const span = document.createElement('span');
-            span.style.color = '#555';
-            span.style.fontSize = '12px';
-            span.textContent = '无行程';
-            tagDisplay.appendChild(span); }
-        document.getElementById('modalMediaBox').innerHTML = '';
-        const thumb = (item.thumbnail || '').trim();
-        const video = (item.videoEmbed || item.videoembed || '').trim();
-        if (thumb) { const img = document.createElement('img');
-            img.src = getProxiedImageUrl(thumb);
-            img.alt = item.title || '缩略图';
-            img.setAttribute('referrerpolicy', 'no-referrer');
-            img.onerror = function() { if (this.src.includes('images.weserv.nl')) { this.src = thumb;
-                    this.onerror = function() { this.style.display = 'none';
-                        document.getElementById('modalMediaBox').innerHTML =
-                            `<span class="no-media">图片加载失败</span>`; }; } else { this.style.display =
-                        'none';
-                    document.getElementById('modalMediaBox').innerHTML =
-                        `<span class="no-media">图片加载失败</span>`; } };
-            document.getElementById('modalMediaBox').appendChild(img); } else if (video) { const embed = urlToEmbed(video); if (
-                embed === null) {
-                document.getElementById('modalMediaBox').innerHTML =
-                    `<span class="no-media">此平台不支持内嵌，<a href="${video}" target="_blank" style="color:#A8D8EA;">点击跳转</a></span>`; } else {
-                const iframe = document.createElement('iframe');
-                iframe.width = '100%';
-                iframe.height = '100%';
-                iframe.src = embed;
-                iframe.frameBorder = '0';
-                iframe.allow =
-                    'accelerometer, autoplay, clipboard-write, encrypted-media, gyroscope, picture-in-picture';
-                iframe.allowFullscreen = true;
-                iframe.onerror = function() {
-                    document.getElementById('modalMediaBox').innerHTML =
-                        `<span class="no-media">无法嵌入，<a href="${video}" target="_blank" style="color:#A8D8EA;">点击跳转</a></span>`; };
-                document.getElementById('modalMediaBox').appendChild(iframe); } } else {
-            document.getElementById('modalMediaBox').innerHTML = '<span class="no-media">暂无媒体</span>'; }
-        document.getElementById('modalLinkList').innerHTML = '';
-        let links = item.links;
-        if (typeof links === 'string') try { links = JSON.parse(links); } catch { links = []; }
-        if (!Array.isArray(links)) links = [];
-        if (links.length) { links.forEach(link => { const div = document.createElement('div');
-                div.className = 'modal-link-item';
-                if (link.link) { div.innerHTML =
-                        `<span style="font-size:13px;">${link.icon || '🔗'}</span> <a href="${link.link}" target="_blank" style="font-size:13px;">${link.text || '查看'}</a>`; } else {
-                    div.innerText = `${link.icon || ''} ${link.text || ''}`; }
-                document.getElementById('modalLinkList').appendChild(div); }); } else { const empty = document
-                .createElement('div');
-            empty.style.color = '#555';
-            empty.style.fontSize = '13px';
-            empty.innerText = '暂无链接';
-            document.getElementById('modalLinkList').appendChild(empty); }
-        document.getElementById('modalMask').classList.add('active'); }
-
-    // ===== 表单 =====
-    function renderFormTagCheckboxes(selected) { const c = document.getElementById('formTagCheckboxContainer');
-        c.innerHTML = '';
-        tags.forEach(tag => { const label = document.createElement('label'); const cb = document.createElement('input');
-            cb.type = 'checkbox';
-            cb.value = tag.id;
-            cb.checked = selected ? selected.includes(tag.id) : false; const dot = document.createElement('span');
-            dot.style.display = 'inline-block';
-            dot.style.width = '8px';
-            dot.style.height = '8px';
-            dot.style.borderRadius = '50%';
-            dot.style.background = tag.color;
-            dot.style.marginRight = '3px';
-            label.appendChild(cb);
-            label.appendChild(dot);
-            label.appendChild(document.createTextNode(tag.name + (tag.isTravel ? ' 🚗' : '')));
-            c.appendChild(label); }); }
-
-    function openForm(item) { if (!isEditMode) return; if (item) { editModeId = item.id;
-            document.getElementById('formTitle').textContent = '✏️ 编辑物料';
-            document.getElementById('formSubmitBtn').textContent = '💾 更新';
-            document.getElementById('formDate').value = item.date || '';
-            document.getElementById('formTitleInput').value = item.title || '';
-            document.getElementById('formLinks').value = item.links || '';
-            document.getElementById('formVideo').value = item.videoEmbed || item.videoembed || '';
-            document.getElementById('formThumbnail').value = item.thumbnail || '';
-            renderFormTagCheckboxes(item.tags || []);
-            const radios = document.querySelectorAll('input[name="formStatus"]');
-            radios.forEach(r => r.checked = false); if (item.thumbnail || item.videoEmbed) { document.querySelector(
-                    'input[name="formStatus"][value="已补完"]').checked = true; } else { document.querySelector(
-                    'input[name="formStatus"][value="待补"]').checked = true; } } else { editModeId = null;
-            document.getElementById('formTitle').textContent = '📝 添加物料';
-            document.getElementById('formSubmitBtn').textContent = '✅ 保存';
-            document.getElementById('formDate').value = '';
-            document.getElementById('formTitleInput').value = '';
-            document.getElementById('formLinks').value = '';
-            document.getElementById('formVideo').value = '';
-            document.getElementById('formThumbnail').value = '';
-            renderFormTagCheckboxes([]);
-            document.querySelector('input[name="formStatus"][value="已补完"]').checked = true; }
-        document.getElementById('formModal').classList.add('active'); }
-
-    function closeForm() { document.getElementById('formModal').classList.remove('active');
-        editModeId = null; }
-
-    // ===== 初始化 =====
-    function initYMSelects() { const y = document.getElementById('ymYearSelect'),
-            m = document.getElementById('ymMonthSelect');
-        const cy = new Date().getFullYear();
-        y.innerHTML = '';
-        for (let i = 2020; i <= cy + 2; i++) { const opt = document.createElement('option');
-            opt.value = i;
-            opt.textContent = i + '年';
-            y.appendChild(opt); }
-        m.innerHTML = '';
-        for (let i = 1; i <= 12; i++) { const opt = document.createElement('option');
-            opt.value = i;
-            opt.textContent = i + '月';
-            m.appendChild(opt); }
-        y.value = viewYear;
-        m.value = viewMonth; }
-
-    // ===== 事件绑定 =====
-    document.getElementById('ymDisplay').onclick = function() {
-        document.getElementById('ymYearSelect').value = viewYear;
-        document.getElementById('ymMonthSelect').value = viewMonth;
-        document.getElementById('ymPickerOverlay').classList.add('active');
-    };
-    document.getElementById('ymConfirm').onclick = function() { const y = parseInt(document.getElementById('ymYearSelect')
-            .value),
-            m = parseInt(document.getElementById('ymMonthSelect').value); if (y >= 2020 && m >= 1 && m <= 12) { viewYear =
-                y;
-            viewMonth = m;
-            syncJumpSelect();
-            renderAll();
-            document.getElementById('ymPickerOverlay').classList.remove('active'); } };
-    document.getElementById('ymCancel').onclick = () => document.getElementById('ymPickerOverlay').classList.remove(
-        'active');
-    document.getElementById('ymPickerOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) e.target
-            .classList.remove('active'); });
-    document.getElementById('prevMonth').addEventListener('click', function() { if (currentView === 'dashboard')
-            switchToCalendar();
-        viewMonth--;
-        if (viewMonth < 1) { viewMonth = 12;
-            viewYear--; }
-        if (viewYear < 2020) viewYear = 2020;
-        syncJumpSelect();
-        renderAll(); });
-    document.getElementById('nextMonth').addEventListener('click', function() { if (currentView === 'dashboard')
-            switchToCalendar();
-        viewMonth++;
-        if (viewMonth > 12) { viewMonth = 1;
-            viewYear++; }
-        syncJumpSelect();
-        renderAll(); });
-    document.getElementById('addBtn').onclick = function() { if (!isEditMode) return;
-        openForm(null); };
-    document.getElementById('modalClose').onclick = closeModal;
-    document.getElementById('modalMask').addEventListener('click', e => { if (e.target === document.getElementById(
-            'modalMask')) closeModal(); });
-    document.getElementById('modalDeleteBtn').onclick = function() { if (!isEditMode) return; if (currentDeleteId && confirm(
-                '确定要删除此日程吗？')) { deleteScheduleById(currentDeleteId);
-            closeModal(); } };
-    document.getElementById('modalEditBtn').onclick = function() { if (!isEditMode) return; if (currentDeleteId) { const
-            item = getScheduleById(currentDeleteId); if (item) { closeModal();
-                openForm(item); } } };
-    document.getElementById('formClose').onclick = closeForm;
-    document.getElementById('formCancel').onclick = closeForm;
-    document.getElementById('formModal').addEventListener('click', e => { if (e.target === document.getElementById(
-            'formModal')) closeForm(); });
-    document.getElementById('scheduleForm').onsubmit = async function(e) { e.preventDefault(); if (!isEditMode) return;
-        const date = normalizeDateInput(document.getElementById('formDate').value.trim());
-        const title = document.getElementById('formTitleInput').value.trim();
-        const linksRaw = document.getElementById('formLinks').value.trim();
-        const videoEmbed = document.getElementById('formVideo').value.trim();
-        const thumbnail = document.getElementById('formThumbnail').value.trim();
-        const selectedTags = Array.from(document.getElementById('formTagCheckboxContainer').querySelectorAll(
-            'input:checked')).map(cb => cb.value);
-        const persons = ['Winter'];
-        if (!date || !isValidDate(date)) { alert('请填写有效日期 (YYYY-MM-DD 或 6/8位数字)'); return; }
-        if (!title) { alert('请填写标题'); return; }
-        let links = '[]';
-        if (linksRaw) { if (linksRaw.startsWith('http')) { links = JSON.stringify([{ icon: '🔗', text: '查看',
-                        link: linksRaw }]); } else { try { const parsed = JSON.parse(linksRaw); if (!Array.isArray(
-                        parsed)) throw new Error();
-                    links = JSON.stringify(parsed); } catch { alert('链接格式错误，请输入URL或JSON数组'); return; } } }
-        const shortName = title.length > 20 ? title.slice(0, 18) + '…' : title;
-        const fd = { date, person: persons, tag: '', shortName, title, links, videoEmbed, thumbnail, tags: selectedTags };
-        if (editModeId) { await updateScheduleById(editModeId, fd); } else { await addSchedule(fd); }
-        closeForm(); };
-    document.getElementById('searchDateInput').addEventListener('input', function(e) {
-        searchDateKeyword = e.target.value.trim();
-        if (currentView !== 'calendar') switchToCalendar();
-        else renderAll();
-    });
     // 侧栏折叠
-    let leftCollapsed = false,
-        rightCollapsed = false;
-    document.getElementById('leftToggle').addEventListener('click', function() {
-        leftCollapsed = !leftCollapsed;
-        document.getElementById('leftPanel').classList.toggle('collapsed', leftCollapsed);
-        this.textContent = leftCollapsed ? '▶' : '◀';
-    });
-    document.getElementById('rightToggle').addEventListener('click', function() {
-        rightCollapsed = !rightCollapsed;
-        document.getElementById('rightPanel').classList.toggle('collapsed', rightCollapsed);
-        this.textContent = rightCollapsed ? '◀' : '▶';
-    });
-    document.querySelectorAll('.toggle-btn[data-target]').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const target = document.getElementById(this.dataset.target);
-            if (target) target.classList.toggle('collapsed');
-        });
-    });
-    // 人物介绍编辑
-    document.getElementById('bioEditBtn').addEventListener('click', function() { if (!isEditMode) return; const cur =
-            document.getElementById('bioContent').innerHTML; const newBio = prompt('编辑人物介绍 (支持HTML):', cur); if (
-            newBio !== null && newBio.trim()) document.getElementById('bioContent').innerHTML = newBio.trim(); });
+    let leftCollapsed=false, rightCollapsed=false;
+    document.getElementById('leftToggle').addEventListener('click',function(){ leftCollapsed=!leftCollapsed; document.getElementById('leftPanel').classList.toggle('collapsed',leftCollapsed); this.textContent=leftCollapsed?'▶':'◀'; });
+    document.getElementById('rightToggle').addEventListener('click',function(){ rightCollapsed=!rightCollapsed; document.getElementById('rightPanel').classList.toggle('collapsed',rightCollapsed); this.textContent=rightCollapsed?'◀':'▶'; });
+    document.querySelectorAll('.toggle-btn[data-target]').forEach(btn=>{ btn.addEventListener('click',function(e){ e.stopPropagation(); const target=document.getElementById(this.dataset.target); if(target) target.classList.toggle('collapsed'); }); });
+    document.getElementById('bioEditBtn').addEventListener('click',function(){ if(!isEditMode) return; const cur=document.getElementById('bioContent').innerHTML; const newBio=prompt('编辑人物介绍 (支持HTML):',cur); if(newBio!==null && newBio.trim()) document.getElementById('bioContent').innerHTML=newBio.trim(); });
 
-    // ===== 导入 =====
-    const importModal = document.getElementById('importModal');
-    document.getElementById('importBtn').onclick = function() { if (!isEditMode) return;
-        document.getElementById('importDataText').value = '';
-        document.getElementById('importPreviewArea').style.display = 'none';
-        document.getElementById('importProgress').classList.remove('active');
-        importModal.classList.add('active'); };
-    document.getElementById('importClose').onclick = () => importModal.classList.remove('active');
-    document.getElementById('importCancel').onclick = () => importModal.classList.remove('active');
-    importModal.addEventListener('click', e => { if (e.target === importModal) importModal.classList.remove('active'); });
-    document.getElementById('loadSampleBtn').onclick = function() {
-        document.getElementById('importDataText').value = JSON.stringify([
-            { date: "2026-07-20", person: ["Winter"], title: "Winter 新物料发布", links: [{ icon: "📸",
-                    text: "Instagram", link: "https://www.instagram.com/" }],
-                thumbnail: "https://i.postimg.cc/G38HFjNr/240516.jpg" },
-            { date: "2026-07-21", person: ["aespa"], title: "aespa 团体回归预告", links: [{ icon: "🎵",
-                    text: "YouTube", link: "https://www.youtube.com/" }],
-                videoEmbed: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-            { date: "2026-07-22", person: ["Karina", "Winter"], title: "Karina & Winter 双人直播" }
-        ], null, 2);
-        setTimeout(() => document.getElementById('previewImportBtn').click(), 200);
-    };
-    document.getElementById('importFileBtn').onclick = () => document.getElementById('importFileInput').click();
-    document.getElementById('importFileInput').onchange = function(e) { const file = e.target.files[0]; if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(ev) { try { JSON.parse(ev.target.result);
-                document.getElementById('importDataText').value = ev.target.result;
-                setTimeout(() => document.getElementById('previewImportBtn').click(), 300); } catch (err) { alert(
-                    '文件不是有效的 JSON 格式'); } };
-        reader.readAsText(file);
-        this.value = ''; };
-    document.getElementById('previewImportBtn').onclick = function() { const raw = document.getElementById('importDataText')
-            .value.trim(); if (!raw) { alert('请先粘贴或上传 JSON 数据。'); return; } let parsed; try { parsed = JSON.parse(
-                raw); } catch (err) { alert('JSON 解析失败：' + err.message); return; } if (!Array.isArray(parsed) || parsed
-                .length === 0) { alert('数据必须是非空数组。'); return; } const result = parsed.map((item, idx) => { const
-                errors = []; const norm = { ...item }; if (!item.date) errors.push('缺少 date'); else { norm.date =
-                    normalizeDateInput(item.date); if (!isValidDate(norm.date)) errors.push('date 格式无效'); } if (!item
-                    .person) errors.push('缺少 person'); else { let persons = item.person; if (typeof persons ===
-                    'string') { persons = persons.includes(',') ? persons.split(',').map(s => s.trim()) : [persons
-                        .trim()]; } if (!Array.isArray(persons) || persons.length === 0) errors.push(
-                        'person 至少选一人'); else { const valid = persons.filter(p => personList.includes(p)); if (
-                            valid.length === 0) errors.push('person 不在允许列表中');
-                        norm.person = valid.length ? valid : persons; } } if (!item.title) errors.push('缺少 title');
-                norm.shortName = item.shortName || (item.title ? (item.title.length > 20 ? item.title.slice(0, 18) +
-                    '…' : item.title) : '未命名'); if (norm.links && !Array.isArray(norm.links)) { try { norm
-                        .links = typeof norm.links === 'string' ? JSON.parse(norm.links) : []; } catch { norm
-                        .links = []; } } if (!norm.links) norm.links = [];
-                norm.tags = item.tags || [];
-                norm.videoEmbed = item.videoEmbed || '';
-                norm.thumbnail = item.thumbnail || '';
-                return { index: idx + 1, raw: item, normalized: norm, valid: errors.length === 0, errors }; });
-            document.getElementById('importPreviewData') ? 0 : null;
-            window._importPreviewData = result;
-            const tbody = document.getElementById('importPreviewBody');
-            tbody.innerHTML = '';
-            let valid = 0,
-                invalid = 0;
-            result.forEach(r => { const tr = document.createElement('tr');
-                tr.className = r.valid ? 'valid' : 'invalid';
-                const personsDisplay = Array.isArray(r.normalized.person) ? r.normalized.person.map(p =>
-                    personDisplayMap[p] || p).join(', ') : String(r.normalized.person || '');
-                const statusHtml = r.valid ?
-                    `<span style="color:#66BB6A;">✅ 有效</span>` :
-                    `<span style="color:#f87171;">❌ 无效</span><div style="font-size:10px;opacity:0.5;">${r.errors.join('; ')}</div>`;
-                tr.innerHTML =
-                    `<td>${r.index}</td><td>${r.normalized.date || '-'}</td><td>${personsDisplay || '-'}</td><td>${r.normalized.title || '-'}</td><td>${statusHtml}</td>`;
-                tbody.appendChild(tr); if (r.valid) valid++;
-                else invalid++; });
-            document.getElementById('importTotalCount').textContent = result.length;
-            document.getElementById('importValidCount').textContent = valid;
-            document.getElementById('importInvalidCount').textContent = invalid;
-            document.getElementById('importPreviewArea').style.display = 'block';
-            document.getElementById('importProgress').classList.remove('active');
-            const btn = document.getElementById('importConfirmBtn');
-            btn.disabled = valid === 0;
-            btn.style.opacity = valid === 0 ? '0.5' : '1'; };
-    document.getElementById('importConfirmBtn').onclick = async function() { if (this.disabled) return; const data = window
-            ._importPreviewData || []; const validItems = data.filter(r => r.valid); if (!validItems.length) { alert(
-                '没有有效数据可导入。'); return; } if (!confirm(`确定要导入 ${validItems.length} 条日程吗？`)) return;
-        document.getElementById('importProgress').classList.add('active');
-        document.getElementById('importProgressText').textContent = `正在导入 0 / ${validItems.length} ...`;
-        document.getElementById('importProgressFill').style.width = '0%';
-        this.disabled = true;
-        let success = 0,
-            fail = 0;
-        for (let i = 0; i < validItems.length; i++) { const item = validItems[i].normalized; try { const fd = { date: item
-                    .date, person: item.person, tag: item.tag || '', shortName: item.shortName, title: item.title,
-                    links: JSON.stringify(item.links || []), videoEmbed: item.videoEmbed || '', thumbnail: item
-                    .thumbnail || '', tags: item.tags || [] };
-                const r = await fetch(`${API_BASE}/data`, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(fd) }); if (!r.ok) throw new Error(`HTTP ${r.status}`); const newItem =
-                    await r.json();
-                ensurePersonArray(newItem); if (!newItem.tags) newItem.tags = [];
-                scheduleList.push(newItem);
-                success++; } catch (err) { fail++;
-                console.error(`第 ${i+1} 条导入失败:`, err); }
-            const done = i + 1;
-            document.getElementById('importProgressText').textContent =
-                `正在导入 ${done} / ${validItems.length} ...`;
-            document.getElementById('importProgressFill').style.width = `${(done/validItems.length)*100}%`; }
-        document.getElementById('importProgressText').textContent =
-            `✅ 导入完成！成功 ${success} 条，失败 ${fail} 条。`;
-        document.getElementById('importProgressFill').style.width = '100%';
-        let msg = `📥 批量导入完成：成功 ${success} 条`;
-        if (fail > 0) msg += `，失败 ${fail} 条`;
-        showToast(msg, fail === 0 ? 'success' : 'error');
-        renderAll();
-        setTimeout(() => { importModal.classList.remove('active');
-            document.getElementById('importProgress').classList.remove('active');
-            this.disabled = false; }, 1000); };
+    // 导入模块
+    const importModal=document.getElementById('importModal');
+    document.getElementById('importBtn').onclick=function(){ if(!isEditMode) return; document.getElementById('importDataText').value=''; document.getElementById('importPreviewArea').style.display='none'; document.getElementById('importProgress').classList.remove('active'); importModal.classList.add('active'); };
+    document.getElementById('importClose').onclick=()=>importModal.classList.remove('active');
+    document.getElementById('importCancel').onclick=()=>importModal.classList.remove('active');
+    importModal.addEventListener('click',e=>{ if(e.target===importModal) importModal.classList.remove('active'); });
+    document.getElementById('loadSampleBtn').onclick=function(){ document.getElementById('importDataText').value=JSON.stringify([{date:"2026-07-20",person:["Winter"],title:"Winter 新物料发布",links:[{icon:"📸",text:"Instagram",link:"https://www.instagram.com/"}],thumbnail:"https://i.postimg.cc/G38HFjNr/240516.jpg"},{date:"2026-07-21",person:["aespa"],title:"aespa 团体回归预告",links:[{icon:"🎵",text:"YouTube",link:"https://www.youtube.com/"}],videoEmbed:"https://www.youtube.com/embed/dQw4w9WgXcQ"},{date:"2026-07-22",person:["Karina","Winter"],title:"Karina & Winter 双人直播"}],null,2); setTimeout(()=>document.getElementById('previewImportBtn').click(),200); };
+    document.getElementById('importFileBtn').onclick=()=>document.getElementById('importFileInput').click();
+    document.getElementById('importFileInput').onchange=function(e){ const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(ev){ try{ JSON.parse(ev.target.result); document.getElementById('importDataText').value=ev.target.result; setTimeout(()=>document.getElementById('previewImportBtn').click(),300); }catch(err){ alert('文件不是有效的 JSON 格式'); } }; reader.readAsText(file); this.value=''; };
+    document.getElementById('previewImportBtn').onclick=function(){ const raw=document.getElementById('importDataText').value.trim(); if(!raw){ alert('请先粘贴或上传 JSON 数据。'); return; } let parsed; try{ parsed=JSON.parse(raw); }catch(err){ alert('JSON 解析失败：'+err.message); return; } if(!Array.isArray(parsed) || parsed.length===0){ alert('数据必须是非空数组。'); return; } const result=parsed.map((item,idx)=>{ const errors=[]; const norm={...item}; if(!item.date) errors.push('缺少 date'); else{ norm.date=normalizeDateInput(item.date); if(!isValidDate(norm.date)) errors.push('date 格式无效'); } if(!item.person) errors.push('缺少 person'); else{ let persons=item.person; if(typeof persons==='string'){ persons=persons.includes(',')?persons.split(',').map(s=>s.trim()):[persons.trim()]; } if(!Array.isArray(persons) || persons.length===0) errors.push('person 至少选一人'); else{ const valid=persons.filter(p=>personList.includes(p)); if(valid.length===0) errors.push('person 不在允许列表中'); norm.person=valid.length?valid:persons; } } if(!item.title) errors.push('缺少 title'); norm.shortName=item.shortName||(item.title?(item.title.length>20?item.title.slice(0,18)+'…':item.title):'未命名'); if(norm.links && !Array.isArray(norm.links)){ try{ norm.links=typeof norm.links==='string'?JSON.parse(norm.links):[]; }catch{ norm.links=[]; } } if(!norm.links) norm.links=[]; norm.tags=item.tags||[]; norm.videoEmbed=item.videoEmbed||''; norm.thumbnail=item.thumbnail||''; return {index:idx+1,raw:item,normalized:norm,valid:errors.length===0,errors}; }); window._importPreviewData=result; const tbody=document.getElementById('importPreviewBody'); tbody.innerHTML=''; let valid=0, invalid=0; result.forEach(r=>{ const tr=document.createElement('tr'); tr.className=r.valid?'valid':'invalid'; const personsDisplay=Array.isArray(r.normalized.person)?r.normalized.person.map(p=>personDisplayMap[p]||p).join(', '):String(r.normalized.person||''); const statusHtml=r.valid?'<span style="color:#66BB6A;">✅ 有效</span>':'<span style="color:#f87171;">❌ 无效</span><div style="font-size:10px;opacity:0.5;">'+r.errors.join('; ')+'</div>'; tr.innerHTML=`<td>${r.index}</td><td>${r.normalized.date||'-'}</td><td>${personsDisplay||'-'}</td><td>${r.normalized.title||'-'}</td><td>${statusHtml}</td>`; tbody.appendChild(tr); if(r.valid) valid++; else invalid++; }); document.getElementById('importTotalCount').textContent=result.length; document.getElementById('importValidCount').textContent=valid; document.getElementById('importInvalidCount').textContent=invalid; document.getElementById('importPreviewArea').style.display='block'; document.getElementById('importProgress').classList.remove('active'); const btn=document.getElementById('importConfirmBtn'); btn.disabled=valid===0; btn.style.opacity=valid===0?'0.5':'1'; };
+    document.getElementById('importConfirmBtn').onclick=async function(){ if(this.disabled) return; const data=window._importPreviewData||[]; const validItems=data.filter(r=>r.valid); if(!validItems.length){ alert('没有有效数据可导入。'); return; } if(!confirm('确定要导入 '+validItems.length+' 条日程吗？')) return; document.getElementById('importProgress').classList.add('active'); document.getElementById('importProgressText').textContent='正在导入 0 / '+validItems.length+' ...'; document.getElementById('importProgressFill').style.width='0%'; this.disabled=true; let success=0, fail=0; for(let i=0;i<validItems.length;i++){ const item=validItems[i].normalized; try{ const fd={date:item.date,person:item.person,tag:item.tag||'',shortName:item.shortName,title:item.title,links:JSON.stringify(item.links||[]),videoEmbed:item.videoEmbed||'',thumbnail:item.thumbnail||'',tags:item.tags||[]}; const r=await fetch(API_BASE+'/data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(fd)}); if(!r.ok) throw new Error('HTTP '+r.status); const newItem=await r.json(); ensurePersonArray(newItem); if(!newItem.tags) newItem.tags=[]; scheduleList.push(newItem); success++; }catch(err){ fail++; console.error('第 '+(i+1)+' 条导入失败:',err); } const done=i+1; document.getElementById('importProgressText').textContent='正在导入 '+done+' / '+validItems.length+' ...'; document.getElementById('importProgressFill').style.width=(done/validItems.length*100)+'%'; } document.getElementById('importProgressText').textContent='✅ 导入完成！成功 '+success+' 条，失败 '+fail+' 条。'; document.getElementById('importProgressFill').style.width='100%'; let msg='📥 批量导入完成：成功 '+success+' 条'; if(fail>0) msg+= '，失败 '+fail+' 条'; showToast(msg,fail===0?'success':'error'); renderAll(); setTimeout(()=>{ importModal.classList.remove('active'); document.getElementById('importProgress').classList.remove('active'); this.disabled=false; },1000); };
 
-    // ===== Excel导入 =====
-    const excelModal = document.getElementById('excelImportModal');
-    document.getElementById('importExcelBtn').onclick = function() {
-        document.getElementById('excelFileInput').value = '';
-        document.getElementById('excelPreviewArea').style.display = 'none';
-        excelModal.classList.add('active');
-    };
-    document.getElementById('excelImportClose').onclick = () => excelModal.classList.remove('active');
-    document.getElementById('excelImportCancel').onclick = () => excelModal.classList.remove('active');
-    excelModal.addEventListener('click', e => { if (e.target === excelModal) excelModal.classList.remove('active'); });
-    document.getElementById('excelTemplateLink').onclick = function(e) { e.preventDefault(); const wb = XLSX.utils
-            .book_new(); const data = [
-                ["date", "person", "title", "links", "thumbnail", "videoEmbed"],
-                ["2026-07-20", "Winter", "Winter 新物料发布",
-                    '{"icon":"📸","text":"Instagram","link":"https://instagram.com/p/xxx"}',
-                    "https://i.postimg.cc/G38HFjNr/240516.jpg", ""
-                ],
-                ["2026-07-21", "aespa", "aespa 团体回归预告",
-                    '{"icon":"🎵","text":"YouTube","link":"https://youtube.com/watch?v=xxx"}', "",
-                    "https://www.youtube.com/embed/dQw4w9WgXcQ"
-                ],
-                ["2026-07-22", "Karina,Winter", "Karina & Winter 双人直播", "", "", ""]
-            ];
-        const ws = XLSX.utils.aoa_to_sheet(data);
-        XLSX.utils.book_append_sheet(wb, ws, "日程");
-        const out = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        const blob = new Blob([out], { type: 'application/octet-stream' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = '日程导入模板.xlsx';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(link.href);
-    };
-    document.getElementById('excelFileInput').addEventListener('change', function(e) { const file = e.target.files[0]; if (!
-            file) return; const reader = new FileReader();
-        reader.onload = function(ev) { try { const data = new Uint8Array(ev.target.result); const wb = XLSX.read(data, {
-                    type: 'array' }); const sheet = wb.Sheets[wb.SheetNames[0]]; const json = XLSX.utils
-                    .sheet_to_json(sheet); if (!json || json.length === 0) { alert('Excel 文件为空或格式不正确');
-                    return; } const result = json.map((row, idx) => { const errors = []; const norm = {};
-                    norm.date = row.date ? normalizeDateInput(String(row.date).trim()) : ''; if (!norm.date || !
-                        isValidDate(norm.date)) errors.push('日期无效'); if (row.person) { const persons = String(
-                            row.person).split(',').map(s => s.trim()).filter(s => s);
-                        norm.person = persons.length ? persons : []; if (!persons.length) errors.push(
-                            '人物为空'); } else { errors.push('缺少 person');
-                        norm.person = []; }
-                    norm.title = row.title ? String(row.title).trim() : ''; if (!norm.title) errors.push(
-                        '缺少 title');
-                    norm.shortName = norm.title.length > 20 ? norm.title.slice(0, 18) + '…' : norm.title;
-                    norm.tags = []; if (row.links) { try { norm.links = typeof row.links === 'string' ? JSON
-                            .parse(row.links) : row.links; } catch { norm.links = []; } } else norm.links =
-                        [];
-                    norm.thumbnail = row.thumbnail ? String(row.thumbnail).trim() : '';
-                    norm.videoEmbed = row.videoEmbed ? String(row.videoEmbed).trim() : '';
-                    norm.tag = ''; return { index: idx + 1, raw: row, normalized: norm, valid: errors
-                            .length === 0, errors }; });
-                window._excelPreviewData = result;
-                const tbody = document.getElementById('excelPreviewBody');
-                tbody.innerHTML = '';
-                let valid = 0,
-                    invalid = 0;
-                result.forEach(r => { const tr = document.createElement('tr');
-                    tr.className = r.valid ? 'valid' : 'invalid';
-                    const personsDisplay = r.normalized.person && r.normalized.person.length ? r.normalized
-                        .person.join(', ') : '-';
-                    const statusHtml = r.valid ?
-                        `<span style="color:#66BB6A;">✅ 有效</span>` :
-                        `<span style="color:#f87171;">❌ 无效</span><div style="font-size:10px;opacity:0.5;">${r.errors.join('; ')}</div>`;
-                    tr.innerHTML =
-                        `<td>${r.index}</td><td>${r.normalized.date || '-'}</td><td>${personsDisplay}</td><td>${r.normalized.title || '-'}</td><td>${statusHtml}</td>`;
-                    tbody.appendChild(tr); if (r.valid) valid++;
-                    else invalid++; });
-                document.getElementById('excelTotalCount').textContent = result.length;
-                document.getElementById('excelValidCount').textContent = valid;
-                document.getElementById('excelInvalidCount').textContent = invalid;
-                document.getElementById('excelPreviewArea').style.display = 'block';
-                const btn = document.getElementById('excelConfirmBtn');
-                btn.disabled = valid === 0;
-                btn.style.opacity = valid === 0 ? '0.5' : '1'; } catch (err) { alert('解析 Excel 失败：' + err
-                        .message); } };
-        reader.readAsArrayBuffer(file); });
-    document.getElementById('excelConfirmBtn').onclick = async function() { if (this.disabled) return; const data = window
-            ._excelPreviewData || []; const validItems = data.filter(r => r.valid); if (!validItems.length) { alert(
-                '没有有效数据可导入。'); return; } if (!confirm(`确定要导入 ${validItems.length} 条日程吗？`)) return;
-        this.disabled = true;
-        this.textContent = '⏳ 导入中...';
-        let success = 0,
-            fail = 0;
-        for (let i = 0; i < validItems.length; i++) { const item = validItems[i].normalized; try { const fd = { date: item
-                    .date, person: item.person, tag: item.tag || '', shortName: item.shortName, title: item.title,
-                    links: JSON.stringify(item.links || []), videoEmbed: item.videoEmbed || '', thumbnail: item
-                    .thumbnail || '', tags: item.tags || [] };
-                const r = await fetch(`${API_BASE}/data`, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(fd) }); if (!r.ok) throw new Error(`HTTP ${r.status}`); const newItem =
-                    await r.json();
-                ensurePersonArray(newItem); if (!newItem.tags) newItem.tags = [];
-                scheduleList.push(newItem);
-                success++; } catch (err) { fail++;
-                console.error(`第 ${i+1} 条导入失败:`, err); } }
-        let msg = `📊 Excel 导入完成：成功 ${success} 条`;
-        if (fail > 0) msg += `，失败 ${fail} 条`;
-        showToast(msg, fail === 0 ? 'success' : 'error');
-        renderAll();
-        this.textContent = '📥 确认导入';
-        this.disabled = false;
-        setTimeout(() => { excelModal.classList.remove('active');
-            document.getElementById('excelPreviewArea').style.display = 'none'; }, 800); };
+    // Excel导入
+    const excelModal=document.getElementById('excelImportModal');
+    document.getElementById('importExcelBtn').onclick=function(){ document.getElementById('excelFileInput').value=''; document.getElementById('excelPreviewArea').style.display='none'; excelModal.classList.add('active'); };
+    document.getElementById('excelImportClose').onclick=()=>excelModal.classList.remove('active');
+    document.getElementById('excelImportCancel').onclick=()=>excelModal.classList.remove('active');
+    excelModal.addEventListener('click',e=>{ if(e.target===excelModal) excelModal.classList.remove('active'); });
+    document.getElementById('excelTemplateLink').onclick=function(e){ e.preventDefault(); const wb=XLSX.utils.book_new(); const data=[["date","person","title","links","thumbnail","videoEmbed"],["2026-07-20","Winter","Winter 新物料发布",'{"icon":"📸","text":"Instagram","link":"https://instagram.com/p/xxx"}',"https://i.postimg.cc/G38HFjNr/240516.jpg",""],["2026-07-21","aespa","aespa 团体回归预告",'{"icon":"🎵","text":"YouTube","link":"https://youtube.com/watch?v=xxx"}',"","https://www.youtube.com/embed/dQw4w9WgXcQ"],["2026-07-22","Karina,Winter","Karina & Winter 双人直播","","",""]]; const ws=XLSX.utils.aoa_to_sheet(data); XLSX.utils.book_append_sheet(wb,ws,"日程"); const out=XLSX.write(wb,{bookType:'xlsx',type:'array'}); const blob=new Blob([out],{type:'application/octet-stream'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download='日程导入模板.xlsx'; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(link.href); };
+    document.getElementById('excelFileInput').addEventListener('change',function(e){ const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=function(ev){ try{ const data=new Uint8Array(ev.target.result); const wb=XLSX.read(data,{type:'array'}); const sheet=wb.Sheets[wb.SheetNames[0]]; const json=XLSX.utils.sheet_to_json(sheet); if(!json || json.length===0){ alert('Excel 文件为空或格式不正确'); return; } const result=json.map((row,idx)=>{ const errors=[]; const norm={}; norm.date=row.date?normalizeDateInput(String(row.date).trim()):''; if(!norm.date || !isValidDate(norm.date)) errors.push('日期无效'); if(row.person){ const persons=String(row.person).split(',').map(s=>s.trim()).filter(s=>s); norm.person=persons.length?persons:[]; if(!persons.length) errors.push('人物为空'); }else{ errors.push('缺少 person'); norm.person=[]; } norm.title=row.title?String(row.title).trim():''; if(!norm.title) errors.push('缺少 title'); norm.shortName=norm.title.length>20?norm.title.slice(0,18)+'…':norm.title; norm.tags=[]; if(row.links){ try{ norm.links=typeof row.links==='string'?JSON.parse(row.links):row.links; }catch{ norm.links=[]; } }else norm.links=[]; norm.thumbnail=row.thumbnail?String(row.thumbnail).trim():''; norm.videoEmbed=row.videoEmbed?String(row.videoEmbed).trim():''; norm.tag=''; return {index:idx+1,raw:row,normalized:norm,valid:errors.length===0,errors}; }); window._excelPreviewData=result; const tbody=document.getElementById('excelPreviewBody'); tbody.innerHTML=''; let valid=0, invalid=0; result.forEach(r=>{ const tr=document.createElement('tr'); tr.className=r.valid?'valid':'invalid'; const personsDisplay=r.normalized.person && r.normalized.person.length?r.normalized.person.join(', '):'-'; const statusHtml=r.valid?'<span style="color:#66BB6A;">✅ 有效</span>':'<span style="color:#f87171;">❌ 无效</span><div style="font-size:10px;opacity:0.5;">'+r.errors.join('; ')+'</div>'; tr.innerHTML=`<td>${r.index}</td><td>${r.normalized.date||'-'}</td><td>${personsDisplay}</td><td>${r.normalized.title||'-'}</td><td>${statusHtml}</td>`; tbody.appendChild(tr); if(r.valid) valid++; else invalid++; }); document.getElementById('excelTotalCount').textContent=result.length; document.getElementById('excelValidCount').textContent=valid; document.getElementById('excelInvalidCount').textContent=invalid; document.getElementById('excelPreviewArea').style.display='block'; const btn=document.getElementById('excelConfirmBtn'); btn.disabled=valid===0; btn.style.opacity=valid===0?'0.5':'1'; }catch(err){ alert('解析 Excel 失败：'+err.message); } }; reader.readAsArrayBuffer(file); });
+    document.getElementById('excelConfirmBtn').onclick=async function(){ if(this.disabled) return; const data=window._excelPreviewData||[]; const validItems=data.filter(r=>r.valid); if(!validItems.length){ alert('没有有效数据可导入。'); return; } if(!confirm('确定要导入 '+validItems.length+' 条日程吗？')) return; this.disabled=true; this.textContent='⏳ 导入中...'; let success=0, fail=0; for(let i=0;i<validItems.length;i++){ const item=validItems[i].normalized; try{ const fd={date:item.date,person:item.person,tag:item.tag||'',shortName:item.shortName,title:item.title,links:JSON.stringify(item.links||[]),videoEmbed:item.videoEmbed||'',thumbnail:item.thumbnail||'',tags:item.tags||[]}; const r=await fetch(API_BASE+'/data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(fd)}); if(!r.ok) throw new Error('HTTP '+r.status); const newItem=await r.json(); ensurePersonArray(newItem); if(!newItem.tags) newItem.tags=[]; scheduleList.push(newItem); success++; }catch(err){ fail++; console.error('第 '+(i+1)+' 条导入失败:',err); } } let msg='📊 Excel 导入完成：成功 '+success+' 条'; if(fail>0) msg+= '，失败 '+fail+' 条'; showToast(msg,fail===0?'success':'error'); renderAll(); this.textContent='📥 确认导入'; this.disabled=false; setTimeout(()=>{ excelModal.classList.remove('active'); document.getElementById('excelPreviewArea').style.display='none'; },800); };
 
-    // ===== 冰晶特效 =====
-    (function() {
-        const ICONS = ['❄️', '✨', '💠', '❇️', '✦', '⬡'];
-        const container = document.getElementById('ice-particle-container');
-
-        function burst(x, y) {
-            const count = 8 + Math.floor(Math.random() * 8);
-            for (let i = 0; i < count; i++) { const el = document.createElement('div');
-                el.className = 'ice-particle';
-                el.textContent = ICONS[Math.floor(Math.random() * ICONS.length)];
-                const angle = Math.random() * 2 * Math.PI;
-                const dist = 40 + Math.random() * 90;
-                const tx = Math.cos(angle) * dist;
-                const ty = Math.sin(angle) * dist - 20;
-                el.style.left = x + 'px';
-                el.style.top = y + 'px';
-                el.style.setProperty('--tx', tx + 'px');
-                el.style.setProperty('--ty', ty + 'px');
-                el.style.fontSize = (14 + Math.random() * 16) + 'px';
-                el.style.color = Math.random() > 0.5 ? '#A8D8EA' : '#F0F4F8';
-                el.style.textShadow = '0 0 12px rgba(168,216,234,0.2)';
-                container.appendChild(el);
-                setTimeout(() => { if (el.parentNode) el.remove(); }, 1400); }
-        }
-        document.addEventListener('click', function(e) {
-            const target = e.target.closest(
-                '.modal-mask, .modal-wrap, button, .cal-btn, .person-btn, .dashboard-item, .calendar-icon-block, .toggle-btn, .modal-close, .add-btn, #importBtn, #importExcelBtn'
-                );
-            if (target) return;
-            const rect = container.getBoundingClientRect();
-            burst(e.clientX - rect.left, e.clientY - rect.top);
-        });
-        document.addEventListener('click', function(e) {
-            const item = e.target.closest('.dashboard-item, .calendar-icon-block');
-            if (item) { const rect = container.getBoundingClientRect();
-                burst(e.clientX - rect.left, e.clientY - rect.top); }
-        });
+    // 冰晶特效
+    (function(){
+        const ICONS=['❄️','✨','💠','❇️','✦','⬡'];
+        const container=document.getElementById('ice-particle-container');
+        function burst(x,y){ const count=8+Math.floor(Math.random()*8); for(let i=0;i<count;i++){ const el=document.createElement('div'); el.className='ice-particle'; el.textContent=ICONS[Math.floor(Math.random()*ICONS.length)]; const angle=Math.random()*2*Math.PI; const dist=40+Math.random()*90; const tx=Math.cos(angle)*dist; const ty=Math.sin(angle)*dist-20; el.style.left=x+'px'; el.style.top=y+'px'; el.style.setProperty('--tx',tx+'px'); el.style.setProperty('--ty',ty+'px'); el.style.fontSize=(14+Math.random()*16)+'px'; el.style.color=Math.random()>0.5?'#A8D8EA':'#F0F4F8'; el.style.textShadow='0 0 12px rgba(168,216,234,0.2)'; container.appendChild(el); setTimeout(()=>{ if(el.parentNode) el.remove(); },1400); } }
+        document.addEventListener('click',function(e){ const target=e.target.closest('.modal-mask,.modal-wrap,button,.cal-btn,.person-btn,.dashboard-item,.calendar-icon-block,.toggle-btn,.modal-close,.add-btn,#importBtn,#importExcelBtn'); if(target) return; const rect=container.getBoundingClientRect(); burst(e.clientX-rect.left, e.clientY-rect.top); });
+        document.addEventListener('click',function(e){ const item=e.target.closest('.dashboard-item,.calendar-icon-block'); if(item){ const rect=container.getBoundingClientRect(); burst(e.clientX-rect.left, e.clientY-rect.top); } });
     })();
 
-    // ===== 启动 =====
+    // 启动
     loadTagsFromStorage();
     loadMilestonesFromStorage();
     initYMSelects();
-    loadScheduleData().then(() => {
+    loadScheduleData().then(()=>{
         syncJumpSelect();
         switchToDashboard();
         renderFormTagCheckboxes([]);
-        if (!isEditMode) console.log('🔒 只读模式。添加 ?key=20010101 开启编辑');
+        if(!isEditMode) console.log('🔒 只读模式。添加 ?key=20010101 开启编辑');
         else console.log('🔓 编辑模式已启用');
     });
+})();
 </script>
 </body>
 </html>
