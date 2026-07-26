@@ -30,26 +30,9 @@ function closeModal() {
 function openModal(itemData) {
     currentDeleteId = itemData.id;
     modalTitle.innerText = itemData.title;
-    const persons = ensurePersonArray(itemData);
+    // 人物标签隐藏
     modalPersonTags.innerHTML = '';
-    if (persons.length === 0) {
-        const tag = document.createElement('span');
-        tag.className = 'modal-person-tag';
-        tag.innerText = '未分类';
-        tag.style.background = '#888';
-        tag.style.color = '#fff';
-        modalPersonTags.appendChild(tag);
-    } else {
-        persons.forEach(p => {
-            let key = personList.includes(p) ? p : (extractPersonKey(p) || p);
-            const tag = document.createElement('span');
-            tag.className = 'modal-person-tag';
-            tag.innerText = personDisplayMap[key] || key;
-            tag.style.background = getPersonColor(key);
-            tag.style.color = getTextColorForPerson(key);
-            modalPersonTags.appendChild(tag);
-        });
-    }
+    modalPersonTags.style.display = 'none';
 
     modalTagDisplay.innerHTML = '';
     if (itemData.tags && itemData.tags.length) {
@@ -147,23 +130,11 @@ function openModal(itemData) {
     modalMask.classList.add('active');
 }
 
-// ----- 表单模态框 -----
+// ----- 表单模态框（无人物标签） -----
 function renderPersonCheckboxes(selected) {
+    // 隐藏人物标签，保留空容器但不显示
     personCheckboxContainer.innerHTML = '';
-    personList.forEach(p => {
-        const label = document.createElement('label');
-        const cb = document.createElement('input');
-        cb.type = 'checkbox';
-        cb.value = p;
-        cb.checked = selected ? selected.includes(p) : false;
-        const dot = document.createElement('span');
-        dot.className = 'person-color-dot';
-        dot.style.background = getPersonColor(p);
-        label.appendChild(cb);
-        label.appendChild(dot);
-        label.appendChild(document.createTextNode(personDisplayMap[p] || p));
-        personCheckboxContainer.appendChild(label);
-    });
+    personCheckboxContainer.style.display = 'none';
 }
 
 function renderFormTagCheckboxes(selected) {
@@ -189,11 +160,11 @@ function renderFormTagCheckboxes(selected) {
 }
 
 function getSelectedPersons() {
-    return Array.from(personCheckboxContainer.querySelectorAll('input:checked')).map(cb => cb.value);
+    return ['Winter']; // 默认返回 Winter，实际表单中已隐藏
 }
 
 function setSelectedPersons(persons) {
-    personCheckboxContainer.querySelectorAll('input').forEach(cb => cb.checked = persons ? persons.includes(cb.value) : false);
+    // 无操作，隐藏
 }
 
 function openForm(itemData) {
@@ -203,7 +174,6 @@ function openForm(itemData) {
         formTitleEl.textContent = '✏️ 编辑日程';
         formSubmitBtn.textContent = '💾 更新';
         document.getElementById('formDate').value = itemData.date || '';
-        setSelectedPersons(ensurePersonArray(itemData));
         document.getElementById('formTitleInput').value = itemData.title || '';
         document.getElementById('formLinks').value = itemData.links || '';
         document.getElementById('formVideo').value = itemData.videoEmbed || itemData.videoembed || '';
@@ -221,7 +191,6 @@ function openForm(itemData) {
         formTitleEl.textContent = '📝 添加物料';
         formSubmitBtn.textContent = '✅ 保存';
         document.getElementById('formDate').value = '';
-        setSelectedPersons([]);
         document.getElementById('formTitleInput').value = '';
         document.getElementById('formLinks').value = '';
         document.getElementById('formVideo').value = '';
@@ -328,7 +297,7 @@ scheduleForm.onsubmit = async function(e) {
     e.preventDefault();
     if (!isEditMode) return;
     const date = normalizeDateInput(document.getElementById('formDate').value.trim());
-    const persons = getSelectedPersons();
+    const persons = ['Winter']; // 默认人物
     const title = document.getElementById('formTitleInput').value.trim();
     const linksRaw = document.getElementById('formLinks').value.trim();
     const videoEmbed = document.getElementById('formVideo').value.trim();
@@ -337,7 +306,6 @@ scheduleForm.onsubmit = async function(e) {
     const status = document.querySelector('input[name="formStatus"]:checked')?.value || '待补';
 
     if (!date || !isValidDate(date)) { alert('请填写有效日期 (YYYY-MM-DD 或 6/8位数字)'); return; }
-    if (!persons.length) { alert('请至少选择一个人物'); return; }
     if (!title) { alert('请填写标题'); return; }
 
     let links = '[]';
