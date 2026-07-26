@@ -33,6 +33,8 @@ document.getElementById('ymConfirm').onclick = function() {
     if (y >= 2020 && m >= 1 && m <= 12) {
         viewYear = y;
         viewMonth = m;
+        window.viewYear = y;
+        window.viewMonth = m;
         syncJumpSelect();
         renderAll();
         document.getElementById('ymPickerOverlay').classList.remove('active');
@@ -50,6 +52,8 @@ document.getElementById('prevMonth').addEventListener('click', function() {
     if (viewMonth < 1) { viewMonth = 12;
         viewYear--; }
     if (viewYear < 2020) viewYear = 2020;
+    window.viewYear = viewYear;
+    window.viewMonth = viewMonth;
     syncJumpSelect();
     renderAll();
 });
@@ -59,6 +63,8 @@ document.getElementById('nextMonth').addEventListener('click', function() {
     viewMonth++;
     if (viewMonth > 12) { viewMonth = 1;
         viewYear++; }
+    window.viewYear = viewYear;
+    window.viewMonth = viewMonth;
     syncJumpSelect();
     renderAll();
 });
@@ -69,7 +75,6 @@ document.getElementById('addBtn').onclick = function() {
     openForm(null);
 };
 
-// 折叠面板绑定
 function initTogglePanels() {
     document.querySelectorAll('.toggle-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
@@ -83,8 +88,9 @@ function initTogglePanels() {
     });
 }
 
-// 切换到日历视图（由 dashboard.js 调用）
 function switchToCalendar() {
+    window.viewYear = viewYear;
+    window.viewMonth = viewMonth;
     currentView = 'calendar';
     document.getElementById('dashboard-view').classList.remove('active');
     document.getElementById('calendar-view').classList.add('active');
@@ -92,11 +98,10 @@ function switchToCalendar() {
     document.getElementById('goToDashboard').style.display = 'inline-block';
     document.querySelector('.person-filter-bar').style.display = 'flex';
     document.querySelector('.calendar-control').style.display = 'flex';
-    // 渲染日历
     renderAll();
+    console.log('✅ 已切换到日历视图', viewYear, viewMonth);
 }
 
-// 切换到仪表盘（由 main.js 初始化调用）
 function switchToDashboard() {
     currentView = 'dashboard';
     document.getElementById('dashboard-view').classList.add('active');
@@ -105,9 +110,12 @@ function switchToDashboard() {
     document.getElementById('goToDashboard').style.display = 'none';
     document.querySelector('.person-filter-bar').style.display = 'none';
     document.querySelector('.calendar-control').style.display = 'none';
-    // 渲染仪表盘
     renderDashboard();
+    console.log('✅ 已切换到仪表盘');
 }
+
+window.switchToCalendar = switchToCalendar;
+window.switchToDashboard = switchToDashboard;
 
 window.onload = async function() {
     loadTagsFromStorage();
@@ -116,21 +124,17 @@ window.onload = async function() {
     await loadScheduleData();
     syncJumpSelect();
 
-    // 初始化折叠面板
     initTogglePanels();
 
-    // 默认显示仪表盘
     switchToDashboard();
 
     renderPersonCheckboxes([]);
     renderFormTagCheckboxes([]);
 
-    // 返回仪表盘按钮
     document.getElementById('goToDashboard').addEventListener('click', function() {
         switchToDashboard();
     });
 
-    // 添加按钮在日历视图中
     document.getElementById('addBtn').onclick = function() {
         if (!isEditMode) return;
         renderPersonCheckboxes([]);
