@@ -48,6 +48,7 @@ h1 { font-size:40px; font-weight:700; text-align:center; letter-spacing:6px; col
 #dashboard-view { display:none; padding:10px 0 20px; }
 #dashboard-view.active { display:block; }
 .dashboard-layout { display:flex; gap:18px; align-items:stretch; min-height:420px; }
+/* 侧边栏固定宽度，不受仪表盘影响 */
 .side-panel-left { flex:0 0 200px; background:var(--glass); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--border); border-radius:14px; padding:14px 14px 18px; position:relative; transition:flex 0.35s, opacity 0.3s, transform 0.35s; overflow:hidden; }
 .side-panel-left.collapsed { flex:0 0 0; padding:0; border:none; opacity:0; transform:scaleX(0.7); margin:0; min-width:0; overflow:hidden; }
 .side-panel-left .toggle-btn { position:absolute; right:-12px; top:50%; transform:translateY(-50%); width:22px; height:44px; background:rgba(168,216,234,0.08); border:1px solid var(--border); border-radius:0 10px 10px 0; color:var(--ice); font-size:14px; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; justify-content:center; font-family:'Courier New',monospace; z-index:5; }
@@ -62,8 +63,8 @@ h1 { font-size:40px; font-weight:700; text-align:center; letter-spacing:6px; col
 .dashboard-center { flex:1; min-width:0; padding:0 2px; }
 .dashboard-grid { 
     display:grid; 
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-    gap:30px 20px; 
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+    gap:24px 16px; 
     justify-items:center; 
 }
 .dashboard-item { 
@@ -72,14 +73,14 @@ h1 { font-size:40px; font-weight:700; text-align:center; letter-spacing:6px; col
     align-items:center; 
     cursor:pointer; 
     transition:transform 0.3s, filter 0.3s; 
-    width:300px; 
+    width:220px; 
     position:relative; 
 }
 .dashboard-item:hover { transform:translateY(-6px) scale(1.04); filter:drop-shadow(0 0 20px rgba(168,216,234,0.12)); }
 .cyber-gauge { 
     position:relative; 
-    width:300px; 
-    height:300px; 
+    width:220px; 
+    height:220px; 
     border-radius:50%; 
     background:radial-gradient(circle at 30% 30%, rgba(168,216,234,0.04), rgba(10,10,20,0.8)); 
     border:1px solid rgba(168,216,234,0.10); 
@@ -97,11 +98,11 @@ h1 { font-size:40px; font-weight:700; text-align:center; letter-spacing:6px; col
     height:100%; 
     transform:rotate(-90deg); 
 }
-.cyber-gauge .bg-ring { fill:none; stroke:rgba(255,255,255,0.04); stroke-width:12; }
-.cyber-gauge .progress-ring { fill:none; stroke:#1a1a2e; stroke-width:12; stroke-linecap:round; transition:stroke-dashoffset 1s ease; }
+.cyber-gauge .bg-ring { fill:none; stroke:rgba(255,255,255,0.04); stroke-width:10; }
+.cyber-gauge .progress-ring { fill:none; stroke:#1a1a2e; stroke-width:10; stroke-linecap:round; transition:stroke-dashoffset 1s ease; }
 .cyber-gauge .gauge-center { position:relative; z-index:2; text-align:center; padding:0 6px; }
-.cyber-gauge .gauge-center .song-name { font-size:38px; font-weight:700; color:var(--ice); text-shadow:0 0 30px rgba(168,216,234,0.15); font-family:'Courier New',monospace; letter-spacing:2px; line-height:1.2; }
-.cyber-gauge .gauge-center .song-year { font-size:20px; opacity:0.35; font-family:'Courier New',monospace; margin-top:4px; }
+.cyber-gauge .gauge-center .song-name { font-size:28px; font-weight:700; color:var(--ice); text-shadow:0 0 30px rgba(168,216,234,0.15); font-family:'Courier New',monospace; letter-spacing:2px; line-height:1.2; }
+.cyber-gauge .gauge-center .song-year { font-size:15px; opacity:0.35; font-family:'Courier New',monospace; margin-top:4px; }
 .cyber-gauge .glow-ring { 
     position:absolute; 
     inset:-4px; 
@@ -112,8 +113,8 @@ h1 { font-size:40px; font-weight:700; text-align:center; letter-spacing:6px; col
     animation:gaugeGlow 8s linear infinite; 
 }
 @keyframes gaugeGlow { 0% { transform:rotate(0deg); } 100% { transform:rotate(360deg); } }
-.dashboard-item .item-info { margin-top:12px; text-align:center; font-size:15px; opacity:0.4; font-family:'Courier New',monospace; color:var(--moon); }
-.dashboard-item .item-info .badge { display:inline-block; padding:2px 14px; border-radius:12px; font-size:13px; font-weight:600; background:rgba(102,187,106,0.15); color:#66BB6A; border:1px solid rgba(102,187,106,0.08); }
+.dashboard-item .item-info { margin-top:12px; text-align:center; font-size:14px; opacity:0.4; font-family:'Courier New',monospace; color:var(--moon); }
+.dashboard-item .item-info .badge { display:inline-block; padding:2px 12px; border-radius:12px; font-size:12px; font-weight:600; background:rgba(102,187,106,0.15); color:#66BB6A; border:1px solid rgba(102,187,106,0.08); }
 .side-panel-right { flex:0 0 160px; background:var(--glass); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--border); border-radius:14px; padding:14px 14px 18px; position:relative; transition:flex 0.35s, opacity 0.3s, transform 0.35s; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; }
 .side-panel-right.collapsed { flex:0 0 0; padding:0; border:none; opacity:0; transform:scaleX(0.7); margin:0; min-width:0; overflow:hidden; }
 .side-panel-right .toggle-btn { position:absolute; left:-12px; top:50%; transform:translateY(-50%); width:22px; height:44px; background:rgba(168,216,234,0.08); border:1px solid var(--border); border-radius:10px 0 0 10px; color:var(--ice); font-size:14px; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; justify-content:center; font-family:'Courier New',monospace; z-index:5; }
@@ -352,11 +353,11 @@ h1 { font-size:40px; font-weight:700; text-align:center; letter-spacing:6px; col
     .modal-img-box { max-height:240px; aspect-ratio:auto; }
 }
 @media (max-width:768px) {
-    .dashboard-grid { grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:20px; }
-    .dashboard-item { width:200px; }
-    .cyber-gauge { width:200px; height:200px; }
-    .cyber-gauge .gauge-center .song-name { font-size:26px; }
-    .cyber-gauge .gauge-center .song-year { font-size:14px; }
+    .dashboard-grid { grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); gap:16px; }
+    .dashboard-item { width:160px; }
+    .cyber-gauge { width:160px; height:160px; }
+    .cyber-gauge .gauge-center .song-name { font-size:20px; }
+    .cyber-gauge .gauge-center .song-year { font-size:12px; }
     .tag-legend-panel { flex:0 0 80px; }
     .tag-legend-item .legend-name { font-size:9px; }
     .calendar-table td { height:80px; padding:4px; }
@@ -368,11 +369,11 @@ h1 { font-size:40px; font-weight:700; text-align:center; letter-spacing:6px; col
     .form-modal .modal-wrap { max-width:95vw; padding:16px; }
 }
 @media (max-width:480px) {
-    .dashboard-grid { grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:14px; }
-    .dashboard-item { width:140px; }
-    .cyber-gauge { width:140px; height:140px; }
-    .cyber-gauge .gauge-center .song-name { font-size:18px; }
-    .cyber-gauge .gauge-center .song-year { font-size:11px; }
+    .dashboard-grid { grid-template-columns:repeat(auto-fill, minmax(120px,1fr)); gap:12px; }
+    .dashboard-item { width:120px; }
+    .cyber-gauge { width:120px; height:120px; }
+    .cyber-gauge .gauge-center .song-name { font-size:15px; }
+    .cyber-gauge .gauge-center .song-year { font-size:10px; }
     .tag-legend-panel { flex:0 0 60px; }
     .tag-legend-item { font-size:9px; padding:1px 3px; }
     .tag-legend-item .legend-icon { font-size:10px; }
@@ -608,8 +609,8 @@ h1 { font-size:40px; font-weight:700; text-align:center; letter-spacing:6px; col
 
     function getFilterData(){ let arr=[...scheduleList]; if(currentFilterPerson==='multi'){ arr=arr.filter(item=>ensurePersonArray(item).length>1); }else if(currentFilterPerson!=='all'){ arr=arr.filter(item=>ensurePersonArray(item).includes(currentFilterPerson)); } if(searchDateKeyword){ arr=arr.filter(item=>item.date && item.date.includes(searchDateKeyword)); } if(currentFilterTagId){ arr=arr.filter(item=>item.tags && item.tags.includes(currentFilterTagId)); } arr.sort((a,b)=>new Date(a.date)-new Date(b.date)); return arr; }
 
-    function renderDashboard(){ const grid=document.getElementById('dashboardGrid'); if(!grid) return; grid.innerHTML=''; const sorted=[...REGRESSION_LIST].sort((a,b)=>{ if(a.year!==b.year) return b.year-a.year; return b.month-a.month; }); sorted.forEach(reg=>{ const start=new Date(reg.year,reg.month-1,1), end=new Date(reg.year,reg.month,0); const items=scheduleList.filter(item=>{ const d=new Date(item.date); return d>=start && d<=end; }); const total=items.length; const done=items.filter(item=>item.title && (item.thumbnail || item.videoEmbed || (item.links && JSON.stringify(item.links)!=='[]'))).length; const pct=total>0?Math.round((done/total)*100):0; const circumference=2*Math.PI*92; // 半径92，适配viewBox 200
-            const offset=circumference*(1-pct/100); const wrapper=document.createElement('div'); wrapper.className='dashboard-item'; wrapper.innerHTML=`<div class="cyber-gauge"><svg viewBox="0 0 200 200"><circle class="bg-ring" cx="100" cy="100" r="92" stroke-width="12"/><circle class="progress-ring" cx="100" cy="100" r="92" stroke-width="12" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/></svg><div class="gauge-center"><div class="song-name">${reg.name}</div><div class="song-year">${reg.year}.${String(reg.month).padStart(2,'0')}</div></div><div class="glow-ring"></div></div><div class="item-info">${total>0?(done===total?'<span class="badge">✅ 已毕业</span>':'剩余 '+(total-done)+' 件'):'暂无物料'}</div>`; wrapper.addEventListener('click',function(){ viewYear=reg.year; viewMonth=reg.month; switchToCalendar(); }); grid.appendChild(wrapper); }); updateDebutDays(); }
+    function renderDashboard(){ const grid=document.getElementById('dashboardGrid'); if(!grid) return; grid.innerHTML=''; const sorted=[...REGRESSION_LIST].sort((a,b)=>{ if(a.year!==b.year) return b.year-a.year; return b.month-a.month; }); sorted.forEach(reg=>{ const start=new Date(reg.year,reg.month-1,1), end=new Date(reg.year,reg.month,0); const items=scheduleList.filter(item=>{ const d=new Date(item.date); return d>=start && d<=end; }); const total=items.length; const done=items.filter(item=>item.title && (item.thumbnail || item.videoEmbed || (item.links && JSON.stringify(item.links)!=='[]'))).length; const pct=total>0?Math.round((done/total)*100):0; const circumference=2*Math.PI*70; // 半径70适配viewBox 200
+            const offset=circumference*(1-pct/100); const wrapper=document.createElement('div'); wrapper.className='dashboard-item'; wrapper.innerHTML=`<div class="cyber-gauge"><svg viewBox="0 0 200 200"><circle class="bg-ring" cx="100" cy="100" r="70" stroke-width="10"/><circle class="progress-ring" cx="100" cy="100" r="70" stroke-width="10" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/></svg><div class="gauge-center"><div class="song-name">${reg.name}</div><div class="song-year">${reg.year}.${String(reg.month).padStart(2,'0')}</div></div><div class="glow-ring"></div></div><div class="item-info">${total>0?(done===total?'<span class="badge">✅ 已毕业</span>':'剩余 '+(total-done)+' 件'):'暂无物料'}</div>`; wrapper.addEventListener('click',function(){ viewYear=reg.year; viewMonth=reg.month; switchToCalendar(); }); grid.appendChild(wrapper); }); updateDebutDays(); }
 
     function updateDebutDays(){ const debut=new Date(2020,10,17); const now=new Date(); const diff=Math.floor((now-debut)/(1000*60*60*24)); document.getElementById('debutDays').textContent=diff>0?diff:'--'; }
 
