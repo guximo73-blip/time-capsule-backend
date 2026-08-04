@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js">
     </script>
     <style>
-        /* ===== FUI 风格基础 ===== */
+        /* ===== FUI 风格 ===== */
         :root {
             --bg: #0a0a14;
             --text: #e9e9eb;
@@ -41,9 +41,7 @@
             margin: 0 auto;
             position: relative;
             cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L14.5 9.5L22 10L16.5 15L18.5 22L12 18L5.5 22L7.5 15L2 10L9.5 9.5L12 2Z' fill='%23A8D8EA' opacity='0.85'/%3E%3C/svg%3E") 12 12, auto;
-            /* FUI 背景：网格 + 光晕 */
-            background:
-                linear-gradient(rgba(168, 216, 234, 0.03) 1px, transparent 1px),
+            background: linear-gradient(rgba(168, 216, 234, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(168, 216, 234, 0.03) 1px, transparent 1px),
                 radial-gradient(ellipse at 20% 50%, rgba(168, 216, 234, 0.07) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 50%, rgba(184, 169, 212, 0.05) 0%, transparent 60%),
@@ -55,8 +53,7 @@
             content: '';
             position: fixed;
             inset: 0;
-            background:
-                radial-gradient(circle at 10% 20%, rgba(168, 216, 234, 0.02) 0%, transparent 50%),
+            background: radial-gradient(circle at 10% 20%, rgba(168, 216, 234, 0.02) 0%, transparent 50%),
                 radial-gradient(circle at 90% 80%, rgba(184, 169, 212, 0.02) 0%, transparent 50%);
             pointer-events: none;
             z-index: -1;
@@ -65,13 +62,11 @@
             content: '';
             position: fixed;
             inset: 0;
-            background:
-                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(168, 216, 234, 0.015) 39px, rgba(168, 216, 234, 0.015) 40px),
+            background: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(168, 216, 234, 0.015) 39px, rgba(168, 216, 234, 0.015) 40px),
                 repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(168, 216, 234, 0.015) 39px, rgba(168, 216, 234, 0.015) 40px);
             pointer-events: none;
             z-index: -1;
         }
-        /* FUI 装饰角标 */
         .fui-corner {
             position: fixed;
             width: 20px;
@@ -106,8 +101,6 @@
             border-bottom-width: 2px;
             border-right-width: 2px;
         }
-
-        /* ===== 通用动画 ===== */
         .view-fade-in {
             animation: fadeIn 0.35s ease;
         }
@@ -129,8 +122,6 @@
                 transform: translateY(-80px) rotate(8deg);
             }
         }
-
-        /* ===== 标题 ===== */
         h1 {
             font-size: 40px;
             font-weight: 700;
@@ -154,8 +145,6 @@
             position: relative;
             z-index: 1;
         }
-
-        /* ===== Dashboard ===== */
         #dashboard-view {
             display: none;
             padding: 10px 0 20px;
@@ -169,8 +158,6 @@
             align-items: stretch;
             min-height: 420px;
         }
-
-        /* 侧边栏 - FUI 风格增强 */
         .side-panel-left {
             flex: 0 0 200px;
             background: var(--glass);
@@ -231,7 +218,6 @@
             border-radius: 10px;
             transform: translateY(-50%) rotate(180deg);
         }
-
         .panel-title {
             font-size: 13px;
             font-weight: 600;
@@ -257,7 +243,6 @@
             border-color: rgba(168, 216, 234, 0.15);
             background: rgba(168, 216, 234, 0.04);
         }
-
         .bio-content {
             font-size: 13px;
             line-height: 1.7;
@@ -275,8 +260,6 @@
             font-size: 12px;
             opacity: 0.5;
         }
-
-        /* 仪表盘网格 */
         .dashboard-center {
             flex: 1;
             min-width: 0;
@@ -380,18 +363,6 @@
             font-family: 'Courier New', monospace;
             color: var(--moon);
         }
-        .dashboard-item .item-info .badge {
-            display: inline-block;
-            padding: 2px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            background: rgba(102, 187, 106, 0.15);
-            color: #66BB6A;
-            border: 1px solid rgba(102, 187, 106, 0.08);
-        }
-
-        /* 右侧面板 */
         .side-panel-right {
             flex: 0 0 160px;
             background: var(--glass);
@@ -472,8 +443,6 @@
             font-family: 'Courier New', monospace;
             letter-spacing: 2px;
         }
-
-        /* ===== 首页跳转按钮 ===== */
         .home-to-calendar-wrap {
             display: flex;
             justify-content: center;
@@ -523,8 +492,6 @@
         .btn-to-calendar:hover .arrow {
             transform: translateX(4px);
         }
-
-        /* ===== 日历视图 ===== */
         #calendar-view {
             display: none;
             padding: 4px 0 16px;
@@ -662,8 +629,6 @@
         #importExcelBtn:hover {
             background: rgba(168, 216, 234, 0.12);
         }
-
-        /* 日历表格 */
         .calendar-body {
             display: flex;
             gap: 14px;
@@ -744,8 +709,6 @@
         .calendar-content::-webkit-scrollbar {
             display: none;
         }
-
-        /* ===== 日历词条 - 悬停滚动标题 ===== */
         .calendar-item-block {
             display: flex;
             align-items: center;
@@ -781,11 +744,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .calendar-item-block .item-title-text.rolling {
-            animation: none;
-            transform: translateX(0);
-        }
-        /* 悬停时滚动 - 从右往左浮现完整标题，不循环 */
         .calendar-item-block:hover .item-title-text {
             transform: translateX(calc(-100% + var(--title-visible-width, 80px)));
             transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -831,8 +789,6 @@
             font-family: 'Courier New', monospace;
             border: 1px solid rgba(168, 216, 234, 0.03);
         }
-
-        /* 标签图例 */
         .tag-legend-panel {
             flex: 0 0 140px;
             background: var(--glass);
@@ -924,8 +880,6 @@
             font-size: 9px;
             opacity: 0.25;
         }
-
-        /* ===== 模态框 ===== */
         .modal-mask {
             position: fixed;
             inset: 0;
@@ -1063,8 +1017,6 @@
         .readonly .manage-btn {
             display: none !important;
         }
-
-        /* ===== 便签纸编辑模态框 ===== */
         .sticky-note-modal .modal-wrap {
             max-width: 520px;
             flex-direction: column;
@@ -1082,12 +1034,7 @@
             left: 20px;
             right: 20px;
             height: 12px;
-            background:
-                repeating-linear-gradient(90deg,
-                    transparent,
-                    transparent 18px,
-                    rgba(200, 180, 130, 0.15) 18px,
-                    rgba(200, 180, 130, 0.15) 20px);
+            background: repeating-linear-gradient(90deg, transparent, transparent 18px, rgba(200, 180, 130, 0.15) 18px, rgba(200, 180, 130, 0.15) 20px);
             border-radius: 0 0 50% 50% / 0 0 100% 100%;
             pointer-events: none;
         }
@@ -1098,12 +1045,7 @@
             left: 20px;
             right: 20px;
             height: 12px;
-            background:
-                repeating-linear-gradient(90deg,
-                    transparent,
-                    transparent 18px,
-                    rgba(200, 180, 130, 0.15) 18px,
-                    rgba(200, 180, 130, 0.15) 20px);
+            background: repeating-linear-gradient(90deg, transparent, transparent 18px, rgba(200, 180, 130, 0.15) 18px, rgba(200, 180, 130, 0.15) 20px);
             border-radius: 50% 50% 0 0 / 100% 100% 0 0;
             pointer-events: none;
         }
@@ -1142,9 +1084,6 @@
             color: #c4b48a;
             margin-top: 2px;
             opacity: 0.5;
-        }
-        .sticky-note-body {
-            font-family: 'Courier New', 'Georgia', serif;
         }
         .sticky-note-body textarea {
             width: 100%;
@@ -1201,8 +1140,6 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
         }
-
-        /* ===== 表单模态框 ===== */
         .form-modal .modal-wrap {
             max-width: 640px;
             flex-direction: column;
@@ -1331,8 +1268,6 @@
         .btn-submit:hover {
             opacity: 0.85;
         }
-
-        /* 年月选择器 */
         .ym-picker-overlay {
             position: fixed;
             inset: 0;
@@ -1403,8 +1338,6 @@
         .ym-btn-cancel:hover {
             background: rgba(255, 255, 255, 0.08);
         }
-
-        /* ===== 粒子 ===== */
         #ice-particle-container {
             position: fixed;
             top: 0;
@@ -1433,8 +1366,6 @@
                 opacity: 0;
             }
         }
-
-        /* ===== 导入模态框 ===== */
         .import-modal .modal-wrap {
             max-width: 760px;
             flex-direction: column;
@@ -1627,8 +1558,6 @@
         .import-result-toast.error {
             border-color: #f87171;
         }
-
-        /* ===== Excel 导入 ===== */
         #excelImportModal .modal-wrap {
             max-width: 680px;
             flex-direction: column;
@@ -1648,8 +1577,6 @@
             font-size: 13px;
             cursor: pointer;
         }
-
-        /* ===== 响应式 ===== */
         @media (max-width:1024px) {
             .dashboard-layout {
                 flex-wrap: wrap;
@@ -1861,17 +1788,14 @@
     </style>
 </head>
 <body>
-    <!-- FUI 装饰角 -->
     <div class="fui-corner tl"></div>
     <div class="fui-corner tr"></div>
     <div class="fui-corner bl"></div>
     <div class="fui-corner br"></div>
-
     <div id="ice-particle-container"></div>
     <h1>❄️ 0101号空间站</h1>
     <div class="subtitle">幸福的终点是旼炡和你</div>
 
-    <!-- ===== 仪表盘视图 ===== -->
     <div id="dashboard-view" class="active view-fade-in">
         <div class="dashboard-layout">
             <div class="side-panel-left" id="leftPanel">
@@ -1881,16 +1805,7 @@
                     <span class="edit-icon" id="bioEditBtn" title="编辑介绍">✎</span>
                 </div>
                 <div class="bio-content" id="bioContent">
-                    <span class="name">WINTER</span>
-                    <div class="desc">aespa 主唱 · 领舞</div>
-                    <div style="margin-top:6px;font-size:12px;opacity:0.5;line-height:1.6;">
-                        2001.01.01<br>
-                        出道日 2020.11.17<br>
-                        ❄️ 冰系少女
-                    </div>
-                    <div style="margin-top:8px;font-size:11px;opacity:0.3;border-top:1px solid rgba(168,216,234,0.04);padding-top:6px;">
-                        “幸福的终点是旼炡和你”
-                    </div>
+                    <!-- 默认内容会在 JS 中加载，此处留空由脚本填充 -->
                 </div>
             </div>
             <div class="dashboard-center">
@@ -1903,7 +1818,6 @@
                 <div style="font-size:10px;opacity:0.15;margin-top:8px;font-family:'Courier New',monospace;">since 2020.11.17</div>
             </div>
         </div>
-        <!-- 首页跳转按钮 -->
         <div class="home-to-calendar-wrap">
             <button class="btn-to-calendar" id="homeToCalendarBtn">
                 ❄️ WINTER RECORD <span class="arrow">→</span>
@@ -1911,7 +1825,6 @@
         </div>
     </div>
 
-    <!-- ===== 日历视图 ===== -->
     <div id="calendar-view">
         <div class="calendar-header">
             <div class="left-group">
@@ -1942,7 +1855,6 @@
         </div>
     </div>
 
-    <!-- ===== 详情模态框 ===== -->
     <div class="modal-mask" id="modalMask">
         <div class="modal-wrap">
             <div class="modal-img-box" id="modalMediaBox"><span class="no-media">暂无媒体</span></div>
@@ -1960,7 +1872,6 @@
         </div>
     </div>
 
-    <!-- ===== 便签纸编辑模态框 ===== -->
     <div class="modal-mask sticky-note-modal" id="stickyNoteModal">
         <div class="modal-wrap">
             <div class="modal-info">
@@ -1977,7 +1888,6 @@
         </div>
     </div>
 
-    <!-- ===== 表单模态框 ===== -->
     <div class="modal-mask form-modal" id="formModal">
         <div class="modal-wrap">
             <div class="modal-info">
@@ -2008,7 +1918,6 @@
         </div>
     </div>
 
-    <!-- ===== 年月选择器 ===== -->
     <div class="ym-picker-overlay" id="ymPickerOverlay">
         <div class="ym-picker-box">
             <h3>📅 选择年月</h3>
@@ -2017,7 +1926,6 @@
         </div>
     </div>
 
-    <!-- ===== 导入 JSON 模态框 ===== -->
     <div class="modal-mask import-modal" id="importModal">
         <div class="modal-wrap">
             <div class="modal-info">
@@ -2038,7 +1946,6 @@
         </div>
     </div>
 
-    <!-- ===== 导入 Excel 模态框 ===== -->
     <div class="modal-mask" id="excelImportModal">
         <div class="modal-wrap" style="max-width:680px;flex-direction:column;padding:24px 28px;">
             <div class="modal-info" style="width:100%;padding:0;">
@@ -2055,12 +1962,10 @@
         </div>
     </div>
 
-    <!-- ===== Toast ===== -->
     <div class="import-result-toast" id="importResultToast"><span id="importResultMsg"></span><button class="toast-close" id="importToastClose">×</button></div>
 
     <script>
         (function() {
-            // ===== 配置 =====
             const API_BASE = 'https://time-capsule-backend-1-3mzs.onrender.com/api';
             const urlParams = new URLSearchParams(location.search);
             const isEditMode = urlParams.get('edit') === 'true' || urlParams.get('key') === '20010101';
@@ -2073,6 +1978,10 @@
                 "NingNing": "🦋NingNing" };
             const STORAGE_TAGS = 'winter_tags';
             const STORAGE_MILESTONES = 'winter_milestones';
+            const STORAGE_BIO = 'winter_bio';
+            const DEFAULT_BIO =
+                '<span class="name">WINTER</span><div class="desc">aespa 主唱 · 领舞</div><div style="margin-top:6px;font-size:12px;opacity:0.5;line-height:1.6;">2001.01.01<br>出道日 2020.11.17<br>❄️ 冰系少女</div><div style="margin-top:8px;font-size:11px;opacity:0.3;border-top:1px solid rgba(168,216,234,0.04);padding-top:6px;">“幸福的终点是旼炡和你”</div>';
+
             const REGRESSION_LIST = [
                 { name: 'LEMON', year: 2026, month: 5 },
                 { name: 'WHIPLASH', year: 2024, month: 11 },
@@ -2159,12 +2068,30 @@
                 item.person = p;
                 return p; }
 
+            // --- 便签持久化 ---
+            function loadBioFromStorage() {
+                const el = document.getElementById('bioContent');
+                let stored = localStorage.getItem(STORAGE_BIO);
+                if (stored) {
+                    el.innerHTML = stored;
+                } else {
+                    el.innerHTML = DEFAULT_BIO;
+                    localStorage.setItem(STORAGE_BIO, DEFAULT_BIO);
+                }
+            }
+
+            function saveBioToStorage(html) {
+                localStorage.setItem(STORAGE_BIO, html);
+                document.getElementById('bioContent').innerHTML = html;
+            }
+
+            // --- 标签和里程碑 ---
             function loadTagsFromStorage() { const s = localStorage.getItem(STORAGE_TAGS); if (s) { try { tags = JSON.parse(
                         s); } catch { tags = []; } } else { tags = [{ id: 'tag1', name: '演唱会', color: '#ff6b9d',
                         isTravel: true }, { id: 'tag2', name: '飞行', color: '#ffaa00', isTravel: true }, { id: 'tag3',
                         name: '直播', color: '#4FC3F7', isTravel: false }, { id: 'tag4', name: '画报', color: '#B47EDC',
                         isTravel: false }];
-                saveTagsToStorage(); } tags = tags.map(t => ({ ...t, isTravel: t.isTravel || false }));
+                    saveTagsToStorage(); } tags = tags.map(t => ({ ...t, isTravel: t.isTravel || false }));
                 saveTagsToStorage(); }
 
             function saveTagsToStorage() { localStorage.setItem(STORAGE_TAGS, JSON.stringify(tags)); }
@@ -2176,6 +2103,7 @@
 
             function saveMilestonesToStorage() { localStorage.setItem(STORAGE_MILESTONES, JSON.stringify(milestones)); }
 
+            // --- 数据 API ---
             async function loadScheduleData() { try { const r = await fetch(API_BASE + '/data'); if (!r.ok) throw new Error(
                         '加载失败'); let data = await r.json(); data = data.map(item => { ensurePersonArray(item); if (!item
                         .tags) item.tags = []; if (!item.status) item.status = '待补'; return item; });
@@ -2220,7 +2148,7 @@
                 if (currentFilterTagId) { arr = arr.filter(item => item.tags && item.tags.includes(currentFilterTagId)); }
                 arr.sort((a, b) => new Date(a.date) - new Date(b.date)); return arr; }
 
-            // ===== 仪表盘渲染 =====
+            // --- 渲染 ---
             function renderDashboard() {
                 const grid = document.getElementById('dashboardGrid');
                 if (!grid) return;
@@ -2240,7 +2168,6 @@
                     const offset = circumference * (1 - pct / 100);
                     const wrapper = document.createElement('div');
                     wrapper.className = 'dashboard-item';
-                    // 不显示 "已毕业" 标签，仅显示剩余或暂无
                     let infoText = total > 0 ? (done === total ? '' : '剩余 ' + (total - done) + ' 件') : '暂无物料';
                     wrapper.innerHTML =
                         `<div class="cyber-gauge"><svg viewBox="0 0 200 200"><circle class="bg-ring" cx="100" cy="100" r="70" stroke-width="10"/><circle class="progress-ring" cx="100" cy="100" r="70" stroke-width="10" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/></svg><div class="gauge-center"><div class="song-name">${reg.name}</div><div class="song-year">${reg.year}.${String(reg.month).padStart(2,'0')}</div></div><div class="glow-ring"></div></div><div class="item-info">${infoText}</div>`;
@@ -2261,7 +2188,6 @@
                 document.getElementById('debutDays').textContent = diff > 0 ? diff : '--';
             }
 
-            // ===== 标签图例 =====
             function renderTagLegend() {
                 const c = document.getElementById('tagLegendBody');
                 if (!c) return;
@@ -2292,7 +2218,6 @@
                 }
             }
 
-            // ===== 日历渲染 =====
             function renderCalendar() {
                 const calDom = document.getElementById('calendar-area');
                 calDom.innerHTML = '';
@@ -2348,20 +2273,16 @@
                             block.className = 'calendar-item-block';
                             const titleText = item.shortName || item.title || '未命名';
                             block.title = item.title || '未命名';
-
-                            // 标题滚动包装
                             const wrap = document.createElement('span');
                             wrap.className = 'item-title-wrap';
                             const titleSpan = document.createElement('span');
                             titleSpan.className = 'item-title-text';
                             titleSpan.textContent = titleText;
-                            // 计算可见宽度（近似）
                             const visibleChars = Math.min(titleText.length, 8);
                             const pxPerChar = 7;
                             const visiblePx = visibleChars * pxPerChar + 20;
                             titleSpan.style.setProperty('--title-visible-width', visiblePx + 'px');
                             wrap.appendChild(titleSpan);
-
                             const dot = document.createElement('span');
                             dot.className = 'status-dot ' + (item.status === '已补完' ? 'done' : 'pending');
                             dot.title = item.status || '待补';
@@ -2448,18 +2369,17 @@
             window.switchToCalendar = switchToCalendar;
             window.switchToDashboard = switchToDashboard;
 
-            // ===== 首页跳转按钮 =====
+            // --- 首页跳转 ---
             document.getElementById('homeToCalendarBtn').addEventListener('click', function() {
                 const now = new Date();
                 viewYear = now.getFullYear();
                 viewMonth = now.getMonth() + 1;
                 switchToCalendar();
             });
-
             document.getElementById('backToDashBtn').addEventListener('click', function() { switchToDashboard(); });
             document.getElementById('titleBack').addEventListener('click', function() { switchToDashboard(); });
 
-            // ===== 模态框 =====
+            // --- 模态框 ---
             function closeModal() {
                 document.getElementById('modalMask').classList.remove('active');
                 document.getElementById('modalMediaBox').innerHTML = '<span class="no-media">暂无媒体</span>';
@@ -2567,7 +2487,7 @@
                 document.getElementById('modalMask').classList.add('active');
             }
 
-            // ===== 表单 =====
+            // --- 表单 ---
             function renderFormTagCheckboxes(selected) {
                 const c = document.getElementById('formTagCheckboxContainer');
                 c.innerHTML = '';
@@ -2628,15 +2548,13 @@
             function closeForm() { document.getElementById('formModal').classList.remove('active');
                 editModeId = null; }
 
-            // ===== 便签纸编辑 =====
+            // --- 便签编辑 ---
             const stickyModal = document.getElementById('stickyNoteModal');
             const stickyText = document.getElementById('stickyNoteText');
-            let stickyBioBackup = '';
 
             function openStickyNote() {
                 if (!isEditMode) return;
                 const currentHtml = document.getElementById('bioContent').innerHTML;
-                stickyBioBackup = currentHtml;
                 stickyText.value = currentHtml;
                 stickyModal.classList.add('active');
             }
@@ -2650,14 +2568,14 @@
             document.getElementById('stickySave').addEventListener('click', function() {
                 const val = stickyText.value.trim();
                 if (val) {
-                    document.getElementById('bioContent').innerHTML = val;
+                    saveBioToStorage(val);
                     closeStickyNote();
                 } else {
                     alert('内容不能为空');
                 }
             });
 
-            // ===== 日期选择器 =====
+            // --- 日期控件 ---
             function initYMSelects() {
                 const y = document.getElementById('ymYearSelect'),
                     m = document.getElementById('ymMonthSelect');
@@ -2695,7 +2613,6 @@
             document.getElementById('ymPickerOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) e
                     .target.classList.remove('active'); });
 
-            // ===== 月份切换 =====
             document.getElementById('prevMonth').addEventListener('click', function() {
                 if (currentView === 'dashboard') switchToCalendar();
                 viewMonth--;
@@ -2714,11 +2631,9 @@
                 renderAll();
             });
 
-            // ===== 添加按钮 =====
             document.getElementById('addBtn').onclick = function() { if (!isEditMode) return;
                 openForm(null); };
 
-            // ===== 模态框事件 =====
             document.getElementById('modalClose').onclick = closeModal;
             document.getElementById('modalMask').addEventListener('click', e => { if (e.target === document.getElementById(
                     'modalMask')) closeModal(); });
@@ -2733,7 +2648,6 @@
                         openForm(item); } }
             };
 
-            // ===== 表单提交 =====
             document.getElementById('formClose').onclick = closeForm;
             document.getElementById('formCancel').onclick = closeForm;
             document.getElementById('formModal').addEventListener('click', e => { if (e.target === document.getElementById(
@@ -2767,12 +2681,11 @@
                 closeForm();
             };
 
-            // ===== 搜索日期跳转 =====
+            // --- 搜索 ---
             document.getElementById('searchDateInput').addEventListener('input', function(e) {
                 const val = e.target.value.trim();
                 if (!val) { searchDateKeyword = '';
                     renderAll(); return; }
-                // 尝试解析日期，跳转到对应年月
                 const normalized = normalizeDateInput(val);
                 if (isValidDate(normalized)) {
                     const parts = normalized.split('-');
@@ -2792,7 +2705,7 @@
                 else renderAll();
             });
 
-            // ===== 侧边栏 =====
+            // --- 侧边栏 ---
             let leftCollapsed = false,
                 rightCollapsed = false;
             document.getElementById('leftToggle').addEventListener('click', function() {
@@ -2813,7 +2726,7 @@
                 });
             });
 
-            // ===== 导入 JSON =====
+            // --- 导入 JSON ---
             const importModal = document.getElementById('importModal');
             document.getElementById('importBtn').onclick = function() { if (!isEditMode) return;
                 document.getElementById('importDataText').value = '';
@@ -2957,7 +2870,7 @@
                     this.disabled = false; }, 1000);
             };
 
-            // ===== 导入 Excel =====
+            // --- 导入 Excel ---
             const excelModal = document.getElementById('excelImportModal');
             document.getElementById('importExcelBtn').onclick = function() {
                 document.getElementById('excelFileInput').value = '';
@@ -3104,7 +3017,7 @@
                     document.getElementById('excelPreviewArea').style.display = 'none'; }, 800);
             };
 
-            // ===== 粒子特效 =====
+            // --- 粒子特效 ---
             (function() {
                 const ICONS = ['❄️', '✨', '💠', '❇️', '✦', '⬡'];
                 const container = document.getElementById('ice-particle-container');
@@ -3147,7 +3060,8 @@
                 });
             })();
 
-            // ===== 初始化 =====
+            // --- 初始化 ---
+            loadBioFromStorage();
             loadTagsFromStorage();
             loadMilestonesFromStorage();
             initYMSelects();
@@ -3159,10 +3073,8 @@
                 else console.log('🔓 编辑模式已启用');
             });
 
-            // 暴露 openModal 给全局（用于 showDateDetail 中的 onclick）
             window.openModal = openModal;
             window.scheduleList = scheduleList;
-
         })();
     </script>
 </body>
